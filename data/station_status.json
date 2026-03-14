@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-14T19:06:45Z",
+  "fetched_at": "2026-03-14T19:11:57Z",
   "stations": [
     {
       "id": "PR05",
@@ -7,7 +7,7 @@
       "drainage": "Puyallup",
       "elev_ft": 2340,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "nominal"
     },
     {
@@ -16,7 +16,7 @@
       "drainage": "Carbon",
       "elev_ft": 1860,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "nominal"
     },
     {
@@ -25,7 +25,7 @@
       "drainage": "White",
       "elev_ft": 3100,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "nominal"
     },
     {
@@ -34,7 +34,7 @@
       "drainage": "Nisqually",
       "elev_ft": 5400,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "unknown"
     },
     {
@@ -43,7 +43,7 @@
       "drainage": "Tahoma",
       "elev_ft": 2900,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "nominal"
     },
     {
@@ -52,7 +52,7 @@
       "drainage": "White NE",
       "elev_ft": 5800,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "unknown"
     },
     {
@@ -61,7 +61,7 @@
       "drainage": "Puyallup",
       "elev_ft": 4150,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "unknown"
     },
     {
@@ -70,7 +70,7 @@
       "drainage": "Nisqually",
       "elev_ft": 2100,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "unknown"
     },
     {
@@ -79,7 +79,7 @@
       "drainage": "Puyallup",
       "elev_ft": 820,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "legacy_afm"
     },
     {
@@ -88,7 +88,7 @@
       "drainage": "Puyallup",
       "elev_ft": 680,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "legacy_afm"
     },
     {
@@ -97,7 +97,7 @@
       "drainage": "Carbon",
       "elev_ft": 490,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:06:45Z",
+      "checked_at": "2026-03-14T19:11:57Z",
       "status": "legacy_afm"
     }
   ],
