@@ -1,13 +1,13 @@
 {
-  "fetched_at": "2026-03-14T19:23:37Z",
+  "fetched_at": "2026-03-14T19:25:09Z",
   "source": "https://waterservices.usgs.gov/nwis/iv/",
   "gauges": {
     "Puyallup at Orting": {
       "site_no": "12093500",
-      "discharge_cfs": 3000.0,
-      "discharge_dt": "2026-03-14T12:00:00.000-07:00",
-      "stage_ft": 8.75,
-      "stage_dt": "2026-03-14T12:00:00.000-07:00"
+      "discharge_cfs": 2960.0,
+      "discharge_dt": "2026-03-14T12:15:00.000-07:00",
+      "stage_ft": 8.73,
+      "stage_dt": "2026-03-14T12:15:00.000-07:00"
     },
     "Carbon at Orting": {
       "site_no": "12094000",
