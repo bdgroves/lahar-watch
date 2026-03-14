@@ -1,0 +1,38 @@
+{
+  "fetched_at": "2026-03-14T19:47:43Z",
+  "stations": {
+    "MUIR": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "CR01": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "WR02": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "STAR": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "PARA": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "CRY5": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "MT.WOW": {
+      "ok": false,
+      "reason": "HTTP 404"
+    },
+    "NQ01": {
+      "ok": false,
+      "reason": "HTTP 404"
+    }
+  },
+  "source": "https://pnsn.org/helicorder/image"
+}
