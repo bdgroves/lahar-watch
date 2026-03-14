@@ -1,0 +1,63 @@
+name: Fetch Sensor Data & Deploy
+
+on:
+  schedule:
+    # Runs twice daily — 06:00 and 18:00 UTC (matches weather-bot cadence)
+    - cron: "0 6 * * *"
+    - cron: "0 18 * * *"
+  workflow_dispatch:   # allow manual trigger from GitHub UI
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "index.html"
+      - ".github/workflows/**"
+
+permissions:
+  contents: write      # needed to commit data/ JSON files back to repo
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pixi
+        uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.41.4
+          cache: true
+
+      - name: Fetch sensor data
+        run: pixi run fetch
+
+      - name: Validate data
+        run: pixi run validate
+
+      - name: Commit updated data files
+        run: |
+          git config user.name  "lahar-watch-bot"
+          git config user.email "actions@github.com"
+          git add data/*.json
+          git diff --staged --quiet || git commit -m "chore: update sensor data [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."   # serve repo root (index.html + data/ + assets/)
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

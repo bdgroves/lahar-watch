@@ -1,0 +1,47 @@
+[project]
+name = "lahar-watch"
+description = "Washington State LAHAR Sensor Network — Dashboard & Data Pipeline"
+version = "0.1.0"
+authors = ["bdgroves"]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-arm64"]
+
+[dependencies]
+python = ">=3.11"
+requests = ">=2.31"
+pandas = ">=2.1"
+python-dotenv = ">=1.0"
+rich = ">=13.0"          # pretty terminal output
+schedule = ">=1.2"       # optional: run fetcher on a loop locally
+
+[feature.dev.dependencies]
+pytest = ">=7.4"
+ruff = ">=0.1"
+httpx = ">=0.25"         # async fetch testing
+
+[environments]
+default = { features = ["dev"], solve-group = "default" }
+
+# ── Tasks ────────────────────────────────────────────────────────────────────
+[tasks]
+
+# Fetch all sensor data → writes JSON to data/
+fetch = { cmd = "python scripts/fetch_sensors.py", description = "Pull latest USGS/PNSN sensor data" }
+
+# Fetch + pretty-print status summary in terminal
+status = { cmd = "python scripts/fetch_sensors.py --status", description = "Print live station status table" }
+
+# Validate generated JSON files
+validate = { cmd = "python scripts/validate_data.py", description = "Check data/ JSON files are well-formed" }
+
+# Run tests
+test = { cmd = "pytest tests/ -v", description = "Run test suite" }
+
+# Lint
+lint = { cmd = "ruff check scripts/", description = "Lint Python scripts" }
+
+# Full pipeline: fetch → validate
+pipeline = { depends-on = ["fetch", "validate"], description = "Run full data pipeline" }
+
+# Open dashboard in default browser (Windows-friendly)
+open = { cmd = "python -m webbrowser index.html", description = "Open dashboard in browser" }
