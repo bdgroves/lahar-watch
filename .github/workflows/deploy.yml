@@ -2,19 +2,21 @@ name: Fetch Sensor Data & Deploy
 
 on:
   schedule:
-    # Runs twice daily — 06:00 and 18:00 UTC (matches weather-bot cadence)
     - cron: "0 6 * * *"
     - cron: "0 18 * * *"
-  workflow_dispatch:   # allow manual trigger from GitHub UI
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - "scripts/**"
       - "index.html"
+      - "seismic.html"
+      - "travel-time.html"
+      - "status.html"
       - ".github/workflows/**"
 
 permissions:
-  contents: write      # needed to commit data/ JSON files back to repo
+  contents: write
   pages: write
   id-token: write
 
@@ -25,6 +27,9 @@ concurrency:
 jobs:
   fetch-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -56,7 +61,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."   # serve repo root (index.html + data/ + assets/)
+          path: "."
 
       - name: Deploy to GitHub Pages
         id: deployment
