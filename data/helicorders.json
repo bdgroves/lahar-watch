@@ -1,38 +1,94 @@
 {
-  "fetched_at": "2026-03-14T20:14:25Z",
+  "fetched_at": "2026-03-14T20:35:00Z",
   "stations": {
     "MUIR": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/MUIR.png",
+      "sta": "RCM",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
     "CR01": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/CR01.png",
+      "sta": "RCS",
+      "net": "UW",
+      "cha": "EHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
     "WR02": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/WR02.png",
+      "sta": "STOR",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
-    "STAR": {
-      "ok": false,
-      "reason": "HTTP 404"
+    "TC04": {
+      "file": "data/helicorders/TC04.png",
+      "sta": "TDH",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
     "PARA": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/PARA.png",
+      "sta": "PARA",
+      "net": "CC",
+      "cha": "BHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
     "CRY5": {
-      "ok": false,
-      "reason": "HTTP 404"
-    },
-    "MT.WOW": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/CRY5.png",
+      "sta": "CRYS",
+      "net": "CC",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     },
     "NQ01": {
-      "ok": false,
-      "reason": "HTTP 404"
+      "file": "data/helicorders/NQ01.png",
+      "sta": "MILD",
+      "net": "CC",
+      "cha": "BHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
+    },
+    "ELBE": {
+      "file": "data/helicorders/ELBE.png",
+      "sta": "ELBE",
+      "net": "CC",
+      "cha": "BHZ",
+      "loc": "--",
+      "window_start": "2026-03-13T20:35:00",
+      "window_end": "2026-03-14T20:35:00",
+      "fetched_at": "2026-03-14T20:35:00Z",
+      "ok": true
     }
   },
-  "source": "https://pnsn.org/helicorder/image"
+  "source": "https://service.iris.edu/irisws/timeseriesplot/1/query"
 }
