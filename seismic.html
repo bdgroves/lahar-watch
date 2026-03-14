@@ -195,7 +195,7 @@
       </div>
       <div class="note-card">
         <div class="note-title">📡 About These Feeds</div>
-        <div class="note-text">Helicorder images stream live from the <strong>Pacific Northwest Seismic Network (PNSN)</strong> via the UW network. Each image shows 24 hours of ground motion. Data updates automatically every 10 minutes. Seismicity data is from the <strong>USGS Earthquake Hazards API</strong>.</div>
+        <div class="note-text">Waveform images are fetched server-side from the <strong>IRIS timeseriesplot API</strong> during each GitHub Actions run (twice daily). Each image shows a rolling 24-hour window of ground motion. Station channels verified against IRIS availability — UW network (Camp Muir, Carbon, White River, Tahoma Creek, Puyallup Valley) and CC Cascade Chain network (Paradise, Crystal Mtn, Nisqually). Seismicity data from the <strong>USGS Earthquake Hazards API</strong>.</div>
       </div>
     </div>
   </div>
@@ -212,16 +212,17 @@ function updateClock() {
 setInterval(updateClock, 1000); updateClock();
 
 // ── Station registry ────────────────────────────────────────────────────────
-// Network codes verified against PNSN — CC = Cascade Chain, UW = U. Washington
+// Synced with HELI_TARGETS in fetch_sensors.py — channels verified 2026-03-14
+// UW = University of Washington  |  CC = Cascade Chain (PNSN volcano network)
 const STATIONS = [
-  { id: 'MUIR', label: 'Camp Muir · Summit',    net: 'UW', sta: 'RCM',  cha: 'EHZ', drainage: 'Summit',    active: true },
-  { id: 'STAR', label: 'St. Andrews Rock',       net: 'UW', sta: 'STAR', cha: 'EHZ', drainage: 'Summit',    active: true },
-  { id: 'CR01', label: 'CR01 · Carbon',          net: 'UW', sta: 'RCS',  cha: 'EHZ', drainage: 'Carbon',    active: true },
-  { id: 'WR02', label: 'WR02 · White River',     net: 'UW', sta: 'FMW',  cha: 'HHZ', drainage: 'White',     active: true },
-  { id: 'PARA', label: 'PARA · Paradise',        net: 'CC', sta: 'PARA', cha: 'EHZ', drainage: 'Nisqually', active: true },
-  { id: 'CRY5', label: 'CRY5 · Crystal Mtn',    net: 'CC', sta: 'CRYS', cha: 'EHZ', drainage: 'White NE',  active: true },
-  { id: 'MT.WOW', label: 'MT.WOW · Westside',   net: 'CC', sta: 'WOW',  cha: 'EHZ', drainage: 'Puyallup',  active: true },
-  { id: 'NQ01', label: 'NQ01 · Nisqually',       net: 'CC', sta: 'MILD', cha: 'EHZ', drainage: 'Nisqually', active: true },
+  { id: 'MUIR', label: 'Camp Muir · Summit',      net: 'UW', sta: 'RCM',  cha: 'HHZ', drainage: 'Summit',    active: true },
+  { id: 'CR01', label: 'CR01 · Carbon River',     net: 'UW', sta: 'RCS',  cha: 'EHZ', drainage: 'Carbon',    active: true },
+  { id: 'WR02', label: 'WR02 · White River',      net: 'UW', sta: 'STOR', cha: 'HHZ', drainage: 'White',     active: true },
+  { id: 'TC04', label: 'TC04 · Tahoma Creek',     net: 'UW', sta: 'TDH',  cha: 'HHZ', drainage: 'Tahoma',    active: true },
+  { id: 'PARA', label: 'PARA · Paradise',         net: 'CC', sta: 'PARA', cha: 'BHZ', drainage: 'Nisqually', active: true },
+  { id: 'CRY5', label: 'CRY5 · Crystal Mtn',     net: 'CC', sta: 'CRYS', cha: 'HHZ', drainage: 'White NE',  active: true },
+  { id: 'NQ01', label: 'NQ01 · Nisqually',        net: 'CC', sta: 'MILD', cha: 'BHZ', drainage: 'Nisqually', active: true },
+  { id: 'PUPY', label: 'PUPY · Puyallup Valley',  net: 'UW', sta: 'PUPY', cha: 'EHZ', drainage: 'Puyallup',  active: true },
 ];
 
 let selected = STATIONS.slice(0, 4).map(s => s.id);
