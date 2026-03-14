@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-14T19:25:09Z",
+  "fetched_at": "2026-03-14T19:40:38Z",
   "stations": [
     {
       "id": "PR05",
@@ -7,7 +7,9 @@
       "drainage": "Puyallup",
       "elev_ft": 2340,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "CC",
+      "sta": "PR05",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "nominal"
     },
     {
@@ -16,7 +18,9 @@
       "drainage": "Carbon",
       "elev_ft": 1860,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "UW",
+      "sta": "RCS",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "nominal"
     },
     {
@@ -25,7 +29,9 @@
       "drainage": "White",
       "elev_ft": 3100,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "UW",
+      "sta": "FMW",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "nominal"
     },
     {
@@ -34,8 +40,10 @@
       "drainage": "Nisqually",
       "elev_ft": 5400,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
-      "status": "unknown"
+      "net": "CC",
+      "sta": "PARA",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
     },
     {
       "id": "TC04",
@@ -43,7 +51,9 @@
       "drainage": "Tahoma",
       "elev_ft": 2900,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "UW",
+      "sta": "TDH",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "nominal"
     },
     {
@@ -52,8 +62,10 @@
       "drainage": "White NE",
       "elev_ft": 5800,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
-      "status": "unknown"
+      "net": "CC",
+      "sta": "CRYS",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
     },
     {
       "id": "MT.WOW",
@@ -61,8 +73,10 @@
       "drainage": "Puyallup",
       "elev_ft": 4150,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
-      "status": "unknown"
+      "net": "CC",
+      "sta": "WOW",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
     },
     {
       "id": "NQ01",
@@ -70,8 +84,32 @@
       "drainage": "Nisqually",
       "elev_ft": 2100,
       "type": "LMS",
-      "checked_at": "2026-03-14T19:25:09Z",
-      "status": "unknown"
+      "net": "CC",
+      "sta": "MILD",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
+    },
+    {
+      "id": "MUIR",
+      "name": "Camp Muir Summit",
+      "drainage": "Summit",
+      "elev_ft": 10100,
+      "type": "LMS",
+      "net": "UW",
+      "sta": "RCM",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
+    },
+    {
+      "id": "STAR",
+      "name": "St. Andrews Rock",
+      "drainage": "Summit",
+      "elev_ft": 9800,
+      "type": "LMS",
+      "net": "UW",
+      "sta": "STAR",
+      "checked_at": "2026-03-14T19:40:38Z",
+      "status": "nominal"
     },
     {
       "id": "AFM-PUY-01",
@@ -79,7 +117,9 @@
       "drainage": "Puyallup",
       "elev_ft": 820,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "\u2014",
+      "sta": "\u2014",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "legacy_afm"
     },
     {
@@ -88,7 +128,9 @@
       "drainage": "Puyallup",
       "elev_ft": 680,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "\u2014",
+      "sta": "\u2014",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "legacy_afm"
     },
     {
@@ -97,15 +139,23 @@
       "drainage": "Carbon",
       "elev_ft": 490,
       "type": "AFM",
-      "checked_at": "2026-03-14T19:25:09Z",
+      "net": "\u2014",
+      "sta": "\u2014",
+      "checked_at": "2026-03-14T19:40:38Z",
       "status": "legacy_afm"
     }
   ],
   "known_in_iris": [
-    "FMW",
-    "RCM",
-    "RCS",
-    "TDH"
+    "CC.CRYS",
+    "CC.MILD",
+    "CC.PARA",
+    "CC.PR05",
+    "CC.WOW",
+    "UW.FMW",
+    "UW.RCM",
+    "UW.RCS",
+    "UW.STAR",
+    "UW.TDH"
   ],
   "source": "https://service.iris.edu/fdsnws/station/1/query"
 }
