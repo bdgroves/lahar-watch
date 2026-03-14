@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-14T19:47:43Z",
+  "fetched_at": "2026-03-14T19:50:59Z",
   "source": "https://waterservices.usgs.gov/nwis/iv/",
   "gauges": {
     "Nisqually at McKenna": {
@@ -25,10 +25,10 @@
     },
     "White at Buckley": {
       "site_no": "12099200",
-      "discharge_cfs": 3880.0,
-      "discharge_dt": "2026-03-14T11:30:00.000-07:00",
-      "stage_ft": 43.07,
-      "stage_dt": "2026-03-14T11:30:00.000-07:00"
+      "discharge_cfs": 3870.0,
+      "discharge_dt": "2026-03-14T12:30:00.000-07:00",
+      "stage_ft": 43.06,
+      "stage_dt": "2026-03-14T12:30:00.000-07:00"
     }
   }
 }
