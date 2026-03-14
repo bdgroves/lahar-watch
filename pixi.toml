@@ -1,4 +1,4 @@
-[project]
+[workspace]
 name = "lahar-watch"
 description = "Washington State LAHAR Sensor Network — Dashboard & Data Pipeline"
 version = "0.1.0"
@@ -11,13 +11,13 @@ python = ">=3.11"
 requests = ">=2.31"
 pandas = ">=2.1"
 python-dotenv = ">=1.0"
-rich = ">=13.0"          # pretty terminal output
-schedule = ">=1.2"       # optional: run fetcher on a loop locally
+rich = ">=13.0"
+schedule = ">=1.2"
 
 [feature.dev.dependencies]
 pytest = ">=7.4"
 ruff = ">=0.1"
-httpx = ">=0.25"         # async fetch testing
+httpx = ">=0.25"
 
 [environments]
 default = { features = ["dev"], solve-group = "default" }
@@ -25,23 +25,10 @@ default = { features = ["dev"], solve-group = "default" }
 # ── Tasks ────────────────────────────────────────────────────────────────────
 [tasks]
 
-# Fetch all sensor data → writes JSON to data/
-fetch = { cmd = "python scripts/fetch_sensors.py", description = "Pull latest USGS/PNSN sensor data" }
-
-# Fetch + pretty-print status summary in terminal
-status = { cmd = "python scripts/fetch_sensors.py --status", description = "Print live station status table" }
-
-# Validate generated JSON files
-validate = { cmd = "python scripts/validate_data.py", description = "Check data/ JSON files are well-formed" }
-
-# Run tests
-test = { cmd = "pytest tests/ -v", description = "Run test suite" }
-
-# Lint
-lint = { cmd = "ruff check scripts/", description = "Lint Python scripts" }
-
-# Full pipeline: fetch → validate
-pipeline = { depends-on = ["fetch", "validate"], description = "Run full data pipeline" }
-
-# Open dashboard in default browser (Windows-friendly)
-open = { cmd = "python -m webbrowser index.html", description = "Open dashboard in browser" }
+fetch    = { cmd = "python scripts/fetch_sensors.py",          description = "Pull latest USGS/PNSN sensor data" }
+status   = { cmd = "python scripts/fetch_sensors.py --status", description = "Print live station status table" }
+validate = { cmd = "python scripts/validate_data.py",          description = "Check data/ JSON files are well-formed" }
+test     = { cmd = "pytest tests/ -v",                         description = "Run test suite" }
+lint     = { cmd = "ruff check scripts/",                      description = "Lint Python scripts" }
+pipeline = { depends-on = ["fetch", "validate"],               description = "Run full data pipeline" }
+open     = { cmd = "python -m http.server 8080",               description = "Serve dashboard at localhost:8080" }

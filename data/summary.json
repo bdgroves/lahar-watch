@@ -1,7 +1,8 @@
 {
-  "fetched_at": "2026-03-14T00:00:00Z",
+  "fetched_at": "2026-03-14T19:02:00Z",
   "alert_level": "GREEN",
-  "seismic_count": 0,
+  "activity_level": "NORMAL",
+  "seismic_count": 50,
   "stations_total": 11,
-  "stations_nominal": 8
+  "stations_nominal": 4
 }

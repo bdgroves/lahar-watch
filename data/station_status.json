@@ -1,1 +1,111 @@
-{"fetched_at": "2026-03-14T00:00:00Z", "stations": [], "source": "placeholder"}
+{
+  "fetched_at": "2026-03-14T19:02:00Z",
+  "stations": [
+    {
+      "id": "PR05",
+      "name": "Puyallup River",
+      "drainage": "Puyallup",
+      "elev_ft": 2340,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "nominal"
+    },
+    {
+      "id": "CR01",
+      "name": "Carbon River",
+      "drainage": "Carbon",
+      "elev_ft": 1860,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "nominal"
+    },
+    {
+      "id": "WR02",
+      "name": "White River East",
+      "drainage": "White",
+      "elev_ft": 3100,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "nominal"
+    },
+    {
+      "id": "PARA",
+      "name": "Paradise / Nisqually",
+      "drainage": "Nisqually",
+      "elev_ft": 5400,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "unknown"
+    },
+    {
+      "id": "TC04",
+      "name": "Tahoma Creek",
+      "drainage": "Tahoma",
+      "elev_ft": 2900,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "nominal"
+    },
+    {
+      "id": "CRY5",
+      "name": "Crystal Mountain",
+      "drainage": "White NE",
+      "elev_ft": 5800,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "unknown"
+    },
+    {
+      "id": "MT.WOW",
+      "name": "Mt. Wow Westside",
+      "drainage": "Puyallup",
+      "elev_ft": 4150,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "unknown"
+    },
+    {
+      "id": "NQ01",
+      "name": "Nisqually River",
+      "drainage": "Nisqually",
+      "elev_ft": 2100,
+      "type": "LMS",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "unknown"
+    },
+    {
+      "id": "AFM-PUY-01",
+      "name": "AFM Puyallup Lower",
+      "drainage": "Puyallup",
+      "elev_ft": 820,
+      "type": "AFM",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "legacy_afm"
+    },
+    {
+      "id": "AFM-PUY-02",
+      "name": "AFM Puyallup Mid",
+      "drainage": "Puyallup",
+      "elev_ft": 680,
+      "type": "AFM",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "legacy_afm"
+    },
+    {
+      "id": "AFM-CAR-01",
+      "name": "AFM Carbon Lower",
+      "drainage": "Carbon",
+      "elev_ft": 490,
+      "type": "AFM",
+      "checked_at": "2026-03-14T19:02:00Z",
+      "status": "legacy_afm"
+    }
+  ],
+  "known_in_iris": [
+    "FMW",
+    "RCM",
+    "RCS",
+    "TDH"
+  ],
+  "source": "https://service.iris.edu/fdsnws/station/1/query"
+}
