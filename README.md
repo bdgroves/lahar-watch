@@ -2,9 +2,21 @@
 
 **Washington State LAHAR Sensor Network — Command Dashboard & Data Pipeline**
 
+[![Fetch Sensor Data & Deploy](https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml/badge.svg)](https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml)
+![GitHub Pages](https://img.shields.io/badge/pages-live-22c55e?logo=github)
+![Python](https://img.shields.io/badge/python-3.11+-3b82f6?logo=python&logoColor=white)
+![pixi](https://img.shields.io/badge/env-pixi-f97316)
+
 Live dashboard tracking the Mt. Rainier lahar detection network across all major drainages — Puyallup, Carbon, White River, Nisqually, and Tahoma Creek.
 
 🔗 **[Live Dashboard → bdgroves.github.io/lahar-watch](https://bdgroves.github.io/lahar-watch)**
+
+| Page | Description |
+|---|---|
+| [`index.html`](https://bdgroves.github.io/lahar-watch/) | Main sensor command dashboard |
+| [`seismic.html`](https://bdgroves.github.io/lahar-watch/seismic.html) | Live PNSN helicorders + seismicity table |
+| [`travel-time.html`](https://bdgroves.github.io/lahar-watch/travel-time.html) | Interactive lahar travel-time calculator |
+| [`status.html`](https://bdgroves.github.io/lahar-watch/status.html) | Pipeline health, API status, data freshness |
 
 ---
 

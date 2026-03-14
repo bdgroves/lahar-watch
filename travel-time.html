@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lahar Travel Time — lahar-watch</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14; --surface: #111720; --border: #1e2d3a;
+    --accent: #f97316; --warn: #ef4444; --ok: #22c55e;
+    --caution: #eab308; --muted: #4a6070; --text: #d6e4ef; --subtext: #7a95a8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(239,68,68,0.06) 0%, transparent 70%);
+  }
+  header {
+    position:relative; z-index:10; border-bottom:1px solid var(--border);
+    padding:0 28px; display:flex; align-items:center; justify-content:space-between;
+    height:56px; background:rgba(11,15,20,0.95); backdrop-filter:blur(8px);
+  }
+  .logo { display:flex; align-items:baseline; gap:10px; }
+  .logo-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--accent); }
+  .logo-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
+  .header-nav { display:flex; gap:2px; margin-left:24px; }
+  .nav-link { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); text-decoration:none; padding:6px 12px; border-radius:4px; transition:all 0.15s; }
+  .nav-link:hover { color:var(--text); background:rgba(255,255,255,0.05); }
+  .nav-link.active { color:var(--accent); background:rgba(249,115,22,0.1); }
+  .clock { font-family:'Space Mono',monospace; font-size:11px; color:var(--subtext); }
+
+  main { position:relative; z-index:1; padding:24px; max-width:1200px; margin:0 auto; }
+
+  .page-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--text); margin-bottom:4px; }
+  .page-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; margin-bottom:24px; }
+
+  /* ── Layout ─────────────────────────────────── */
+  .calc-layout { display:grid; grid-template-columns:340px 1fr; gap:20px; }
+
+  /* ── Controls panel ──────────────────────────── */
+  .controls { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; display:flex; flex-direction:column; gap:16px; }
+
+  .ctrl-section { font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:4px; }
+
+  .drain-select { display:flex; flex-direction:column; gap:6px; }
+  .drain-btn {
+    padding:10px 14px; border-radius:6px; border:1px solid var(--border);
+    background:transparent; color:var(--subtext); cursor:pointer; text-align:left;
+    transition:all 0.15s; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .drain-btn:hover { border-color:var(--muted); color:var(--text); }
+  .drain-btn.active { border-color:var(--accent); background:rgba(249,115,22,0.1); color:var(--text); }
+  .drain-btn .drain-pct { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); }
+
+  /* Scenario selector */
+  .scenario-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .scenario-btn {
+    padding:10px; border-radius:6px; border:1px solid var(--border);
+    background:transparent; color:var(--subtext); cursor:pointer;
+    transition:all 0.15s; font-size:11px; font-family:'DM Sans',sans-serif; text-align:left;
+  }
+  .scenario-btn .sc-label { font-weight:600; display:block; margin-bottom:2px; font-size:12px; }
+  .scenario-btn .sc-sub { font-family:'Space Mono',monospace; font-size:8px; color:var(--muted); }
+  .scenario-btn:hover { border-color:var(--muted); color:var(--text); }
+  .scenario-btn.active { border-color:var(--warn); background:rgba(239,68,68,0.08); color:var(--text); }
+
+  /* Volume slider */
+  .slider-wrap { display:flex; flex-direction:column; gap:6px; }
+  .slider-label { display:flex; justify-content:space-between; align-items:center; }
+  .slider-val { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--accent); }
+  .slider-unit { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); }
+  input[type=range] {
+    width:100%; accent-color:var(--accent); height:4px; cursor:pointer;
+    background: linear-gradient(to right, var(--accent) 50%, var(--border) 50%);
+  }
+
+  /* ── Results panel ────────────────────────────── */
+  .results { display:flex; flex-direction:column; gap:16px; }
+
+  /* Timeline diagram */
+  .timeline-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .timeline-header { padding:12px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .panel-title { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--subtext); }
+  .timeline-body { padding:18px; }
+
+  .tl-track { position:relative; height:6px; background:rgba(255,255,255,0.05); border-radius:3px; margin:28px 0 16px; }
+  .tl-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px; transition:width 0.6s ease; }
+  .tl-markers { position:absolute; top:0; left:0; right:0; height:100%; }
+  .tl-marker { position:absolute; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; }
+  .tl-marker-line { width:1px; height:14px; background:var(--border); margin-top:-14px; }
+  .tl-marker-label { font-family:'Space Mono',monospace; font-size:8px; color:var(--subtext); white-space:nowrap; margin-top:6px; }
+  .tl-marker-time { font-family:'Bebas Neue',sans-serif; font-size:13px; margin-top:1px; }
+
+  /* Community cards */
+  .community-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+
+  .community-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:14px; position:relative; overflow:hidden; transition:border-color 0.2s;
+  }
+  .community-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .community-card.zone-red::before { background:var(--warn); }
+  .community-card.zone-yellow::before { background:var(--caution); }
+  .community-card.zone-green::before { background:var(--ok); }
+
+  .comm-name { font-weight:600; font-size:13px; margin-bottom:2px; }
+  .comm-drainage { font-family:'Space Mono',monospace; font-size:9px; color:var(--subtext); margin-bottom:10px; }
+  .comm-time { font-family:'Bebas Neue',sans-serif; font-size:30px; line-height:1; }
+  .comm-unit { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); margin-left:2px; }
+  .comm-pop { font-size:10px; color:var(--subtext); margin-top:6px; }
+  .urgency-badge { display:inline-block; padding:2px 8px; border-radius:3px; font-family:'Space Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:0.5px; margin-top:6px; }
+  .urgency-critical { background:rgba(239,68,68,0.15); color:var(--warn); border:1px solid rgba(239,68,68,0.3); }
+  .urgency-warning  { background:rgba(234,179,8,0.12); color:var(--caution); border:1px solid rgba(234,179,8,0.3); }
+  .urgency-monitor  { background:rgba(34,197,94,0.1); color:var(--ok); border:1px solid rgba(34,197,94,0.25); }
+
+  /* Detection note */
+  .detection-strip {
+    background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.2);
+    border-radius:8px; padding:12px 16px; display:flex; gap:16px; align-items:center;
+  }
+  .det-label { font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); flex-shrink:0; }
+  .det-bar { flex:1; height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
+  .det-fill { height:100%; background:var(--accent); border-radius:2px; }
+  .det-times { font-family:'Space Mono',monospace; font-size:10px; color:var(--subtext); flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-title">WA Lahar Net</span>
+    <span class="logo-sub">Travel Time Calculator · Mt. Rainier</span>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="seismic.html" class="nav-link">Seismic</a>
+    <a href="travel-time.html" class="nav-link active">Travel Time</a>
+    <a href="status.html" class="nav-link">Status</a>
+  </nav>
+  <div class="clock" id="clock">--:--:-- PDT</div>
+</header>
+
+<main>
+  <div class="page-title">Lahar Travel Time Calculator</div>
+  <div class="page-sub">Model warning windows for downstream communities based on drainage, scenario, and lahar volume · Based on USGS lahar inundation models</div>
+
+  <div class="calc-layout">
+
+    <!-- Controls -->
+    <div class="controls">
+
+      <div>
+        <div class="ctrl-section">1 — Select Drainage</div>
+        <div class="drain-select" id="drainSelect"></div>
+      </div>
+
+      <div>
+        <div class="ctrl-section">2 — Scenario / Trigger</div>
+        <div class="scenario-grid" id="scenarioGrid"></div>
+      </div>
+
+      <div>
+        <div class="ctrl-section">3 — Estimated Volume</div>
+        <div class="slider-wrap">
+          <div class="slider-label">
+            <span style="font-size:11px;color:var(--subtext)">Volume</span>
+            <span><span class="slider-val" id="volDisplay">0.5</span> <span class="slider-unit">km³</span></span>
+          </div>
+          <input type="range" id="volSlider" min="0.01" max="4" step="0.01" value="0.5"
+            oninput="updateVolume(this.value)">
+          <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
+            <span>0.01 km³ (small)</span><span>4 km³ (Osceola-scale)</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#0d1821;border:1px solid var(--border);border-radius:6px;padding:12px;">
+        <div class="ctrl-section" style="margin-bottom:8px;">Reference Events</div>
+        <div style="font-size:11px;color:var(--subtext);line-height:1.7;">
+          <div><span style="color:var(--accent)">Electron Mudflow (~1507)</span> — ~0.1 km³ · west flank collapse · no eruption</div>
+          <div style="margin-top:4px;"><span style="color:var(--warn)">Osceola Mudflow (~5,600 BP)</span> — ~3.8 km³ · reached Commencement Bay</div>
+          <div style="margin-top:4px;"><span style="color:var(--caution)">Mt St Helens 1980</span> — ~0.5 km³ debris avalanche</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Results -->
+    <div class="results">
+
+      <!-- Detection pipeline -->
+      <div class="detection-strip">
+        <span class="det-label">Detection → Alert</span>
+        <div class="det-bar"><div class="det-fill" id="detFill" style="width:5%"></div></div>
+        <span class="det-times">Sensor detect: <strong style="color:var(--ok)">~10s</strong> · EOC alert: <strong style="color:var(--ok)">~30s</strong> · Sirens: <strong style="color:var(--caution)">~2 min</strong></span>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <span class="panel-title" id="timelineTitle">Puyallup River — Warning Timeline</span>
+          <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--subtext)" id="timelineScenario">Eruption scenario</span>
+        </div>
+        <div class="timeline-body">
+          <div class="tl-track" id="tlTrack">
+            <div class="tl-fill" id="tlFill" style="width:0%;background:linear-gradient(to right,#22c55e,#eab308,#ef4444)"></div>
+            <div class="tl-markers" id="tlMarkers"></div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);display:flex;justify-content:space-between;margin-top:8px;">
+            <span>T+0 — Lahar initiates</span>
+            <span id="tlEnd">T+3h 00m — Puget Lowlands</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community cards -->
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--subtext);margin-bottom:10px;">Warning Windows by Community</div>
+        <div class="community-grid" id="communityGrid"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+// ── Clock ──────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const p = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent = `${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())} PDT`;
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ── Data model ─────────────────────────────────────────────────────────────
+// Travel times from USGS lahar inundation models + published research
+// Base times are for a ~0.5 km³ eruption-triggered lahar
+// Scaled by volume factor relative to 0.5 km³ reference
+
+const DRAINAGES = [
+  { id: 'puyallup', label: 'Puyallup River', coverage: '80%' },
+  { id: 'carbon',   label: 'Carbon River',   coverage: '65%' },
+  { id: 'white',    label: 'White River',     coverage: '70%' },
+  { id: 'nisqually',label: 'Nisqually River', coverage: '55%' },
+  { id: 'tahoma',   label: 'Tahoma Creek',   coverage: '40%' },
+];
+
+const SCENARIOS = [
+  { id: 'eruption',  label: 'Eruption',       sub: 'Rapid snow/ice melt', speedFactor: 1.0 },
+  { id: 'collapse',  label: 'W. Flank Collapse', sub: 'No eruption, landslide', speedFactor: 0.85 },
+  { id: 'rapid',     label: 'Rapid Onset',    sub: 'Summit event', speedFactor: 1.2 },
+  { id: 'slow',      label: 'Slow Build',     sub: 'Incremental debris', speedFactor: 0.65 },
+];
+
+// Communities: { name, drainage, distKm, baseMins (at 0.5 km³ eruption), population }
+const COMMUNITIES = {
+  puyallup: [
+    { name: 'Ashford',        drainage: 'Puyallup', distKm: 8,   baseMins: 8,   pop: '1,200',  inside: true  },
+    { name: 'Orting',         drainage: 'Puyallup', distKm: 56,  baseMins: 33,  pop: '8,000',  inside: false },
+    { name: 'Buckley',        drainage: 'Carbon',   distKm: 72,  baseMins: 44,  pop: '4,800',  inside: false },
+    { name: 'Bonney Lake',    drainage: 'Puyallup', distKm: 80,  baseMins: 55,  pop: '21,000', inside: false },
+    { name: 'Sumner',         drainage: 'Puyallup', distKm: 92,  baseMins: 70,  pop: '10,000', inside: false },
+    { name: 'Puyallup City',  drainage: 'Puyallup', distKm: 98,  baseMins: 82,  pop: '43,000', inside: false },
+  ],
+  carbon: [
+    { name: 'Carbonado',      drainage: 'Carbon',   distKm: 30,  baseMins: 28,  pop: '700',    inside: false },
+    { name: 'Wilkeson',       drainage: 'Carbon',   distKm: 36,  baseMins: 33,  pop: '500',    inside: false },
+    { name: 'Orting',         drainage: 'Carbon',   distKm: 54,  baseMins: 40,  pop: '8,000',  inside: false },
+    { name: 'Buckley',        drainage: 'Carbon',   distKm: 60,  baseMins: 44,  pop: '4,800',  inside: false },
+    { name: 'Auburn',         drainage: 'White',    distKm: 88,  baseMins: 68,  pop: '87,000', inside: false },
+  ],
+  white: [
+    { name: 'Greenwater',     drainage: 'White',    distKm: 22,  baseMins: 18,  pop: '300',    inside: false },
+    { name: 'Enumclaw',       drainage: 'White',    distKm: 48,  baseMins: 38,  pop: '12,000', inside: false },
+    { name: 'Buckley',        drainage: 'White',    distKm: 60,  baseMins: 46,  pop: '4,800',  inside: false },
+    { name: 'Auburn',         drainage: 'White',    distKm: 78,  baseMins: 62,  pop: '87,000', inside: false },
+    { name: 'Kent',           drainage: 'White',    distKm: 90,  baseMins: 76,  pop: '132,000',inside: false },
+  ],
+  nisqually: [
+    { name: 'Ashford',        drainage: 'Nisqually',distKm: 10,  baseMins: 10,  pop: '1,200',  inside: true  },
+    { name: 'Eatonville',     drainage: 'Nisqually',distKm: 35,  baseMins: 40,  pop: '3,000',  inside: false },
+    { name: 'McKenna',        drainage: 'Nisqually',distKm: 62,  baseMins: 68,  pop: '1,800',  inside: false },
+    { name: 'Yelm',           drainage: 'Nisqually',distKm: 72,  baseMins: 80,  pop: '10,000', inside: false },
+    { name: 'Olympia area',   drainage: 'Nisqually',distKm: 95,  baseMins: 105, pop: '53,000', inside: false },
+  ],
+  tahoma: [
+    { name: 'Ashford',        drainage: 'Tahoma',   distKm: 5,   baseMins: 5,   pop: '1,200',  inside: true  },
+    { name: 'Elbe',           drainage: 'Tahoma',   distKm: 18,  baseMins: 15,  pop: '400',    inside: false },
+    { name: 'Morton',         drainage: 'Tahoma',   distKm: 45,  baseMins: 42,  pop: '1,200',  inside: false },
+  ],
+};
+
+// State
+let activeDrainage = 'puyallup';
+let activeScenario = 'eruption';
+let volume = 0.5;
+
+// ── Volume scaling ──────────────────────────────────────────────────────────
+// Larger lahars are faster due to more momentum; rough power law
+function volumeScaleFactor(vol) {
+  // At vol=0.5 → factor=1.0; at vol=4.0 → factor~0.7 (faster, less time)
+  // At vol=0.05 → factor~1.4 (smaller = slower)
+  return Math.pow(0.5 / vol, 0.18);
+}
+
+function calcMins(baseMins, scenario, vol) {
+  const sf = scenario.speedFactor * volumeScaleFactor(vol);
+  // sf < 1 means faster lahar → less time
+  return Math.round(baseMins * sf);
+}
+
+function fmtTime(mins) {
+  if (mins < 60) return `${mins}`;
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
+function fmtTimeUnit(mins) {
+  return mins < 60 ? 'min' : '';
+}
+
+// ── Urgency zone ───────────────────────────────────────────────────────────
+function urgency(mins) {
+  if (mins < 20) return { zone: 'zone-red', badge: 'urgency-critical', label: '⚠ Critical — Immediate Evac' };
+  if (mins < 60) return { zone: 'zone-yellow', badge: 'urgency-warning', label: '⚡ Warning — Begin Evac' };
+  return { zone: 'zone-green', badge: 'urgency-monitor', label: '✓ Monitor — Prepare' };
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function renderDrainages() {
+  document.getElementById('drainSelect').innerHTML = DRAINAGES.map(d => `
+    <button class="drain-btn ${d.id === activeDrainage ? 'active' : ''}"
+      onclick="setDrainage('${d.id}')">
+      ${d.label}
+      <span class="drain-pct">${d.coverage}</span>
+    </button>`).join('');
+}
+
+function renderScenarios() {
+  document.getElementById('scenarioGrid').innerHTML = SCENARIOS.map(s => `
+    <button class="scenario-btn ${s.id === activeScenario ? 'active' : ''}"
+      onclick="setScenario('${s.id}')">
+      <span class="sc-label">${s.label}</span>
+      <span class="sc-sub">${s.sub}</span>
+    </button>`).join('');
+}
+
+function renderResults() {
+  const scenario = SCENARIOS.find(s => s.id === activeScenario);
+  const communities = COMMUNITIES[activeDrainage] || [];
+  const drainage = DRAINAGES.find(d => d.id === activeDrainage);
+
+  // Timeline header
+  document.getElementById('timelineTitle').textContent = `${drainage.label} — Warning Timeline`;
+  document.getElementById('timelineScenario').textContent = `${scenario.label} · ${volume} km³`;
+
+  // Compute times
+  const times = communities.map(c => ({ ...c, mins: calcMins(c.baseMins, scenario, volume) }));
+  const maxMins = Math.max(...times.map(t => t.mins), 10);
+
+  // Timeline markers
+  const markers = document.getElementById('tlMarkers');
+  markers.innerHTML = times.map(c => {
+    const pct = Math.min((c.mins / (maxMins * 1.1)) * 100, 98);
+    const u = urgency(c.mins);
+    const color = u.zone === 'zone-red' ? 'var(--warn)' : u.zone === 'zone-yellow' ? 'var(--caution)' : 'var(--ok)';
+    return `<div class="tl-marker" style="left:${pct}%">
+      <div class="tl-marker-line" style="background:${color}"></div>
+      <div class="tl-marker-label" style="color:${color}">${c.name}</div>
+      <div class="tl-marker-time" style="color:${color}">${fmtTime(c.mins)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('tlFill').style.width = '100%';
+  document.getElementById('tlEnd').textContent = `T+${fmtTime(maxMins)} — ${communities[communities.length-1]?.name || 'distal'}`;
+
+  // Community cards
+  document.getElementById('communityGrid').innerHTML = times.map(c => {
+    const u = urgency(c.mins);
+    return `<div class="community-card ${u.zone}">
+      <div class="comm-name">${c.name}</div>
+      <div class="comm-drainage">${c.drainage} drainage · ${c.distKm} km</div>
+      <div>
+        <span class="comm-time">${fmtTime(c.mins)}</span>
+        <span class="comm-unit">${fmtTimeUnit(c.mins)}</span>
+      </div>
+      <div class="comm-pop">Pop. ~${c.pop}${c.inside ? ' · inside park' : ''}</div>
+      <div class="urgency-badge ${u.badge}">${u.label}</div>
+    </div>`;
+  }).join('');
+}
+
+function render() {
+  renderDrainages();
+  renderScenarios();
+  renderResults();
+}
+
+// ── Event handlers ─────────────────────────────────────────────────────────
+function setDrainage(id) { activeDrainage = id; render(); }
+function setScenario(id) { activeScenario = id; render(); }
+function updateVolume(val) {
+  volume = parseFloat(val);
+  document.getElementById('volDisplay').textContent = volume.toFixed(2);
+  // Update slider gradient
+  const slider = document.getElementById('volSlider');
+  const pct = ((volume - 0.01) / (4 - 0.01)) * 100;
+  slider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--border) ${pct}%)`;
+  renderResults();
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+render();
+updateVolume(0.5);
+</script>
+</body>
+</html>

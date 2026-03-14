@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seismic Monitor — lahar-watch</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14; --surface: #111720; --border: #1e2d3a;
+    --accent: #f97316; --warn: #ef4444; --ok: #22c55e;
+    --caution: #eab308; --muted: #4a6070; --text: #d6e4ef; --subtext: #7a95a8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse 50% 40% at 15% 5%, rgba(249,115,22,0.05) 0%, transparent 70%);
+  }
+
+  header {
+    position: relative; z-index: 10; border-bottom: 1px solid var(--border);
+    padding: 0 28px; display: flex; align-items: center; justify-content: space-between;
+    height: 56px; background: rgba(11,15,20,0.95); backdrop-filter: blur(8px);
+  }
+  .logo { display: flex; align-items: baseline; gap: 10px; }
+  .logo-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--accent); }
+  .logo-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+  .header-nav { display: flex; gap: 2px; margin-left: 24px; }
+  .nav-link { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
+  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .nav-link.active { color: var(--accent); background: rgba(249,115,22,0.1); }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .clock { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--subtext); }
+
+  main { position: relative; z-index: 1; padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .page-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
+
+  /* Station selector tabs */
+  .station-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab-btn {
+    font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1px; padding: 6px 14px; border-radius: 4px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface); color: var(--subtext);
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); border-color: var(--muted); }
+  .tab-btn.active { background: rgba(249,115,22,0.12); border-color: var(--accent); color: var(--accent); }
+  .tab-btn .tab-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  /* Helicorder grid */
+  .helicorder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+  .heli-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: none; } }
+
+  .heli-header {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .heli-station { font-weight: 600; font-size: 12px; }
+  .heli-meta { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--subtext); }
+  .heli-img-wrap { position: relative; background: #050a0f; line-height: 0; min-height: 120px; display: flex; align-items: center; justify-content: center; }
+  .heli-img { width: 100%; display: block; image-rendering: pixelated; }
+  .heli-loading { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); padding: 20px; }
+  .heli-error { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--warn); padding: 16px; text-align: center; }
+
+  /* Helicorder label overlay */
+  .heli-label {
+    position: absolute; top: 6px; left: 8px;
+    font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(249,115,22,0.7);
+    background: rgba(11,15,20,0.7); padding: 2px 6px; border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .heli-footer {
+    padding: 6px 14px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .heli-channel { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); }
+  .heli-link { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--accent); text-decoration: none; }
+  .heli-link:hover { text-decoration: underline; }
+
+  /* Seismicity list */
+  .two-col { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
+
+  .events-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .panel-header { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .panel-title { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--subtext); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { padding: 8px 12px; text-align: left; font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 400; border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid rgba(30,45,58,0.5); transition: background 0.12s; cursor: pointer; }
+  tbody tr:hover { background: rgba(249,115,22,0.04); }
+  tbody td { padding: 8px 12px; }
+  .td-mono { font-family: 'Space Mono', monospace; font-size: 10px; }
+  .td-sub { color: var(--subtext); font-size: 10px; }
+  .mag-chip { display: inline-block; padding: 1px 7px; border-radius: 3px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
+  .mag-lo { background: rgba(74,96,112,0.2); color: var(--muted); }
+  .mag-mid { background: rgba(234,179,8,0.15); color: var(--caution); }
+  .mag-hi { background: rgba(239,68,68,0.15); color: var(--warn); }
+
+  /* Stats sidebar */
+  .stats-sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+  .stat-mini { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .stat-mini-label { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+  .stat-mini-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--accent); line-height: 1; }
+  .stat-mini-sub { font-size: 10px; color: var(--subtext); margin-top: 4px; }
+
+  .depth-chart { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .depth-bars { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .depth-row { display: flex; align-items: center; gap: 8px; }
+  .depth-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--subtext); width: 60px; flex-shrink: 0; }
+  .depth-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+  .depth-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.8s ease; }
+  .depth-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); width: 20px; text-align: right; }
+
+  .note-card { background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.15); border-radius: 8px; padding: 14px; }
+  .note-title { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; }
+  .note-text { font-size: 11px; color: var(--subtext); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-title">WA Lahar Net</span>
+    <span class="logo-sub">Seismic Monitor · Mt. Rainier Region</span>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="seismic.html" class="nav-link active">Seismic</a>
+    <a href="travel-time.html" class="nav-link">Travel Time</a>
+    <a href="status.html" class="nav-link">Status</a>
+  </nav>
+  <div class="header-right">
+    <div class="clock" id="clock">--:--:-- PDT</div>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">Seismic Monitor</div>
+  <div class="page-sub">PNSN / UW Network · Live Helicorders + Recent Seismicity · 50 km radius of Mt. Rainier</div>
+
+  <!-- Station tabs -->
+  <div class="station-tabs" id="stationTabs"></div>
+
+  <!-- Helicorder images (4-up grid) -->
+  <div class="helicorder-grid" id="helicorderGrid"></div>
+
+  <!-- Events + stats -->
+  <div class="two-col">
+    <div class="events-panel">
+      <div class="panel-header">
+        <span class="panel-title">Recent Seismicity — 7 days</span>
+        <span id="eventCount" style="font-family:'Space Mono',monospace;font-size:9px;color:var(--subtext);">loading…</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Mag</th><th>Depth</th><th>Location</th><th>Time (UTC)</th><th>Status</th>
+        </tr></thead>
+        <tbody id="eventTable"><tr><td colspan="5" class="td-sub" style="padding:16px;text-align:center;">Loading seismicity data…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="stats-sidebar">
+      <div class="stat-mini">
+        <div class="stat-mini-label">Events (7 days)</div>
+        <div class="stat-mini-val" id="statCount">–</div>
+        <div class="stat-mini-sub">within 50 km of summit</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-label">Largest Magnitude</div>
+        <div class="stat-mini-val" id="statMaxMag">–</div>
+        <div class="stat-mini-sub" id="statMaxPlace">past 7 days</div>
+      </div>
+      <div class="depth-chart">
+        <div class="panel-title">Depth Distribution</div>
+        <div class="depth-bars" id="depthBars">
+          <div class="depth-row"><span class="depth-label">0–5 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d0">–</span></div>
+          <div class="depth-row"><span class="depth-label">5–15 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d1">–</span></div>
+          <div class="depth-row"><span class="depth-label">15–30 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d2">–</span></div>
+          <div class="depth-row"><span class="depth-label">&gt;30 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d3">–</span></div>
+        </div>
+      </div>
+      <div class="note-card">
+        <div class="note-title">📡 About These Feeds</div>
+        <div class="note-text">Helicorder images stream live from the <strong>Pacific Northwest Seismic Network (PNSN)</strong> via the UW network. Each image shows 24 hours of ground motion. Data updates automatically every 10 minutes. Seismicity data is from the <strong>USGS Earthquake Hazards API</strong>.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ── Clock ──────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent =
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} PDT`;
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ── Station registry ────────────────────────────────────────────────────────
+// PNSN helicorder URL pattern:
+// https://pnsn.org/helicorder/image?sta=RCM&net=UW&cha=EHZ&loc=--
+// Also available: seismogram viewer at pnsn.org/seismogram/
+const STATIONS = [
+  { id: 'RCM',  label: 'PR05 · Puyallup',       net: 'UW', cha: 'EHZ', drainage: 'Puyallup',  active: true  },
+  { id: 'RCS',  label: 'CR01 · Carbon',          net: 'UW', cha: 'EHZ', drainage: 'Carbon',    active: true  },
+  { id: 'PARA', label: 'PARA · Paradise',        net: 'UW', cha: 'HHZ', drainage: 'Nisqually', active: true  },
+  { id: 'CRY',  label: 'CRY5 · Crystal Mtn',    net: 'UW', cha: 'HHZ', drainage: 'White NE',  active: true  },
+  { id: 'TDH',  label: 'TC04 · Tahoma Creek',    net: 'UW', cha: 'EHZ', drainage: 'Tahoma',    active: true  },
+  { id: 'FMW',  label: 'WR02 · White River',     net: 'UW', cha: 'HHZ', drainage: 'White',     active: true  },
+  { id: 'NIS',  label: 'NQ01 · Nisqually',       net: 'UW', cha: 'EHZ', drainage: 'Nisqually', active: true  },
+  { id: 'LON',  label: 'LON · Longmire',         net: 'UW', cha: 'HHZ', drainage: 'Nisqually', active: true  },
+];
+
+let selected = STATIONS.slice(0, 4).map(s => s.id);
+
+// ── Render station tabs ─────────────────────────────────────────────────────
+function renderTabs() {
+  const wrap = document.getElementById('stationTabs');
+  wrap.innerHTML = STATIONS.map(s => `
+    <button class="tab-btn ${selected.includes(s.id) ? 'active' : ''}"
+      onclick="toggleStation('${s.id}', this)">
+      <span class="tab-dot" style="background:${selected.includes(s.id) ? 'var(--ok)' : 'var(--muted)'}"></span>
+      ${s.label}
+    </button>`).join('');
+}
+
+function toggleStation(id, btn) {
+  if (selected.includes(id)) {
+    if (selected.length === 1) return; // keep at least one
+    selected = selected.filter(s => s !== id);
+  } else {
+    selected = [...selected, id];
+  }
+  renderTabs();
+  renderHelicorders();
+}
+
+// ── Render helicorder panels ────────────────────────────────────────────────
+function heliUrl(sta, net, cha) {
+  // PNSN live helicorder image endpoint
+  return `https://pnsn.org/helicorder/image?sta=${sta}&net=${net}&cha=${cha}&loc=--`;
+}
+
+function pnsnLink(sta, net) {
+  return `https://pnsn.org/station/view/${net}.${sta}`;
+}
+
+function renderHelicorders() {
+  const grid = document.getElementById('helicorderGrid');
+  const stations = STATIONS.filter(s => selected.includes(s.id));
+
+  grid.style.gridTemplateColumns = stations.length <= 2 ? '1fr 1fr' :
+                                    stations.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr';
+
+  grid.innerHTML = stations.map((s, i) => `
+    <div class="heli-card" style="animation-delay:${i * 0.06}s">
+      <div class="heli-header">
+        <div>
+          <span class="heli-station">${s.label}</span>
+          <span class="heli-meta" style="margin-left:8px;">${s.drainage} drainage</span>
+        </div>
+        <span class="heli-meta">${s.net}.${s.id}.${s.cha}</span>
+      </div>
+      <div class="heli-img-wrap" id="wrap-${s.id}">
+        <div class="heli-loading" id="loading-${s.id}">Loading helicorder…</div>
+        <span class="heli-label">24h · ${s.cha}</span>
+      </div>
+      <div class="heli-footer">
+        <span class="heli-channel">Channel: ${s.cha} · Updated every 10 min</span>
+        <a class="heli-link" href="${pnsnLink(s.id, s.net)}" target="_blank">PNSN ↗</a>
+      </div>
+    </div>`).join('');
+
+  // Load images after DOM is set
+  stations.forEach(s => loadHelicorder(s));
+}
+
+function loadHelicorder(s) {
+  const wrap = document.getElementById(`wrap-${s.id}`);
+  const loading = document.getElementById(`loading-${s.id}`);
+  if (!wrap) return;
+
+  const img = new Image();
+  const url = heliUrl(s.id, s.net, s.cha);
+  // Add cache-busting so we always get fresh images
+  img.src = url + `&_t=${Math.floor(Date.now() / 600000)}`; // busts every 10min
+  img.className = 'heli-img';
+  img.alt = `${s.id} helicorder`;
+
+  img.onload = () => {
+    if (loading) loading.remove();
+    wrap.appendChild(img);
+  };
+
+  img.onerror = () => {
+    if (loading) loading.remove();
+    wrap.innerHTML += `
+      <div class="heli-error">
+        ⚠ Helicorder image unavailable<br>
+        <span style="color:var(--muted);font-size:8px;margin-top:4px;display:block;">
+          PNSN may be rate-limiting direct image requests.<br>
+          <a href="${pnsnLink(s.id, s.net)}" target="_blank" style="color:var(--accent)">
+            View on PNSN ↗
+          </a>
+        </span>
+      </div>`;
+    wrap.querySelector('.heli-label')?.remove();
+  };
+}
+
+// ── Load seismicity from data/seismicity.json ───────────────────────────────
+async function loadSeismicity() {
+  let events = [];
+
+  try {
+    const res = await fetch('data/seismicity.json');
+    const data = await res.json();
+    events = data.events || [];
+  } catch {
+    // Fallback: fetch live from USGS
+    try {
+      const url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?' +
+        'format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=50' +
+        '&minmagnitude=0.5&orderby=time&limit=50';
+      const res = await fetch(url);
+      const data = await res.json();
+      events = (data.features || []).map(f => ({
+        magnitude: f.properties.mag,
+        depth_km: f.geometry.coordinates[2],
+        place: f.properties.place,
+        time: new Date(f.properties.time).toISOString(),
+        status: f.properties.status,
+        url: f.properties.url,
+      }));
+    } catch (e) {
+      console.warn('Could not load seismicity:', e);
+    }
+  }
+
+  renderEvents(events);
+}
+
+function renderEvents(events) {
+  const tbody = document.getElementById('eventTable');
+  const countEl = document.getElementById('eventCount');
+  const statCount = document.getElementById('statCount');
+  const statMaxMag = document.getElementById('statMaxMag');
+  const statMaxPlace = document.getElementById('statMaxPlace');
+
+  if (countEl) countEl.textContent = `${events.length} events`;
+  if (statCount) statCount.textContent = events.length;
+
+  if (events.length > 0) {
+    const maxEv = events.reduce((a, b) => (b.magnitude > a.magnitude ? b : a));
+    if (statMaxMag) statMaxMag.textContent = `M${maxEv.magnitude?.toFixed(1)}`;
+    if (statMaxPlace) statMaxPlace.textContent = maxEv.place?.replace(/, WA$/, '') || 'near Rainier';
+  }
+
+  // Depth distribution
+  const buckets = [0, 0, 0, 0];
+  events.forEach(e => {
+    const d = e.depth_km || 0;
+    if (d < 5) buckets[0]++;
+    else if (d < 15) buckets[1]++;
+    else if (d < 30) buckets[2]++;
+    else buckets[3]++;
+  });
+  const maxBucket = Math.max(...buckets, 1);
+  ['d0','d1','d2','d3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = buckets[i];
+    const bar = el?.closest('.depth-row')?.querySelector('.depth-bar-fill');
+    if (bar) bar.style.width = `${(buckets[i] / maxBucket) * 100}%`;
+  });
+
+  if (events.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="td-sub" style="padding:16px;text-align:center;">No events in past 7 days.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = events.map(ev => {
+    const mag = ev.magnitude;
+    const magClass = mag >= 3 ? 'mag-hi' : mag >= 2 ? 'mag-mid' : 'mag-lo';
+    const dt = ev.time ? ev.time.slice(0,16).replace('T',' ') : '—';
+    const place = (ev.place || '').replace(', Washington', '').replace(', WA', '');
+    const link = ev.url ? `<a href="${ev.url}" target="_blank" style="color:var(--accent);text-decoration:none;font-size:9px;">↗</a>` : '';
+    return `<tr>
+      <td><span class="mag-chip ${magClass}">M${mag?.toFixed(1)}</span></td>
+      <td class="td-mono">${ev.depth_km?.toFixed(1)} km</td>
+      <td class="td-sub">${place} ${link}</td>
+      <td class="td-mono td-sub">${dt}</td>
+      <td class="td-sub" style="font-size:9px;">${ev.status || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderTabs();
+renderHelicorders();
+loadSeismicity();
+
+// Refresh helicorders every 10 minutes
+setInterval(renderHelicorders, 10 * 60 * 1000);
+</script>
+</body>
+</html>

@@ -112,6 +112,37 @@
     50%       { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 0 4px rgba(34,197,94,0); }
   }
 
+  .header-nav {
+    display: flex;
+    gap: 2px;
+    margin-left: 24px;
+  }
+
+  .nav-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .nav-link.active { color: var(--accent); background: rgba(249,115,22,0.1); }
+
+  .data-age {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 8px;
+  }
+
   .clock {
     font-family: 'Space Mono', monospace;
     font-size: 11px;
@@ -618,8 +649,15 @@
     <span class="logo-title">WA Lahar Net</span>
     <span class="logo-sub">Sensor Command Dashboard · Mt. Rainier Region</span>
   </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link active">Dashboard</a>
+    <a href="seismic.html" class="nav-link">Seismic</a>
+    <a href="travel-time.html" class="nav-link">Travel Time</a>
+    <a href="status.html" class="nav-link">Status</a>
+  </nav>
   <div class="header-right">
-    <div class="status-pill"><div class="pulse"></div>System Nominal</div>
+    <div class="status-pill"><div class="pulse"></div><span id="pill-text">System Nominal</span></div>
+    <div class="data-age" id="data-age" title="Last data fetch">–</div>
     <div class="clock" id="clock">--:--:-- PDT</div>
   </div>
 </header>
@@ -1161,6 +1199,14 @@ async function loadData() {
       fetch('data/stream_gauges.json').then(r => r.json()),
     ]);
 
+    // Data freshness badge
+    if (summary.fetched_at) {
+      const fetched = new Date(summary.fetched_at);
+      const ageMin = Math.round((Date.now() - fetched) / 60000);
+      const ageEl = document.getElementById('data-age');
+      if (ageEl) ageEl.textContent = ageMin < 2 ? 'data: live' : `data: ${ageMin}m ago`;
+    }
+
     // Alert level
     const level = (volcano.alert_level || 'GREEN').toUpperCase();
     const levelColors = { GREEN: '#22c55e', YELLOW: '#eab308', ORANGE: '#f97316', RED: '#ef4444' };
@@ -1178,7 +1224,8 @@ async function loadData() {
       statusPill.style.color = levelColors[level];
       statusPill.style.borderColor = levelColors[level] + '55';
       statusPill.querySelector('.pulse').style.background = levelColors[level];
-      statusPill.childNodes[1].textContent = `Alert: ${level}`;
+      const pillText = document.getElementById('pill-text');
+      if (pillText) pillText.textContent = `Alert: ${level}`;
     }
 
     // Seismic event count badge
