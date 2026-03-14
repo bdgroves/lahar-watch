@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-14T20:39:20Z",
+  "fetched_at": "2026-03-14T21:40:48Z",
   "stations": [
     {
       "id": "PR05",
@@ -9,7 +9,7 @@
       "type": "LMS",
       "net": "CC",
       "sta": "PR05",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -20,7 +20,7 @@
       "type": "LMS",
       "net": "UW",
       "sta": "RCS",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -31,7 +31,7 @@
       "type": "LMS",
       "net": "UW",
       "sta": "FMW",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -42,7 +42,7 @@
       "type": "LMS",
       "net": "CC",
       "sta": "PARA",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -53,7 +53,7 @@
       "type": "LMS",
       "net": "UW",
       "sta": "TDH",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -64,7 +64,7 @@
       "type": "LMS",
       "net": "CC",
       "sta": "CRYS",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -75,7 +75,7 @@
       "type": "LMS",
       "net": "CC",
       "sta": "WOW",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -86,7 +86,7 @@
       "type": "LMS",
       "net": "CC",
       "sta": "MILD",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -97,18 +97,18 @@
       "type": "LMS",
       "net": "UW",
       "sta": "RCM",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
-      "id": "STAR",
-      "name": "St. Andrews Rock",
-      "drainage": "Summit",
-      "elev_ft": 9800,
+      "id": "PUPY",
+      "name": "Puyallup Valley",
+      "drainage": "Puyallup",
+      "elev_ft": 580,
       "type": "LMS",
       "net": "UW",
-      "sta": "STAR",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "sta": "PUPY",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "nominal"
     },
     {
@@ -119,7 +119,7 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "legacy_afm"
     },
     {
@@ -130,7 +130,7 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "legacy_afm"
     },
     {
@@ -141,7 +141,7 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-03-14T20:39:20Z",
+      "checked_at": "2026-03-14T21:40:48Z",
       "status": "legacy_afm"
     }
   ],
@@ -152,9 +152,9 @@
     "CC.PR05",
     "CC.WOW",
     "UW.FMW",
+    "UW.PUPY",
     "UW.RCM",
     "UW.RCS",
-    "UW.STAR",
     "UW.TDH"
   ],
   "source": "https://service.iris.edu/fdsnws/station/1/query"
