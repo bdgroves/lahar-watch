@@ -212,18 +212,16 @@ function updateClock() {
 setInterval(updateClock, 1000); updateClock();
 
 // ── Station registry ────────────────────────────────────────────────────────
-// PNSN helicorder URL pattern:
-// https://pnsn.org/helicorder/image?sta=RCM&net=UW&cha=EHZ&loc=--
-// Also available: seismogram viewer at pnsn.org/seismogram/
+// Network codes verified against PNSN — CC = Cascade Chain, UW = U. Washington
 const STATIONS = [
-  { id: 'RCM',  label: 'PR05 · Puyallup',       net: 'UW', cha: 'EHZ', drainage: 'Puyallup',  active: true  },
-  { id: 'RCS',  label: 'CR01 · Carbon',          net: 'UW', cha: 'EHZ', drainage: 'Carbon',    active: true  },
-  { id: 'PARA', label: 'PARA · Paradise',        net: 'UW', cha: 'HHZ', drainage: 'Nisqually', active: true  },
-  { id: 'CRY',  label: 'CRY5 · Crystal Mtn',    net: 'UW', cha: 'HHZ', drainage: 'White NE',  active: true  },
-  { id: 'TDH',  label: 'TC04 · Tahoma Creek',    net: 'UW', cha: 'EHZ', drainage: 'Tahoma',    active: true  },
-  { id: 'FMW',  label: 'WR02 · White River',     net: 'UW', cha: 'HHZ', drainage: 'White',     active: true  },
-  { id: 'NIS',  label: 'NQ01 · Nisqually',       net: 'UW', cha: 'EHZ', drainage: 'Nisqually', active: true  },
-  { id: 'LON',  label: 'LON · Longmire',         net: 'UW', cha: 'HHZ', drainage: 'Nisqually', active: true  },
+  { id: 'MUIR', label: 'Camp Muir · Summit',    net: 'UW', sta: 'RCM',  cha: 'EHZ', drainage: 'Summit',    active: true },
+  { id: 'STAR', label: 'St. Andrews Rock',       net: 'UW', sta: 'STAR', cha: 'EHZ', drainage: 'Summit',    active: true },
+  { id: 'CR01', label: 'CR01 · Carbon',          net: 'UW', sta: 'RCS',  cha: 'EHZ', drainage: 'Carbon',    active: true },
+  { id: 'WR02', label: 'WR02 · White River',     net: 'UW', sta: 'FMW',  cha: 'HHZ', drainage: 'White',     active: true },
+  { id: 'PARA', label: 'PARA · Paradise',        net: 'CC', sta: 'PARA', cha: 'EHZ', drainage: 'Nisqually', active: true },
+  { id: 'CRY5', label: 'CRY5 · Crystal Mtn',    net: 'CC', sta: 'CRYS', cha: 'EHZ', drainage: 'White NE',  active: true },
+  { id: 'MT.WOW', label: 'MT.WOW · Westside',   net: 'CC', sta: 'WOW',  cha: 'EHZ', drainage: 'Puyallup',  active: true },
+  { id: 'NQ01', label: 'NQ01 · Nisqually',       net: 'CC', sta: 'MILD', cha: 'EHZ', drainage: 'Nisqually', active: true },
 ];
 
 let selected = STATIONS.slice(0, 4).map(s => s.id);
@@ -251,22 +249,23 @@ function toggleStation(id, btn) {
 }
 
 // ── Render helicorder panels ────────────────────────────────────────────────
-function heliUrl(sta, net, cha) {
-  // PNSN live helicorder image endpoint
-  return `https://pnsn.org/helicorder/image?sta=${sta}&net=${net}&cha=${cha}&loc=--`;
-}
-
 function pnsnLink(sta, net) {
   return `https://pnsn.org/station/view/${net}.${sta}`;
+}
+
+// Load manifest of server-fetched images from GitHub Actions
+let heliManifest = null;
+async function loadHeliManifest() {
+  try {
+    const r = await fetch('data/helicorders.json');
+    heliManifest = await r.json();
+  } catch { heliManifest = null; }
 }
 
 function renderHelicorders() {
   const grid = document.getElementById('helicorderGrid');
   const stations = STATIONS.filter(s => selected.includes(s.id));
-
-  grid.style.gridTemplateColumns = stations.length <= 2 ? '1fr 1fr' :
-                                    stations.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr';
-
+  grid.style.gridTemplateColumns = stations.length <= 2 ? '1fr 1fr' : '1fr 1fr';
   grid.innerHTML = stations.map((s, i) => `
     <div class="heli-card" style="animation-delay:${i * 0.06}s">
       <div class="heli-header">
@@ -274,53 +273,74 @@ function renderHelicorders() {
           <span class="heli-station">${s.label}</span>
           <span class="heli-meta" style="margin-left:8px;">${s.drainage} drainage</span>
         </div>
-        <span class="heli-meta">${s.net}.${s.id}.${s.cha}</span>
+        <span class="heli-meta">${s.net}.${s.sta}.${s.cha}</span>
       </div>
       <div class="heli-img-wrap" id="wrap-${s.id}">
         <div class="heli-loading" id="loading-${s.id}">Loading helicorder…</div>
         <span class="heli-label">24h · ${s.cha}</span>
       </div>
       <div class="heli-footer">
-        <span class="heli-channel">Channel: ${s.cha} · Updated every 10 min</span>
-        <a class="heli-link" href="${pnsnLink(s.id, s.net)}" target="_blank">PNSN ↗</a>
+        <span class="heli-channel">Channel: ${s.cha} · Updated twice daily via Actions</span>
+        <a class="heli-link" href="${pnsnLink(s.sta, s.net)}" target="_blank">PNSN ↗</a>
       </div>
     </div>`).join('');
 
-  // Load images after DOM is set
   stations.forEach(s => loadHelicorder(s));
 }
 
 function loadHelicorder(s) {
-  const wrap = document.getElementById(`wrap-${s.id}`);
+  const wrap    = document.getElementById(`wrap-${s.id}`);
   const loading = document.getElementById(`loading-${s.id}`);
   if (!wrap) return;
 
+  // Try server-side cached image first (no CORS issues)
+  const cached = heliManifest?.stations?.[s.id];
+  const localUrl = cached?.ok ? cached.file : `data/helicorders/${s.id}.png`;
+
   const img = new Image();
-  const url = heliUrl(s.id, s.net, s.cha);
-  // Add cache-busting so we always get fresh images
-  img.src = url + `&_t=${Math.floor(Date.now() / 600000)}`; // busts every 10min
   img.className = 'heli-img';
   img.alt = `${s.id} helicorder`;
 
   img.onload = () => {
     if (loading) loading.remove();
-    wrap.appendChild(img);
+    wrap.querySelector('.heli-label') && wrap.querySelector('.heli-label').remove();
+    wrap.insertBefore(img, wrap.firstChild);
+    // Add fetch time if available
+    if (cached?.fetched_at) {
+      const age = document.createElement('div');
+      age.style.cssText = 'font-family:Space Mono,monospace;font-size:8px;color:var(--muted);padding:4px 10px;border-top:1px solid var(--border)';
+      const dt = new Date(cached.fetched_at);
+      age.textContent = `fetched ${dt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})} · 24h window`;
+      wrap.parentElement.querySelector('.heli-footer').prepend(age);
+    }
   };
 
   img.onerror = () => {
-    if (loading) loading.remove();
-    wrap.innerHTML += `
-      <div class="heli-error">
-        ⚠ Helicorder image unavailable<br>
-        <span style="color:var(--muted);font-size:8px;margin-top:4px;display:block;">
-          PNSN may be rate-limiting direct image requests.<br>
-          <a href="${pnsnLink(s.id, s.net)}" target="_blank" style="color:var(--accent)">
-            View on PNSN ↗
-          </a>
-        </span>
-      </div>`;
-    wrap.querySelector('.heli-label')?.remove();
+    // Fall back to direct PNSN request
+    const pnsnUrl = `https://pnsn.org/helicorder/image?sta=${s.sta}&net=${s.net}&cha=${s.cha}&loc=--`;
+    const img2 = new Image();
+    img2.className = 'heli-img';
+    img2.alt = img.alt;
+    img2.src = pnsnUrl;
+    img2.onload = () => {
+      if (loading) loading.remove();
+      wrap.appendChild(img2);
+    };
+    img2.onerror = () => {
+      if (loading) loading.remove();
+      wrap.innerHTML += `
+        <div class="heli-error">
+          ⚠ Image unavailable<br>
+          <span style="color:var(--muted);font-size:8px;display:block;margin-top:4px;">
+            Run <code style="color:var(--accent)">pixi run fetch</code> to cache locally, or
+            <a href="${pnsnLink(s.sta, s.net)}" target="_blank" style="color:var(--accent)">view on PNSN ↗</a>
+          </span>
+        </div>`;
+      wrap.querySelector('.heli-label')?.remove();
+    };
   };
+
+  img.src = localUrl + `?_t=${Math.floor(Date.now() / 3600000)}`; // bust cache hourly
 }
 
 // ── Load seismicity from data/seismicity.json ───────────────────────────────
@@ -410,12 +430,14 @@ function renderEvents(events) {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
-renderTabs();
-renderHelicorders();
+loadHeliManifest().then(() => {
+  renderTabs();
+  renderHelicorders();
+});
 loadSeismicity();
 
-// Refresh helicorders every 10 minutes
-setInterval(renderHelicorders, 10 * 60 * 1000);
+// Refresh helicorders every hour (Actions fetches twice daily)
+setInterval(renderHelicorders, 60 * 60 * 1000);
 </script>
 </body>
 </html>

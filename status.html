@@ -177,7 +177,7 @@
       <div class="api-row">
         <div>
           <div class="api-name">USGS Volcano Notifications</div>
-          <div class="api-url">volcanoes.usgs.gov/vns2/api</div>
+          <div class="api-url">volcanoes.usgs.gov/hans-public/api</div>
         </div>
         <div class="api-status">
           <div class="dot dot-checking" id="dot-usgs-vns"></div>
@@ -333,6 +333,7 @@ const DATA_FILES = [
   { file: 'data/seismicity.json',     desc: 'Recent earthquake events',        key: 'fetched_at' },
   { file: 'data/stream_gauges.json',  desc: 'NWIS stream gauge readings',      key: 'fetched_at' },
   { file: 'data/station_status.json', desc: 'IRIS/FDSN station availability',  key: 'fetched_at' },
+  { file: 'data/helicorders.json',    desc: 'PNSN helicorder image manifest',  key: 'fetched_at' },
 ];
 
 async function loadDataFiles() {
@@ -390,7 +391,7 @@ async function checkAPI(dotId, txtId, url) {
 }
 
 checkAPI('dot-usgs-eq',  'txt-usgs-eq',  'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=1&minmagnitude=9');
-checkAPI('dot-usgs-vns', 'txt-usgs-vns', 'https://volcanoes.usgs.gov/vns2/api/vns/volcano/1200003');
+checkAPI('dot-usgs-vns', 'txt-usgs-vns', 'https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes');
 checkAPI('dot-nwis',     'txt-nwis',     'https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12093500&parameterCd=00060');
 checkAPI('dot-iris',     'txt-iris',     'https://service.iris.edu/irisws/availability/1/query?network=UW&station=RCM&format=json');
 checkAPI('dot-pnsn',     'txt-pnsn',     'https://pnsn.org/helicorder/image?sta=RCM&net=UW&cha=EHZ&loc=--');

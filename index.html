@@ -780,23 +780,23 @@
   <div class="top-stats">
     <div class="stat-card orange">
       <div class="stat-label">Total Stations</div>
-      <div class="stat-value orange">29</div>
-      <div class="stat-sub">14 LMS + 15 legacy AFM sites</div>
+      <div class="stat-value orange" id="kpi-total">–</div>
+      <div class="stat-sub" id="kpi-total-sub">loading…</div>
     </div>
     <div class="stat-card green">
       <div class="stat-label">Online / Nominal</div>
-      <div class="stat-value green">25</div>
-      <div class="stat-sub">86% network uptime</div>
+      <div class="stat-value green" id="kpi-nominal">–</div>
+      <div class="stat-sub" id="kpi-nominal-sub">loading…</div>
     </div>
     <div class="stat-card yellow">
-      <div class="stat-label">Degraded</div>
-      <div class="stat-value yellow">2</div>
-      <div class="stat-sub">Sensor or comms issue</div>
+      <div class="stat-label">Puyallup at Orting</div>
+      <div class="stat-value yellow" id="kpi-puyallup">–</div>
+      <div class="stat-sub" id="kpi-puyallup-sub">discharge cfs</div>
     </div>
     <div class="stat-card red">
-      <div class="stat-label">Offline</div>
-      <div class="stat-value red">2</div>
-      <div class="stat-sub">Maintenance required</div>
+      <div class="stat-label">Nisqually at McKenna</div>
+      <div class="stat-value red" id="kpi-nisqually">–</div>
+      <div class="stat-sub" id="kpi-nisqually-sub">discharge cfs</div>
     </div>
   </div>
 
@@ -1192,14 +1192,15 @@ function selectStation(el) {
 // ── LIVE DATA LOADER (reads from data/*.json) ─────────────────────────────
 async function loadData() {
   try {
-    const [summary, volcano, seismicity, gauges] = await Promise.all([
+    const [summary, volcano, seismicity, gaugeData, stationData] = await Promise.all([
       fetch('data/summary.json').then(r => r.json()),
       fetch('data/volcano_alert.json').then(r => r.json()),
       fetch('data/seismicity.json').then(r => r.json()),
       fetch('data/stream_gauges.json').then(r => r.json()),
+      fetch('data/station_status.json').then(r => r.json()),
     ]);
 
-    // Data freshness badge
+    // ── Data freshness badge ──────────────────────────────────────────────
     if (summary.fetched_at) {
       const fetched = new Date(summary.fetched_at);
       const ageMin = Math.round((Date.now() - fetched) / 60000);
@@ -1207,19 +1208,15 @@ async function loadData() {
       if (ageEl) ageEl.textContent = ageMin < 2 ? 'data: live' : `data: ${ageMin}m ago`;
     }
 
-    // Alert level
+    // ── Volcano alert level ───────────────────────────────────────────────
     const level = (volcano.alert_level || 'GREEN').toUpperCase();
     const levelColors = { GREEN: '#22c55e', YELLOW: '#eab308', ORANGE: '#f97316', RED: '#ef4444' };
-    const gaugeEl = document.querySelector('.gauge-value-text');
-    const gaugeSub = document.querySelector('.gauge-sub');
+    const gaugeEl   = document.querySelector('.gauge-value-text');
+    const gaugeSub  = document.querySelector('.gauge-sub');
     const statusPill = document.querySelector('.status-pill');
 
-    if (gaugeEl) {
-      gaugeEl.textContent = level;
-      gaugeEl.style.color = levelColors[level] || '#22c55e';
-    }
+    if (gaugeEl) { gaugeEl.textContent = level; gaugeEl.style.color = levelColors[level] || '#22c55e'; }
     if (gaugeSub) gaugeSub.textContent = `USGS Alert Level: ${level}`;
-
     if (level !== 'GREEN' && statusPill) {
       statusPill.style.color = levelColors[level];
       statusPill.style.borderColor = levelColors[level] + '55';
@@ -1228,24 +1225,59 @@ async function loadData() {
       if (pillText) pillText.textContent = `Alert: ${level}`;
     }
 
-    // Seismic event count badge
-    const seismicCount = seismicity.count || 0;
-    const alertCount = document.querySelector('.alert-count');
-    if (alertCount && seismicCount > 0) {
-      alertCount.textContent = seismicCount;
+    // ── KPI: stations ─────────────────────────────────────────────────────
+    const stations   = stationData.stations || [];
+    const total      = stations.length;
+    const nominal    = stations.filter(s => s.status === 'nominal').length;
+    const pct        = total > 0 ? Math.round((nominal / total) * 100) : 0;
+
+    const kpiTotal   = document.getElementById('kpi-total');
+    const kpiTotalSub = document.getElementById('kpi-total-sub');
+    const kpiNominal = document.getElementById('kpi-nominal');
+    const kpiNomSub  = document.getElementById('kpi-nominal-sub');
+
+    if (kpiTotal)    kpiTotal.textContent    = total;
+    if (kpiTotalSub) kpiTotalSub.textContent = `${nominal} LMS · ${stations.filter(s=>s.type==='AFM').length} legacy AFM`;
+    if (kpiNominal)  kpiNominal.textContent  = nominal;
+    if (kpiNomSub) {
+      const fetched = summary.fetched_at ? new Date(summary.fetched_at) : null;
+      const ts = fetched ? fetched.toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', timeZoneName:'short' }) : '—';
+      kpiNomSub.textContent = `${pct}% nominal · ${ts}`;
     }
 
-    // Inject recent seismic events into alert feed
+    // ── KPI: stream gauges ────────────────────────────────────────────────
+    const g = gaugeData.gauges || {};
+
+    function setGaugeKPI(elId, subId, gaugeName, thresholdHigh) {
+      const data = g[gaugeName];
+      const valEl = document.getElementById(elId);
+      const subEl = document.getElementById(subId);
+      if (!valEl || !data) return;
+      const cfs = data.discharge_cfs;
+      valEl.textContent = cfs ? cfs.toLocaleString() : '—';
+      // Color the value by flow level
+      if (cfs && cfs > thresholdHigh) valEl.style.color = 'var(--warn)';
+      else if (cfs && cfs > thresholdHigh * 0.6) valEl.style.color = 'var(--caution)';
+      else valEl.style.color = 'var(--ok)';
+      if (subEl) subEl.textContent = `${data.stage_ft ? data.stage_ft + ' ft · ' : ''}discharge cfs`;
+    }
+
+    setGaugeKPI('kpi-puyallup', 'kpi-puyallup-sub', 'Puyallup at Orting',   5000);
+    setGaugeKPI('kpi-nisqually','kpi-nisqually-sub', 'Nisqually at McKenna', 8000);
+
+    // ── Seismic event feed ────────────────────────────────────────────────
+    const seismicCount = seismicity.count || 0;
+    const alertCount = document.querySelector('.alert-count');
+    if (alertCount) alertCount.textContent = seismicCount;
+
     if (seismicity.events && seismicity.events.length > 0) {
-      const feed = document.querySelector('.alert-feed');
+      const feed   = document.querySelector('.alert-feed');
       const header = feed.querySelector('.alert-header');
-      // Remove old seismic items
       feed.querySelectorAll('.seismic-event').forEach(el => el.remove());
-      const recent = seismicity.events.slice(0, 3);
-      recent.forEach(ev => {
+      seismicity.events.slice(0, 3).forEach(ev => {
         const item = document.createElement('div');
         item.className = 'alert-item seismic-event';
-        const mag = ev.magnitude;
+        const mag  = ev.magnitude;
         const icon = mag >= 3 ? '🔴' : mag >= 2 ? '🟡' : '⚪';
         item.innerHTML = `
           <span class="alert-icon">${icon}</span>
@@ -1257,19 +1289,19 @@ async function loadData() {
       });
     }
 
-    // Stations nominal count in KPI
-    if (summary.stations_nominal !== undefined) {
-      const kpiGreen = document.querySelector('.stat-card.green .stat-value');
-      if (kpiGreen) kpiGreen.textContent = summary.stations_nominal;
-    }
-
-    // Last fetched timestamp
-    if (summary.fetched_at) {
-      const dt = new Date(summary.fetched_at);
-      const ts = dt.toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', timeZoneName:'short' });
-      const sub = document.querySelector('.stat-card.green .stat-sub');
-      if (sub) sub.textContent = `Updated ${ts}`;
-    }
+    // ── Sidebar station dots — update from live status ────────────────────
+    const statusMap = {};
+    (stationData.stations || []).forEach(s => { statusMap[s.id] = s.status; });
+    document.querySelectorAll('.station-item[data-id]').forEach(item => {
+      const dot = item.querySelector('.status-dot');
+      if (!dot) return;
+      const st = statusMap[item.dataset.id];
+      dot.className = 'status-dot ' + (
+        st === 'nominal'    ? 'dot-ok' :
+        st === 'legacy_afm' ? 'dot-offline' :
+        st === 'offline'    ? 'dot-warn' : 'dot-caution'
+      );
+    });
 
   } catch (err) {
     console.warn('Data load failed (running locally without a server?):', err);
