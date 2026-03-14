@@ -1,0 +1,8 @@
+﻿* text=auto
+*.py text eol=lf
+*.html text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+data/*.json merge=ours
+data/helicorders/*.png binary
