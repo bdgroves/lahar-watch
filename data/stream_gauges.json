@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-14T22:04:56Z",
+  "fetched_at": "2026-03-14T22:07:33Z",
   "source": "https://waterservices.usgs.gov/nwis/iv/",
   "gauges": {
     "Nisqually at McKenna": {
@@ -18,10 +18,10 @@
     },
     "Carbon at Orting": {
       "site_no": "12094000",
-      "discharge_cfs": 769.0,
-      "discharge_dt": "2026-03-14T14:00:00.000-07:00",
-      "stage_ft": 7.68,
-      "stage_dt": "2026-03-14T14:00:00.000-07:00"
+      "discharge_cfs": 761.0,
+      "discharge_dt": "2026-03-14T15:00:00.000-07:00",
+      "stage_ft": 7.66,
+      "stage_dt": "2026-03-14T15:00:00.000-07:00"
     },
     "White at Buckley": {
       "site_no": "12099200",
