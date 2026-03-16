@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-03-16T07:20:24Z",
+  "fetched_at": "2026-03-16T18:58:33Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62235796",
+      "time": "2026-03-16T13:28:04.740000+00:00",
+      "magnitude": 1.62,
+      "depth_km": 21.3199996948242,
+      "place": "6 km SE of Mineral, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62235796"
+    },
+    {
+      "id": "uw62234836",
+      "time": "2026-03-14T17:27:55.530000+00:00",
+      "magnitude": 0.61,
+      "depth_km": 19.94,
+      "place": "7 km SE of Mineral, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234836"
+    },
     {
       "id": "uw62234511",
       "time": "2026-03-14T09:59:19.860000+00:00",
@@ -19,6 +37,24 @@
       "place": "10 km SE of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234461"
+    },
+    {
+      "id": "uw62234426",
+      "time": "2026-03-14T02:10:30.410000+00:00",
+      "magnitude": 0.52,
+      "depth_km": 3.06,
+      "place": "15 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234426"
+    },
+    {
+      "id": "uw62234421",
+      "time": "2026-03-14T01:46:37.160000+00:00",
+      "magnitude": 0.71,
+      "depth_km": 4.67,
+      "place": "8 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234421"
     },
     {
       "id": "uw62234196",
@@ -415,42 +451,6 @@
       "place": "6 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62228731"
-    },
-    {
-      "id": "uw62219907",
-      "time": "2026-02-25T10:51:17.850000+00:00",
-      "magnitude": 1.47,
-      "depth_km": 6.28,
-      "place": "6 km N of Packwood, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62219907"
-    },
-    {
-      "id": "uw62219897",
-      "time": "2026-02-25T09:40:19.630000+00:00",
-      "magnitude": 0.5,
-      "depth_km": 5.46,
-      "place": "11 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62219897"
-    },
-    {
-      "id": "uw62219892",
-      "time": "2026-02-25T09:36:58.570000+00:00",
-      "magnitude": 1,
-      "depth_km": 21.99,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62219892"
-    },
-    {
-      "id": "uw62219852",
-      "time": "2026-02-25T05:42:45.990000+00:00",
-      "magnitude": 0.51,
-      "depth_km": 21.68,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62219852"
     }
   ],
   "count": 50
