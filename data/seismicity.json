@@ -1,14 +1,32 @@
 {
-  "fetched_at": "2026-03-16T18:58:33Z",
+  "fetched_at": "2026-03-17T07:06:51Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
-      "id": "uw62235796",
-      "time": "2026-03-16T13:28:04.740000+00:00",
-      "magnitude": 1.62,
-      "depth_km": 21.3199996948242,
-      "place": "6 km SE of Mineral, Washington",
+      "id": "uw62236021",
+      "time": "2026-03-17T03:50:26.710000+00:00",
+      "magnitude": 2.52,
+      "depth_km": 21.37,
+      "place": "7 km SE of Mineral, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236021"
+    },
+    {
+      "id": "uw62235946",
+      "time": "2026-03-16T21:37:57.520000+00:00",
+      "magnitude": 1.5029422044754028,
+      "depth_km": 23.8500003814697,
+      "place": "11 km W of Greenwater, Washington",
       "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62235946"
+    },
+    {
+      "id": "uw62235796",
+      "time": "2026-03-16T13:28:04.700000+00:00",
+      "magnitude": 1.25,
+      "depth_km": 21.4,
+      "place": "7 km SE of Mineral, Washington",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62235796"
     },
     {
@@ -433,24 +451,6 @@
       "place": "7 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229086"
-    },
-    {
-      "id": "uw62229046",
-      "time": "2026-02-27T00:08:53.100000+00:00",
-      "magnitude": 1.47,
-      "depth_km": -0.48,
-      "place": "1 km NW of Kapowsin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229046"
-    },
-    {
-      "id": "uw62228731",
-      "time": "2026-02-25T23:34:39.300000+00:00",
-      "magnitude": 0.63,
-      "depth_km": 20.86,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62228731"
     }
   ],
   "count": 50
