@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-03-17T18:58:51Z",
+  "fetched_at": "2026-03-18T07:04:01Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw62236041",
       "time": "2026-03-17T08:32:58.560000+00:00",
-      "magnitude": 2.1767144203186035,
-      "depth_km": 21.1800003051758,
+      "magnitude": 2.02,
+      "depth_km": 21.1,
       "place": "7 km SE of Mineral, Washington",
-      "status": "automatic",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236041"
     },
     {
@@ -33,7 +33,7 @@
       "id": "uw62235796",
       "time": "2026-03-16T13:28:04.700000+00:00",
       "magnitude": 1.25,
-      "depth_km": 21.4,
+      "depth_km": 21.42,
       "place": "7 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62235796"
