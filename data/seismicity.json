@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-03-22T18:33:45Z",
+  "fetched_at": "2026-03-23T07:13:02Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62228502",
+      "time": "2026-03-22T21:21:55.910000+00:00",
+      "magnitude": 1.86000001,
+      "depth_km": 21.0300006866455,
+      "place": "6 km SE of Mineral, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62228502"
+    },
     {
       "id": "uw62227862",
       "time": "2026-03-20T04:40:55.400000+00:00",
@@ -442,15 +451,6 @@
       "place": "7 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229371"
-    },
-    {
-      "id": "uw62229366",
-      "time": "2026-03-01T06:56:53.260000+00:00",
-      "magnitude": 0.54,
-      "depth_km": 16.18,
-      "place": "3 km SE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229366"
     }
   ],
   "count": 50
