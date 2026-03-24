@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-03-24T07:06:00Z",
+  "fetched_at": "2026-03-24T18:59:50Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw61505038",
+      "time": "2026-03-24T04:54:33.890000+00:00",
+      "magnitude": 0.9500000000000001,
+      "depth_km": 1.42,
+      "place": "22 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw61505038"
+    },
     {
       "id": "uw62228552",
       "time": "2026-03-23T11:51:54.430000+00:00",
@@ -442,15 +451,6 @@
       "place": "7 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229526"
-    },
-    {
-      "id": "uw62229451",
-      "time": "2026-03-01T21:09:30.040000+00:00",
-      "magnitude": 0.96,
-      "depth_km": 22.06,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229451"
     }
   ],
   "count": 50
