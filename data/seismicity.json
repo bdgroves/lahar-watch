@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-03-31T18:58:58Z",
+  "fetched_at": "2026-04-01T07:22:59Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62230102",
+      "time": "2026-03-31T19:59:38.840000+00:00",
+      "magnitude": 1.41,
+      "depth_km": 7.55,
+      "place": "4 km WSW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62230102"
+    },
     {
       "id": "uw62229992",
       "time": "2026-03-30T23:05:28.670000+00:00",
@@ -442,15 +451,6 @@
       "place": "21 km E of Morton, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62222252"
-    },
-    {
-      "id": "uw62221672",
-      "time": "2026-03-05T11:08:33.380000+00:00",
-      "magnitude": 0.75,
-      "depth_km": 16.21,
-      "place": "3 km ESE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62221672"
     }
   ],
   "count": 50
