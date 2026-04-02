@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-04-02T07:15:14Z",
+  "fetched_at": "2026-04-02T18:53:50Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw62230362",
-      "time": "2026-04-02T06:57:50.610000+00:00",
-      "magnitude": 2.4158356189727783,
-      "depth_km": 2.84999990463257,
-      "place": "6 km SW of Packwood, Washington",
-      "status": "automatic",
+      "time": "2026-04-02T06:57:50.600000+00:00",
+      "magnitude": 2.33,
+      "depth_km": 8.73,
+      "place": "5 km SW of Packwood, Washington",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62230362"
     },
     {
