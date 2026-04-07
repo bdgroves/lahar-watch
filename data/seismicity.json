@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-04-06T18:55:33Z",
+  "fetched_at": "2026-04-07T07:20:05Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62231372",
+      "time": "2026-04-06T02:28:01.360000+00:00",
+      "magnitude": 0.55,
+      "depth_km": 1.94,
+      "place": "6 km ESE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62231372"
+    },
     {
       "id": "uw62230987",
       "time": "2026-04-03T12:37:31.170000+00:00",
@@ -442,15 +451,6 @@
       "place": "1 km E of Kapowsin, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62231906"
-    },
-    {
-      "id": "uw62231731",
-      "time": "2026-03-09T07:18:20.130000+00:00",
-      "magnitude": 1,
-      "depth_km": 21.97,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62231731"
     }
   ],
   "count": 50
