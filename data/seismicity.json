@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-04-11T07:02:35Z",
+  "fetched_at": "2026-04-11T18:40:32Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62233047",
+      "time": "2026-04-11T15:59:19.640000+00:00",
+      "magnitude": 2.7600000000000002,
+      "depth_km": 2.73,
+      "place": "13 km NW of Cliffdell, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233047"
+    },
     {
       "id": "uw62232922",
       "time": "2026-04-10T23:07:25.650000+00:00",
@@ -388,34 +397,7 @@
       "place": "15 km NNE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234196"
-    },
-    {
-      "id": "uw62233676",
-      "time": "2026-03-12T10:49:27.780000+00:00",
-      "magnitude": 0.78,
-      "depth_km": 13.08,
-      "place": "17 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233676"
-    },
-    {
-      "id": "uw62233586",
-      "time": "2026-03-12T09:37:36.790000+00:00",
-      "magnitude": 1.37,
-      "depth_km": 12.8,
-      "place": "17 km SSE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233586"
-    },
-    {
-      "id": "uw62233581",
-      "time": "2026-03-12T09:33:32.790000+00:00",
-      "magnitude": 2.2800000000000002,
-      "depth_km": 12.46,
-      "place": "17 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233581"
     }
   ],
-  "count": 46
+  "count": 44
 }
