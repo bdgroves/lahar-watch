@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-04-10T18:48:55Z",
+  "fetched_at": "2026-04-11T07:02:35Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62232922",
+      "time": "2026-04-10T23:07:25.650000+00:00",
+      "magnitude": 1.667588472366333,
+      "depth_km": 0.400000005960464,
+      "place": "1 km SE of Kapowsin, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62232922"
+    },
     {
       "id": "uw62232492",
       "time": "2026-04-09T03:49:38.370000+00:00",
@@ -406,25 +415,7 @@
       "place": "17 km NNE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233581"
-    },
-    {
-      "id": "uw62233371",
-      "time": "2026-03-12T06:24:20.330000+00:00",
-      "magnitude": 0.96,
-      "depth_km": 13.45,
-      "place": "17 km SSE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233371"
-    },
-    {
-      "id": "uw62233081",
-      "time": "2026-03-11T22:33:16.300000+00:00",
-      "magnitude": 1.18,
-      "depth_km": 20.37,
-      "place": "8 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233081"
     }
   ],
-  "count": 47
+  "count": 46
 }
