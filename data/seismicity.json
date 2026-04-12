@@ -1,15 +1,24 @@
 {
-  "fetched_at": "2026-04-11T18:40:32Z",
+  "fetched_at": "2026-04-12T07:16:16Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw62233047",
-      "time": "2026-04-11T15:59:19.640000+00:00",
-      "magnitude": 2.7600000000000002,
-      "depth_km": 2.73,
+      "time": "2026-04-11T15:59:19.830000+00:00",
+      "magnitude": 2.75,
+      "depth_km": 9.05,
       "place": "13 km NW of Cliffdell, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233047"
+    },
+    {
+      "id": "uw62232977",
+      "time": "2026-04-11T04:33:19.840000+00:00",
+      "magnitude": 0.6900000000000001,
+      "depth_km": 2.26,
+      "place": "6 km SSW of Crocker, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62232977"
     },
     {
       "id": "uw62232922",
@@ -399,5 +408,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234196"
     }
   ],
-  "count": 44
+  "count": 45
 }
