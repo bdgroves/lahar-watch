@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-13T08:06:27Z",
+  "fetched_at": "2026-04-13T19:11:50Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -352,25 +352,7 @@
       "place": "7 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62235796"
-    },
-    {
-      "id": "uw62234836",
-      "time": "2026-03-14T17:27:55.530000+00:00",
-      "magnitude": 0.61,
-      "depth_km": 19.94,
-      "place": "7 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234836"
-    },
-    {
-      "id": "uw62234511",
-      "time": "2026-03-14T09:59:19.860000+00:00",
-      "magnitude": 0.58,
-      "depth_km": 15.15,
-      "place": "10 km SE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62234511"
     }
   ],
-  "count": 41
+  "count": 39
 }
