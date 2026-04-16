@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-04-16T07:49:29Z",
+  "fetched_at": "2026-04-16T19:09:05Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62243786",
+      "time": "2026-04-16T18:24:29.700000+00:00",
+      "magnitude": 0.66,
+      "depth_km": 8.5,
+      "place": "4 km SW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243786"
+    },
+    {
+      "id": "uw62243606",
+      "time": "2026-04-16T01:30:02.730000+00:00",
+      "magnitude": 0.86,
+      "depth_km": 18.13,
+      "place": "6 km SE of Mineral, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243606"
+    },
     {
       "id": "uw62233047",
       "time": "2026-04-11T15:59:19.830000+00:00",
@@ -316,24 +334,6 @@
       "place": "6 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236151"
-    },
-    {
-      "id": "uw62236046",
-      "time": "2026-03-17T11:30:26.760000+00:00",
-      "magnitude": 0.87,
-      "depth_km": 21.49,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236046"
-    },
-    {
-      "id": "uw62236041",
-      "time": "2026-03-17T08:32:58.560000+00:00",
-      "magnitude": 2.02,
-      "depth_km": 21.1,
-      "place": "7 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236041"
     }
   ],
   "count": 37
