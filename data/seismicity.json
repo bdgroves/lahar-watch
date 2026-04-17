@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-17T07:49:35Z",
+  "fetched_at": "2026-04-17T18:57:00Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -316,16 +316,7 @@
       "place": "1 km ESE of Kapowsin, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236271"
-    },
-    {
-      "id": "uw62236211",
-      "time": "2026-03-18T11:04:01.540000+00:00",
-      "magnitude": 0.51,
-      "depth_km": 12.36,
-      "place": "17 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236211"
     }
   ],
-  "count": 36
+  "count": 35
 }
