@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-17T18:57:00Z",
+  "fetched_at": "2026-04-18T07:10:53Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -307,16 +307,7 @@
       "place": "6 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62227687"
-    },
-    {
-      "id": "uw62236271",
-      "time": "2026-03-18T20:28:46.450000+00:00",
-      "magnitude": 1.51,
-      "depth_km": -0.48,
-      "place": "1 km ESE of Kapowsin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62236271"
     }
   ],
-  "count": 35
+  "count": 34
 }
