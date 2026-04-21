@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-21T07:53:36Z",
+  "fetched_at": "2026-04-21T19:07:51Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -289,16 +289,7 @@
       "place": "6 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62228502"
-    },
-    {
-      "id": "uw62228467",
-      "time": "2026-03-22T16:22:22.510000+00:00",
-      "magnitude": 0.6900000000000001,
-      "depth_km": 4.26,
-      "place": "9 km E of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62228467"
     }
   ],
-  "count": 33
+  "count": 32
 }
