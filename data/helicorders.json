@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-21T19:07:52Z",
+  "fetched_at": "2026-04-22T07:50:32Z",
   "stations": {
     "MUIR": {
       "file": "data/helicorders/MUIR.png",
@@ -8,9 +8,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "CR01": {
@@ -20,9 +20,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "WR02": {
@@ -32,9 +32,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "TC04": {
@@ -44,9 +44,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "PARA": {
@@ -56,9 +56,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "CRY5": {
@@ -68,9 +68,9 @@
       "net": "CC",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "NQ01": {
@@ -80,9 +80,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     },
     "PUPY": {
@@ -92,9 +92,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-04-20T19:07:52",
-      "window_end": "2026-04-21T19:07:52",
-      "fetched_at": "2026-04-21T19:07:52Z",
+      "window_start": "2026-04-21T07:50:32",
+      "window_end": "2026-04-22T07:50:32",
+      "fetched_at": "2026-04-22T07:50:32Z",
       "ok": true
     }
   },
