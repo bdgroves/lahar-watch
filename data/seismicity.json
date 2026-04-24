@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-04-24T08:05:57Z",
+  "fetched_at": "2026-04-24T18:46:03Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62239482",
+      "time": "2026-04-24T04:33:44.110000+00:00",
+      "magnitude": 0.68,
+      "depth_km": 16,
+      "place": "10 km W of Greenwater, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239482"
+    },
     {
       "id": "uw62239202",
       "time": "2026-04-23T22:53:43.190000+00:00",
@@ -300,5 +309,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229112"
     }
   ],
-  "count": 33
+  "count": 34
 }
