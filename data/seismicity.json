@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-25T18:48:27Z",
+  "fetched_at": "2026-04-26T07:41:55Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -289,16 +289,7 @@
       "place": "14 km SSE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229662"
-    },
-    {
-      "id": "uw62229467",
-      "time": "2026-03-27T05:30:01.630000+00:00",
-      "magnitude": 0.87,
-      "depth_km": 16.55,
-      "place": "3 km SE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229467"
     }
   ],
-  "count": 33
+  "count": 32
 }
