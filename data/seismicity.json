@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-04-26T18:51:02Z",
+  "fetched_at": "2026-04-27T08:28:06Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62239692",
+      "time": "2026-04-24T22:43:45.900000+00:00",
+      "magnitude": 1,
+      "depth_km": 11.93,
+      "place": "11 km ESE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239692"
+    },
+    {
+      "id": "uw62239687",
+      "time": "2026-04-24T22:43:22.510000+00:00",
+      "magnitude": 0.85,
+      "depth_km": 16.1,
+      "place": "3 km ESE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239687"
+    },
     {
       "id": "uw62239482",
       "time": "2026-04-24T04:33:44.110000+00:00",
@@ -280,16 +298,7 @@
       "place": "22 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229717"
-    },
-    {
-      "id": "uw62229662",
-      "time": "2026-03-28T06:45:21.990000+00:00",
-      "magnitude": 1.05,
-      "depth_km": 7.46,
-      "place": "14 km SSE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229662"
     }
   ],
-  "count": 32
+  "count": 33
 }
