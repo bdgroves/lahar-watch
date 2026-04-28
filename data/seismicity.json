@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-04-27T19:16:19Z",
+  "fetched_at": "2026-04-28T08:27:02Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62240167",
+      "time": "2026-04-27T07:39:05.720000+00:00",
+      "magnitude": 1.54,
+      "depth_km": 17.34,
+      "place": "14 km SSW of Alder, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62240167"
+    },
     {
       "id": "uw62239912",
       "time": "2026-04-26T03:04:56.720000+00:00",
@@ -307,15 +316,6 @@
       "place": "7 km NNE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229802"
-    },
-    {
-      "id": "uw62229717",
-      "time": "2026-03-28T20:08:30.960000+00:00",
-      "magnitude": 0.53,
-      "depth_km": 2.83,
-      "place": "22 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62229717"
     }
   ],
   "count": 35
