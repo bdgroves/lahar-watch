@@ -1,12 +1,12 @@
 {
-  "fetched_at": "2026-04-28T19:28:38Z",
+  "fetched_at": "2026-04-29T08:21:19Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw62240167",
-      "time": "2026-04-27T07:39:05.720000+00:00",
+      "time": "2026-04-27T07:39:05.730000+00:00",
       "magnitude": 1.54,
-      "depth_km": 17.42,
+      "depth_km": 17.3,
       "place": "14 km SSW of Alder, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62240167"
