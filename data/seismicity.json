@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-02T07:46:13Z",
+  "fetched_at": "2026-05-02T18:55:33Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -253,16 +253,7 @@
       "place": "18 km SSE of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62230952"
-    },
-    {
-      "id": "uw62230392",
-      "time": "2026-04-02T11:18:44.010000+00:00",
-      "magnitude": 0.6900000000000001,
-      "depth_km": 16.17,
-      "place": "3 km SE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62230392"
     }
   ],
-  "count": 29
+  "count": 28
 }
