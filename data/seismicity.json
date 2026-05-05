@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-05T08:11:49Z",
+  "fetched_at": "2026-05-05T19:15:28Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -8,7 +8,7 @@
       "magnitude": 1.6153819561004639,
       "depth_km": 7.59000015258789,
       "place": "14 km SSE of Ashford, Washington",
-      "status": "automatic",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62242062"
     },
     {
