@@ -1,13 +1,11 @@
 {
-  "fetched_at": "2026-05-07T19:40:52Z",
+  "fetched_at": "2026-05-08T07:44:14Z",
   "volcano": "Mount Rainier",
   "vnum": "321030",
   "volcano_cd": "wa6",
   "source": "https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes",
-  "alert_level": "GREEN",
-  "activity_level": "NORMAL",
-  "activity_notice": "NORMAL / GREEN \u2014 last update 2025-08-25",
-  "last_updated": "2025-08-25 22:38:40",
-  "notice_url": "https://volcanoes.usgs.gov/hans-public/notice/DOI-USGS-CVO-2025-08-25T22:19:13+00:00",
-  "notice_type": "IS"
+  "alert_level": "UNKNOWN",
+  "activity_level": "UNKNOWN",
+  "activity_notice": "Could not reach USGS HANS API",
+  "last_updated": "2026-05-08T07:44:14Z"
 }
