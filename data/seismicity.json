@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-05-11T09:41:24Z",
+  "fetched_at": "2026-05-11T19:43:37Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62243767",
+      "time": "2026-05-10T17:56:14.870000+00:00",
+      "magnitude": 1.8800000000000001,
+      "depth_km": 11.15,
+      "place": "3 km SW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243767"
+    },
+    {
+      "id": "uw62243697",
+      "time": "2026-05-10T13:02:00.090000+00:00",
+      "magnitude": 1.2,
+      "depth_km": 0.5,
+      "place": "22 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243697"
+    },
     {
       "id": "uw62243532",
       "time": "2026-05-09T19:02:55.200000+00:00",
@@ -235,16 +253,7 @@
       "place": "6 km SE of Mineral, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243606"
-    },
-    {
-      "id": "uw62233047",
-      "time": "2026-04-11T15:59:19.830000+00:00",
-      "magnitude": 2.75,
-      "depth_km": 9.05,
-      "place": "13 km NW of Cliffdell, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233047"
     }
   ],
-  "count": 27
+  "count": 28
 }
