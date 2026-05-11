@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-10T18:59:14Z",
+  "fetched_at": "2026-05-11T09:41:24Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62243532",
+      "time": "2026-05-09T19:02:55.200000+00:00",
+      "magnitude": 0.81,
+      "depth_km": 9.67,
+      "place": "7 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243532"
+    },
     {
       "id": "uw62243287",
       "time": "2026-05-08T22:12:35.970000+00:00",
@@ -235,25 +244,7 @@
       "place": "13 km NW of Cliffdell, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62233047"
-    },
-    {
-      "id": "uw62232977",
-      "time": "2026-04-11T04:33:19.840000+00:00",
-      "magnitude": 0.6900000000000001,
-      "depth_km": 2.26,
-      "place": "6 km SSW of Crocker, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62232977"
-    },
-    {
-      "id": "uw62232922",
-      "time": "2026-04-10T23:07:25.590000+00:00",
-      "magnitude": 1.6300000000000001,
-      "depth_km": 0.59,
-      "place": "0 km SSE of Kapowsin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62232922"
     }
   ],
-  "count": 28
+  "count": 27
 }
