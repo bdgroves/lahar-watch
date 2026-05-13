@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-12T19:47:21Z",
+  "fetched_at": "2026-05-13T08:45:47Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -40,9 +40,9 @@
     },
     {
       "id": "uw62243532",
-      "time": "2026-05-09T19:02:55.200000+00:00",
-      "magnitude": 0.81,
-      "depth_km": 9.67,
+      "time": "2026-05-09T19:02:55.230000+00:00",
+      "magnitude": 0.74,
+      "depth_km": 9.46,
       "place": "7 km NNE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243532"
@@ -66,20 +66,11 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243097"
     },
     {
-      "id": "uw62242337",
-      "time": "2026-05-06T08:38:55.370000+00:00",
-      "magnitude": 0.51,
-      "depth_km": 8.84,
-      "place": "13 km SE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62242337"
-    },
-    {
       "id": "uw62242287",
-      "time": "2026-05-05T23:13:56.120000+00:00",
+      "time": "2026-05-05T23:13:56.060000+00:00",
       "magnitude": 1.3800000000000001,
-      "depth_km": -0.36,
-      "place": "1 km ESE of Kapowsin, Washington",
+      "depth_km": -0.4,
+      "place": "1 km SE of Kapowsin, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62242287"
     },
@@ -273,5 +264,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243606"
     }
   ],
-  "count": 30
+  "count": 29
 }
