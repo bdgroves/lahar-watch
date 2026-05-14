@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-13T19:51:07Z",
+  "fetched_at": "2026-05-14T08:38:42Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62245177",
+      "time": "2026-05-13T23:05:01.550000+00:00",
+      "magnitude": 1.33000004,
+      "depth_km": -0.129999995231628,
+      "place": "1 km SE of Kapowsin, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62245177"
+    },
     {
       "id": "uw62244257",
       "time": "2026-05-12T06:19:05.230000+00:00",
@@ -264,5 +273,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243606"
     }
   ],
-  "count": 29
+  "count": 30
 }
