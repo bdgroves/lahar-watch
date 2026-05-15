@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-05-15T08:51:09Z",
-  "alert_level": "UNKNOWN",
-  "activity_level": "UNKNOWN",
+  "fetched_at": "2026-05-15T19:26:48Z",
+  "alert_level": "GREEN",
+  "activity_level": "NORMAL",
   "seismic_count": 33,
   "stations_total": 13,
   "stations_nominal": 10
