@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-14T19:42:53Z",
+  "fetched_at": "2026-05-15T08:50:30Z",
   "volcano": "Mount Rainier",
   "vnum": "321030",
   "volcano_cd": "wa6",
@@ -7,5 +7,5 @@
   "alert_level": "UNKNOWN",
   "activity_level": "UNKNOWN",
   "activity_notice": "Could not reach USGS HANS API",
-  "last_updated": "2026-05-14T19:42:53Z"
+  "last_updated": "2026-05-15T08:50:30Z"
 }
