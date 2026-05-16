@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-15T19:26:04Z",
+  "fetched_at": "2026-05-16T08:06:02Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62246047",
+      "time": "2026-05-15T13:22:42.440000+00:00",
+      "magnitude": 0.8,
+      "depth_km": 8.7,
+      "place": "5 km SW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62246047"
+    },
     {
       "id": "uw62245847",
       "time": "2026-05-14T21:03:13.080000+00:00",
@@ -289,15 +298,6 @@
       "place": "4 km SW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243786"
-    },
-    {
-      "id": "uw62243606",
-      "time": "2026-04-16T01:30:02.730000+00:00",
-      "magnitude": 0.86,
-      "depth_km": 18.13,
-      "place": "6 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243606"
     }
   ],
   "count": 33
