@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-24T19:13:31Z",
+  "fetched_at": "2026-05-25T10:08:28Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -235,25 +235,7 @@
       "place": "24 km N of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239892"
-    },
-    {
-      "id": "uw62239692",
-      "time": "2026-04-24T22:43:45.900000+00:00",
-      "magnitude": 1,
-      "depth_km": 11.93,
-      "place": "11 km ESE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239692"
-    },
-    {
-      "id": "uw62239687",
-      "time": "2026-04-24T22:43:22.510000+00:00",
-      "magnitude": 0.85,
-      "depth_km": 16.1,
-      "place": "3 km ESE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62239687"
     }
   ],
-  "count": 28
+  "count": 26
 }
