@@ -1,7 +1,43 @@
 {
-  "fetched_at": "2026-05-26T09:58:17Z",
+  "fetched_at": "2026-05-26T20:05:57Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62251067",
+      "time": "2026-05-26T12:01:53.410000+00:00",
+      "magnitude": 0.81,
+      "depth_km": 19.09,
+      "place": "3 km SE of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251067"
+    },
+    {
+      "id": "uw62251062",
+      "time": "2026-05-26T11:59:57.150000+00:00",
+      "magnitude": 0.63,
+      "depth_km": 18.31,
+      "place": "4 km SSE of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251062"
+    },
+    {
+      "id": "uw62250477",
+      "time": "2026-05-24T17:40:10.390000+00:00",
+      "magnitude": 0.87,
+      "depth_km": 5.57,
+      "place": "11 km W of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62250477"
+    },
+    {
+      "id": "uw62249902",
+      "time": "2026-05-22T19:53:41.460000+00:00",
+      "magnitude": 1.35,
+      "depth_km": -1.33,
+      "place": "22 km E of Morton, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249902"
+    },
     {
       "id": "uw62249762",
       "time": "2026-05-22T11:29:00.300000+00:00",
@@ -219,5 +255,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62240167"
     }
   ],
-  "count": 24
+  "count": 28
 }
