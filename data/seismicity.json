@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-28T10:03:55Z",
+  "fetched_at": "2026-05-28T20:17:11Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62251712",
+      "time": "2026-05-28T02:59:14.350000+00:00",
+      "magnitude": 0.84,
+      "depth_km": 10.96,
+      "place": "4 km SSE of Orting, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251712"
+    },
     {
       "id": "uw62251267",
       "time": "2026-05-27T01:08:31.240000+00:00",
@@ -255,5 +264,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241327"
     }
   ],
-  "count": 28
+  "count": 29
 }
