@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-29T09:55:31Z",
+  "fetched_at": "2026-05-29T20:21:20Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62251817",
+      "time": "2026-05-28T16:36:43.090000+00:00",
+      "magnitude": 0.81,
+      "depth_km": 1.81,
+      "place": "28 km NNE of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251817"
+    },
     {
       "id": "uw62251712",
       "time": "2026-05-28T02:59:14.350000+00:00",
@@ -264,5 +273,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241327"
     }
   ],
-  "count": 29
+  "count": 30
 }
