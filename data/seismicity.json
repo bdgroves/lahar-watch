@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-28T20:17:11Z",
+  "fetched_at": "2026-05-29T09:55:31Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -13,11 +13,11 @@
     },
     {
       "id": "uw62251267",
-      "time": "2026-05-27T01:08:31.240000+00:00",
-      "magnitude": 1.08000004,
-      "depth_km": -0.740000009536743,
+      "time": "2026-05-27T01:08:31.180000+00:00",
+      "magnitude": 0.91,
+      "depth_km": 0.59,
       "place": "22 km ENE of Ashford, Washington",
-      "status": "automatic",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251267"
     },
     {
