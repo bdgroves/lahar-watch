@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-29T20:21:20Z",
+  "fetched_at": "2026-05-30T08:29:08Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -157,18 +157,18 @@
     },
     {
       "id": "uw62243767",
-      "time": "2026-05-10T17:56:14.870000+00:00",
-      "magnitude": 1.8800000000000001,
-      "depth_km": 11.15,
-      "place": "3 km SW of Packwood, Washington",
+      "time": "2026-05-10T17:56:14.850000+00:00",
+      "magnitude": 1.92,
+      "depth_km": 10.49,
+      "place": "4 km SW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243767"
     },
     {
       "id": "uw62243697",
       "time": "2026-05-10T13:02:00.090000+00:00",
-      "magnitude": 1.2,
-      "depth_km": 0.5,
+      "magnitude": 1.19,
+      "depth_km": 0.46,
       "place": "22 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243697"
