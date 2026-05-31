@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-05-30T19:08:40Z",
+  "fetched_at": "2026-05-31T08:46:34Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62252812",
+      "time": "2026-05-29T19:59:30.260000+00:00",
+      "magnitude": 1.5,
+      "depth_km": -0.62,
+      "place": "10 km ESE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62252812"
+    },
     {
       "id": "uw62251817",
       "time": "2026-05-28T16:36:43.090000+00:00",
@@ -273,5 +282,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241327"
     }
   ],
-  "count": 30
+  "count": 31
 }
