@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-06-01T11:36:37Z",
+  "fetched_at": "2026-06-01T21:29:42Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62254222",
+      "time": "2026-06-01T04:43:01+00:00",
+      "magnitude": 0.7000000000000001,
+      "depth_km": 5.4,
+      "place": "17 km SSE of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62254222"
+    },
     {
       "id": "uw62253837",
       "time": "2026-05-31T01:50:22.560000+00:00",
@@ -282,5 +291,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241467"
     }
   ],
-  "count": 31
+  "count": 32
 }
