@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-02T10:25:10Z",
+  "fetched_at": "2026-06-02T20:44:26Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -271,16 +271,7 @@
       "place": "8 km ESE of Morton, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241902"
-    },
-    {
-      "id": "uw62241602",
-      "time": "2026-05-03T13:33:09.510000+00:00",
-      "magnitude": 0.81,
-      "depth_km": 21.53,
-      "place": "7 km SE of Mineral, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241602"
     }
   ],
-  "count": 31
+  "count": 30
 }
