@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-06-03T11:01:18Z",
+  "fetched_at": "2026-06-03T20:52:32Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw62254867",
+      "time": "2026-06-03T01:00:55.170000+00:00",
+      "magnitude": 0.75,
+      "depth_km": -0.04,
+      "place": "17 km WSW of Nile, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62254867"
+    },
     {
       "id": "uw62254222",
       "time": "2026-06-01T04:43:01+00:00",
@@ -262,15 +271,6 @@
       "place": "13 km SSE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62242062"
-    },
-    {
-      "id": "uw62241902",
-      "time": "2026-05-04T18:55:26.310000+00:00",
-      "magnitude": 1.49,
-      "depth_km": -1.14,
-      "place": "8 km ESE of Morton, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62241902"
     }
   ],
   "count": 30
