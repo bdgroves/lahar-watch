@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-06-08T20:10:37Z",
+  "fetched_at": "2026-06-09T09:48:58Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714010761",
+      "time": "2026-06-08T19:52:39.250000+00:00",
+      "magnitude": 1.42,
+      "depth_km": 16.58,
+      "place": "8 km SE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714010761"
+    },
     {
       "id": "uw714006811",
       "time": "2026-06-05T20:12:54.880000+00:00",
@@ -273,5 +282,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62243697"
     }
   ],
-  "count": 30
+  "count": 31
 }
