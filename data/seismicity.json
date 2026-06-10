@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-09T20:04:03Z",
+  "fetched_at": "2026-06-10T10:02:19Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -40,12 +40,21 @@
     },
     {
       "id": "uw714005671",
-      "time": "2026-06-04T13:46:46.690000+00:00",
+      "time": "2026-06-04T13:46:46.680000+00:00",
       "magnitude": 2,
-      "depth_km": 11.52,
+      "depth_km": 11.65,
       "place": "10 km ESE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714005671"
+    },
+    {
+      "id": "uw714005611",
+      "time": "2026-06-04T08:21:33.380000+00:00",
+      "magnitude": 0.5,
+      "depth_km": 4.11,
+      "place": "8 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714005611"
     },
     {
       "id": "uw714005561",
@@ -264,5 +273,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62244212"
     }
   ],
-  "count": 29
+  "count": 30
 }
