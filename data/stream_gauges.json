@@ -1,34 +1,34 @@
 {
-  "fetched_at": "2026-06-11T10:27:02Z",
+  "fetched_at": "2026-06-11T20:17:26Z",
   "source": "https://waterservices.usgs.gov/nwis/iv/",
   "gauges": {
     "Nisqually at McKenna": {
       "site_no": "12089500",
-      "discharge_cfs": 1060.0,
-      "discharge_dt": "2026-06-11T03:15:00.000-07:00",
-      "stage_ft": 1.92,
-      "stage_dt": "2026-06-11T03:15:00.000-07:00"
+      "discharge_cfs": 1020.0,
+      "discharge_dt": "2026-06-11T13:00:00.000-07:00",
+      "stage_ft": 1.87,
+      "stage_dt": "2026-06-11T13:00:00.000-07:00"
     },
     "Puyallup at Orting": {
       "site_no": "12093500",
-      "discharge_cfs": 972.0,
-      "discharge_dt": "2026-06-11T03:15:00.000-07:00",
-      "stage_ft": 7.27,
-      "stage_dt": "2026-06-11T03:15:00.000-07:00"
+      "discharge_cfs": 882.0,
+      "discharge_dt": "2026-06-11T13:00:00.000-07:00",
+      "stage_ft": 7.16,
+      "stage_dt": "2026-06-11T13:00:00.000-07:00"
     },
     "Carbon at Orting": {
       "site_no": "12094000",
-      "discharge_cfs": 735.0,
-      "discharge_dt": "2026-06-11T03:00:00.000-07:00",
-      "stage_ft": 7.6,
-      "stage_dt": "2026-06-11T03:00:00.000-07:00"
+      "discharge_cfs": 627.0,
+      "discharge_dt": "2026-06-11T13:00:00.000-07:00",
+      "stage_ft": 7.35,
+      "stage_dt": "2026-06-11T13:00:00.000-07:00"
     },
     "White at Buckley": {
       "site_no": "12099200",
-      "discharge_cfs": 1160.0,
-      "discharge_dt": "2026-06-11T02:30:00.000-07:00",
-      "stage_ft": 41.32,
-      "stage_dt": "2026-06-11T02:30:00.000-07:00"
+      "discharge_cfs": 1090.0,
+      "discharge_dt": "2026-06-11T12:30:00.000-07:00",
+      "stage_ft": 41.27,
+      "stage_dt": "2026-06-11T12:30:00.000-07:00"
     }
   }
 }
