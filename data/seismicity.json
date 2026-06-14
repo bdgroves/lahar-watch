@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-14T09:36:13Z",
+  "fetched_at": "2026-06-14T19:22:02Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -217,16 +217,7 @@
       "place": "0 km NNE of Eatonville, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62248532"
-    },
-    {
-      "id": "uw62246047",
-      "time": "2026-05-15T13:22:42.440000+00:00",
-      "magnitude": 0.8,
-      "depth_km": 8.7,
-      "place": "5 km SW of Packwood, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62246047"
     }
   ],
-  "count": 25
+  "count": 24
 }
