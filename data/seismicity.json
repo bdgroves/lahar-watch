@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-13T19:20:58Z",
+  "fetched_at": "2026-06-14T09:36:13Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -226,16 +226,7 @@
       "place": "5 km SW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62246047"
-    },
-    {
-      "id": "uw62245847",
-      "time": "2026-05-14T21:03:13.080000+00:00",
-      "magnitude": 0.5,
-      "depth_km": 1.54,
-      "place": "26 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62245847"
     }
   ],
-  "count": 26
+  "count": 25
 }
