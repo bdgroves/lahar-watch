@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-06-18T20:22:04Z",
+  "fetched_at": "2026-06-19T10:27:14Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714026791",
+      "time": "2026-06-19T07:03:23.090000+00:00",
+      "magnitude": 2.26793158054352,
+      "depth_km": 7.44999980926514,
+      "place": "5 km SSE of Orting, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026791"
+    },
     {
       "id": "uw714025091",
       "time": "2026-06-17T13:37:44.430000+00:00",
@@ -244,15 +253,6 @@
       "place": "1 km SE of Kapowsin, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249677"
-    },
-    {
-      "id": "uw62248802",
-      "time": "2026-05-20T06:34:42.790000+00:00",
-      "magnitude": 0.73,
-      "depth_km": 7.03,
-      "place": "6 km ESE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62248802"
     }
   ],
   "count": 28
