@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T09:51:22Z",
+  "fetched_at": "2026-06-21T19:25:49Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -244,16 +244,7 @@
       "place": "22 km E of Morton, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249902"
-    },
-    {
-      "id": "uw62249762",
-      "time": "2026-05-22T11:29:00.300000+00:00",
-      "magnitude": 0.76,
-      "depth_km": 9.63,
-      "place": "8 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249762"
     }
   ],
-  "count": 28
+  "count": 27
 }
