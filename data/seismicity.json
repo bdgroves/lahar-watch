@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-06-20T19:21:11Z",
+  "fetched_at": "2026-06-21T09:51:22Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714027811",
+      "time": "2026-06-20T19:57:16.600000+00:00",
+      "magnitude": 1.7468638420105,
+      "depth_km": -1.77999997138977,
+      "place": "17 km WSW of Nile, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714027811"
+    },
     {
       "id": "uw714026791",
       "time": "2026-06-19T07:03:23.090000+00:00",
@@ -244,15 +253,6 @@
       "place": "8 km NNE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249762"
-    },
-    {
-      "id": "uw62249677",
-      "time": "2026-05-21T23:06:08.670000+00:00",
-      "magnitude": 1.37,
-      "depth_km": -0.54,
-      "place": "1 km SE of Kapowsin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249677"
     }
   ],
   "count": 28
