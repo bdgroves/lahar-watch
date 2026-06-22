@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T19:25:49Z",
+  "fetched_at": "2026-06-22T11:56:24Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -235,16 +235,7 @@
       "place": "11 km W of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62250477"
-    },
-    {
-      "id": "uw62249902",
-      "time": "2026-05-22T19:53:41.460000+00:00",
-      "magnitude": 1.35,
-      "depth_km": -1.33,
-      "place": "22 km E of Morton, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62249902"
     }
   ],
-  "count": 27
+  "count": 26
 }
