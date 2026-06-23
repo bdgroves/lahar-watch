@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-06-23T09:40:44Z",
+  "fetched_at": "2026-06-23T19:58:26Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714030061",
+      "time": "2026-06-22T22:52:58.650000+00:00",
+      "magnitude": 1.11,
+      "depth_km": 0.91,
+      "place": "22 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714030061"
+    },
+    {
+      "id": "uw714030001",
+      "time": "2026-06-22T21:25:05.030000+00:00",
+      "magnitude": 1.07,
+      "depth_km": 7.1,
+      "place": "16 km WSW of Nile, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714030001"
+    },
     {
       "id": "uw714027381",
       "time": "2026-06-20T05:56:03.760000+00:00",
@@ -253,16 +271,7 @@
       "place": "4 km SSE of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251062"
-    },
-    {
-      "id": "uw62250477",
-      "time": "2026-05-24T17:40:10.390000+00:00",
-      "magnitude": 0.87,
-      "depth_km": 5.57,
-      "place": "11 km W of Packwood, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62250477"
     }
   ],
-  "count": 29
+  "count": 30
 }
