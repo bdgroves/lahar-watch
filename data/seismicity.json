@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-25T09:23:23Z",
+  "fetched_at": "2026-06-25T19:55:47Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -253,25 +253,7 @@
       "place": "22 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251267"
-    },
-    {
-      "id": "uw62251067",
-      "time": "2026-05-26T12:01:53.410000+00:00",
-      "magnitude": 0.81,
-      "depth_km": 19.09,
-      "place": "3 km SE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251067"
-    },
-    {
-      "id": "uw62251062",
-      "time": "2026-05-26T11:59:57.150000+00:00",
-      "magnitude": 0.63,
-      "depth_km": 18.31,
-      "place": "4 km SSE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251062"
     }
   ],
-  "count": 30
+  "count": 28
 }
