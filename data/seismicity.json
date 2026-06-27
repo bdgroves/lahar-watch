@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26T19:45:47Z",
+  "fetched_at": "2026-06-27T08:36:36Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -244,16 +244,7 @@
       "place": "28 km NNE of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251817"
-    },
-    {
-      "id": "uw62251712",
-      "time": "2026-05-28T02:59:14.350000+00:00",
-      "magnitude": 0.84,
-      "depth_km": 10.96,
-      "place": "4 km SSE of Orting, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251712"
     }
   ],
-  "count": 28
+  "count": 27
 }
