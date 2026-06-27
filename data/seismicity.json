@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-27T08:36:36Z",
+  "fetched_at": "2026-06-27T19:16:06Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -235,16 +235,7 @@
       "place": "10 km ESE of Enumclaw, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62252812"
-    },
-    {
-      "id": "uw62251817",
-      "time": "2026-05-28T16:36:43.090000+00:00",
-      "magnitude": 0.81,
-      "depth_km": 1.81,
-      "place": "28 km NNE of Packwood, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62251817"
     }
   ],
-  "count": 27
+  "count": 26
 }
