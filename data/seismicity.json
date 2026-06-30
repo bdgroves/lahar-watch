@@ -1,7 +1,43 @@
 {
-  "fetched_at": "2026-06-29T19:52:36Z",
+  "fetched_at": "2026-06-30T09:37:20Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714038541",
+      "time": "2026-06-30T06:26:35.140000+00:00",
+      "magnitude": 0.769999981,
+      "depth_km": 0.899999976158142,
+      "place": "23 km ENE of Ashford, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714038541"
+    },
+    {
+      "id": "uw714038191",
+      "time": "2026-06-29T19:34:27.130000+00:00",
+      "magnitude": 1.73608779907227,
+      "depth_km": -1.06,
+      "place": "12 km ESE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714038191"
+    },
+    {
+      "id": "uw714037111",
+      "time": "2026-06-28T23:01:44.320000+00:00",
+      "magnitude": 1.47,
+      "depth_km": 9.37,
+      "place": "10 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714037111"
+    },
+    {
+      "id": "uw714037031",
+      "time": "2026-06-28T22:32:12.570000+00:00",
+      "magnitude": 1.06,
+      "depth_km": 9.95,
+      "place": "10 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714037031"
+    },
     {
       "id": "uw714037011",
       "time": "2026-06-28T22:24:36.520000+00:00",
@@ -31,11 +67,11 @@
     },
     {
       "id": "uw714035561",
-      "time": "2026-06-27T22:37:49+00:00",
-      "magnitude": 1.50474762916565,
-      "depth_km": 0.920000016689301,
-      "place": "10 km WSW of Packwood, Washington",
-      "status": "automatic",
+      "time": "2026-06-27T22:37:49.070000+00:00",
+      "magnitude": 1.43,
+      "depth_km": 6.76,
+      "place": "12 km W of Packwood, Washington",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714035561"
     },
     {
@@ -253,16 +289,7 @@
       "place": "17 km SSE of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62254222"
-    },
-    {
-      "id": "uw62253837",
-      "time": "2026-05-31T01:50:22.560000+00:00",
-      "magnitude": 0.59,
-      "depth_km": 6.53,
-      "place": "6 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62253837"
     }
   ],
-  "count": 29
+  "count": 32
 }
