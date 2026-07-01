@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-30T19:51:17Z",
+  "fetched_at": "2026-07-01T09:48:49Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -289,16 +289,7 @@
       "place": "17 km WSW of Nile, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62254867"
-    },
-    {
-      "id": "uw62254222",
-      "time": "2026-06-01T04:43:01+00:00",
-      "magnitude": 0.7000000000000001,
-      "depth_km": 5.4,
-      "place": "17 km SSE of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw62254222"
     }
   ],
-  "count": 33
+  "count": 32
 }
