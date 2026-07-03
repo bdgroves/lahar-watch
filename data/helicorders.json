@@ -1,10 +1,17 @@
 {
-  "fetched_at": "2026-07-02T19:19:54Z",
+  "fetched_at": "2026-07-03T09:19:09Z",
   "stations": {
     "MUIR": {
-      "ok": false,
+      "file": "data/helicorders/MUIR.png",
       "label": "Camp Muir \u00b7 Summit",
-      "reason": "no data in IRIS past 48h (UW.RCM.--.HHZ)"
+      "sta": "RCM",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
+      "ok": true
     },
     "CR01": {
       "file": "data/helicorders/CR01.png",
@@ -13,9 +20,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-07-01T19:19:54",
-      "window_end": "2026-07-02T19:19:54",
-      "fetched_at": "2026-07-02T19:19:54Z",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
       "ok": true
     },
     "WR02": {
@@ -25,15 +32,22 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-01T19:19:54",
-      "window_end": "2026-07-02T19:19:54",
-      "fetched_at": "2026-07-02T19:19:54Z",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
       "ok": true
     },
     "TC04": {
-      "ok": false,
+      "file": "data/helicorders/TC04.png",
       "label": "Tahoma Creek",
-      "reason": "no data in IRIS past 48h (UW.TDH.--.HHZ)"
+      "sta": "TDH",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
+      "ok": true
     },
     "PARA": {
       "file": "data/helicorders/PARA.png",
@@ -42,9 +56,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-01T19:19:54",
-      "window_end": "2026-07-02T19:19:54",
-      "fetched_at": "2026-07-02T19:19:54Z",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
       "ok": true
     },
     "CRY5": {
@@ -54,9 +68,9 @@
       "net": "CC",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-01T19:19:54",
-      "window_end": "2026-07-02T19:19:54",
-      "fetched_at": "2026-07-02T19:19:54Z",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
       "ok": true
     },
     "NQ01": {
@@ -66,15 +80,22 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-01T19:19:54",
-      "window_end": "2026-07-02T19:19:54",
-      "fetched_at": "2026-07-02T19:19:54Z",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
       "ok": true
     },
     "PUPY": {
-      "ok": false,
+      "file": "data/helicorders/PUPY.png",
       "label": "Puyallup Valley",
-      "reason": "no data in IRIS past 48h (UW.PUPY.--.EHZ)"
+      "sta": "PUPY",
+      "net": "UW",
+      "cha": "EHZ",
+      "loc": "--",
+      "window_start": "2026-07-02T09:19:09",
+      "window_end": "2026-07-03T09:19:09",
+      "fetched_at": "2026-07-03T09:19:09Z",
+      "ok": true
     }
   },
   "source": "https://service.iris.edu/irisws/timeseriesplot/1/query"
