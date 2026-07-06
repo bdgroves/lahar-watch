@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-05T19:12:48Z",
+  "fetched_at": "2026-07-06T10:23:44Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -217,16 +217,7 @@
       "place": "8 km SE of Enumclaw, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714010761"
-    },
-    {
-      "id": "uw714006811",
-      "time": "2026-06-05T20:12:54.880000+00:00",
-      "magnitude": 1.68,
-      "depth_km": -0.4,
-      "place": "1 km SE of Kapowsin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714006811"
     }
   ],
-  "count": 25
+  "count": 24
 }
