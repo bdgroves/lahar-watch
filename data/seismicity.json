@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-07-13T19:19:35Z",
+  "fetched_at": "2026-07-14T08:06:00Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714047592",
+      "time": "2026-07-12T01:03:28.200000+00:00",
+      "magnitude": 1.17,
+      "depth_km": 4.35,
+      "place": "15 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714047592"
+    },
     {
       "id": "uw714046112",
       "time": "2026-07-10T08:00:36.580000+00:00",
@@ -237,5 +246,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714020981"
     }
   ],
-  "count": 26
+  "count": 27
 }
