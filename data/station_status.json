@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-15T19:05:47Z",
+  "fetched_at": "2026-07-16T08:14:38Z",
   "stations": [
     {
       "id": "PR05",
@@ -9,8 +9,8 @@
       "type": "LMS",
       "net": "CC",
       "sta": "PR05",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "CR01",
@@ -20,8 +20,8 @@
       "type": "LMS",
       "net": "UW",
       "sta": "RCS",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "WR02",
@@ -31,8 +31,8 @@
       "type": "LMS",
       "net": "UW",
       "sta": "FMW",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "PARA",
@@ -42,8 +42,8 @@
       "type": "LMS",
       "net": "CC",
       "sta": "PARA",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "TC04",
@@ -53,8 +53,8 @@
       "type": "LMS",
       "net": "UW",
       "sta": "TDH",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "CRY5",
@@ -64,8 +64,8 @@
       "type": "LMS",
       "net": "CC",
       "sta": "CRYS",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "MT.WOW",
@@ -75,8 +75,8 @@
       "type": "LMS",
       "net": "CC",
       "sta": "WOW",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "NQ01",
@@ -86,8 +86,8 @@
       "type": "LMS",
       "net": "CC",
       "sta": "MILD",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "MUIR",
@@ -97,8 +97,8 @@
       "type": "LMS",
       "net": "UW",
       "sta": "RCM",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "PUPY",
@@ -108,8 +108,8 @@
       "type": "LMS",
       "net": "UW",
       "sta": "PUPY",
-      "checked_at": "2026-07-15T19:05:47Z",
-      "status": "nominal"
+      "checked_at": "2026-07-16T08:14:38Z",
+      "status": "unknown"
     },
     {
       "id": "AFM-PUY-01",
@@ -119,7 +119,7 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-07-15T19:05:47Z",
+      "checked_at": "2026-07-16T08:14:38Z",
       "status": "legacy_afm"
     },
     {
@@ -130,7 +130,7 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-07-15T19:05:47Z",
+      "checked_at": "2026-07-16T08:14:38Z",
       "status": "legacy_afm"
     },
     {
@@ -141,21 +141,10 @@
       "type": "AFM",
       "net": "\u2014",
       "sta": "\u2014",
-      "checked_at": "2026-07-15T19:05:47Z",
+      "checked_at": "2026-07-16T08:14:38Z",
       "status": "legacy_afm"
     }
   ],
-  "known_in_iris": [
-    "CC.CRYS",
-    "CC.MILD",
-    "CC.PARA",
-    "CC.PR05",
-    "CC.WOW",
-    "UW.FMW",
-    "UW.PUPY",
-    "UW.RCM",
-    "UW.RCS",
-    "UW.TDH"
-  ],
+  "known_in_iris": [],
   "source": "https://service.iris.edu/fdsnws/station/1/query"
 }
