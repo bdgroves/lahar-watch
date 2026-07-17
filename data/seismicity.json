@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-17T08:10:29Z",
+  "fetched_at": "2026-07-17T19:02:28Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -253,16 +253,7 @@
       "place": "5 km WSW of Crocker, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026791"
-    },
-    {
-      "id": "uw714025091",
-      "time": "2026-06-17T13:37:44.430000+00:00",
-      "magnitude": 0.62,
-      "depth_km": 0.71,
-      "place": "22 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714025091"
     }
   ],
-  "count": 29
+  "count": 28
 }
