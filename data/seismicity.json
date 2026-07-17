@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-07-16T19:04:40Z",
+  "fetched_at": "2026-07-17T08:10:29Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714054001",
+      "time": "2026-07-16T22:21:33.380000+00:00",
+      "magnitude": 1.16,
+      "depth_km": -0.69,
+      "place": "1 km ESE of McMillin, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714054001"
+    },
     {
       "id": "uw714051921",
       "time": "2026-07-16T07:48:50.120000+00:00",
@@ -255,5 +264,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714025091"
     }
   ],
-  "count": 28
+  "count": 29
 }
