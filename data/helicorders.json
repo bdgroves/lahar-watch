@@ -1,10 +1,17 @@
 {
-  "fetched_at": "2026-07-18T18:59:05Z",
+  "fetched_at": "2026-07-19T08:20:20Z",
   "stations": {
     "MUIR": {
-      "ok": false,
+      "file": "data/helicorders/MUIR.png",
       "label": "Camp Muir \u00b7 Summit",
-      "reason": "no data in IRIS past 48h (UW.RCM.--.HHZ)"
+      "sta": "RCM",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
+      "ok": true
     },
     "CR01": {
       "file": "data/helicorders/CR01.png",
@@ -13,9 +20,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "WR02": {
@@ -25,9 +32,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "TC04": {
@@ -37,9 +44,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "PARA": {
@@ -49,9 +56,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "CRY5": {
@@ -61,9 +68,9 @@
       "net": "CC",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "NQ01": {
@@ -73,9 +80,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     },
     "PUPY": {
@@ -85,9 +92,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-07-17T18:59:05",
-      "window_end": "2026-07-18T18:59:05",
-      "fetched_at": "2026-07-18T18:59:05Z",
+      "window_start": "2026-07-18T08:20:20",
+      "window_end": "2026-07-19T08:20:20",
+      "fetched_at": "2026-07-19T08:20:20Z",
       "ok": true
     }
   },
