@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-19T08:20:18Z",
+  "fetched_at": "2026-07-19T19:01:31Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -244,16 +244,7 @@
       "place": "2 km SSE of Kapowsin, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714027181"
-    },
-    {
-      "id": "uw714026861",
-      "time": "2026-06-19T09:45:45.810000+00:00",
-      "magnitude": 0.65,
-      "depth_km": 8.63,
-      "place": "3 km SE of Orting, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026861"
     }
   ],
-  "count": 28
+  "count": 27
 }
