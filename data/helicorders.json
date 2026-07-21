@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-20T19:40:09Z",
+  "fetched_at": "2026-07-21T08:29:57Z",
   "stations": {
     "MUIR": {
       "file": "data/helicorders/MUIR.png",
@@ -8,9 +8,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "CR01": {
@@ -20,15 +20,22 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "WR02": {
-      "ok": false,
+      "file": "data/helicorders/WR02.png",
       "label": "White River",
-      "reason": "no data in IRIS past 48h (UW.STOR.--.HHZ)"
+      "sta": "STOR",
+      "net": "UW",
+      "cha": "HHZ",
+      "loc": "--",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
+      "ok": true
     },
     "TC04": {
       "file": "data/helicorders/TC04.png",
@@ -37,9 +44,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "PARA": {
@@ -49,9 +56,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "CRY5": {
@@ -61,9 +68,9 @@
       "net": "CC",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "NQ01": {
@@ -73,9 +80,9 @@
       "net": "CC",
       "cha": "BHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     },
     "PUPY": {
@@ -85,9 +92,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-07-19T19:40:09",
-      "window_end": "2026-07-20T19:40:09",
-      "fetched_at": "2026-07-20T19:40:09Z",
+      "window_start": "2026-07-20T08:29:57",
+      "window_end": "2026-07-21T08:29:57",
+      "fetched_at": "2026-07-21T08:29:57Z",
       "ok": true
     }
   },
