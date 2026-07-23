@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-22T19:11:17Z",
+  "fetched_at": "2026-07-23T08:31:31Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -226,25 +226,7 @@
       "place": "24 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714033701"
-    },
-    {
-      "id": "uw714030061",
-      "time": "2026-06-22T22:52:58.650000+00:00",
-      "magnitude": 1.11,
-      "depth_km": 0.91,
-      "place": "22 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714030061"
-    },
-    {
-      "id": "uw714030001",
-      "time": "2026-06-22T21:25:05.030000+00:00",
-      "magnitude": 1.07,
-      "depth_km": 7.1,
-      "place": "16 km WSW of Nile, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714030001"
     }
   ],
-  "count": 27
+  "count": 25
 }
