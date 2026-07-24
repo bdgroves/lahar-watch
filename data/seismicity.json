@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-07-24T08:28:00Z",
+  "fetched_at": "2026-07-24T19:20:10Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714060841",
+      "time": "2026-07-24T18:15:56.530000+00:00",
+      "magnitude": 1.64,
+      "depth_km": 10.9,
+      "place": "3 km S of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714060841"
+    },
     {
       "id": "uw714057022",
       "time": "2026-07-22T11:37:52.050000+00:00",
@@ -228,5 +237,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714033701"
     }
   ],
-  "count": 25
+  "count": 26
 }
