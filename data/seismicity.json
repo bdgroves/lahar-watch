@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-24T19:20:10Z",
+  "fetched_at": "2026-07-25T08:06:40Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -28,6 +28,15 @@
       "place": "17 km SW of Nile, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714056922"
+    },
+    {
+      "id": "uw714056032",
+      "time": "2026-07-21T14:11:14.220000+00:00",
+      "magnitude": 0.59,
+      "depth_km": 7.23,
+      "place": "11 km SW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714056032"
     },
     {
       "id": "uw714054521",
@@ -237,5 +246,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714033701"
     }
   ],
-  "count": 26
+  "count": 27
 }
