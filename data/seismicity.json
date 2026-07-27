@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-07-27T09:52:56Z",
+  "fetched_at": "2026-07-27T19:22:21Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714062571",
+      "time": "2026-07-26T20:02:53.150000+00:00",
+      "magnitude": 1.6,
+      "depth_km": 14.7,
+      "place": "3 km ESE of Buckley, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714062571"
+    },
+    {
+      "id": "uw714061111",
+      "time": "2026-07-24T23:06:28.240000+00:00",
+      "magnitude": 0.9,
+      "depth_km": 9.26,
+      "place": "13 km E of Wilkeson, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714061111"
+    },
     {
       "id": "uw714060841",
       "time": "2026-07-24T18:15:56.530000+00:00",
@@ -237,5 +255,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714035561"
     }
   ],
-  "count": 26
+  "count": 28
 }
