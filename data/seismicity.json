@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-07-31T08:50:08Z",
+  "fetched_at": "2026-07-31T19:19:28Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw714066721",
-      "time": "2026-07-31T02:02:57.580000+00:00",
-      "magnitude": 1.52798461914062,
-      "depth_km": 0.0700000002980232,
-      "place": "17 km WSW of Nile, Washington",
-      "status": "automatic",
+      "time": "2026-07-31T02:02:57.490000+00:00",
+      "magnitude": 1.39,
+      "depth_km": 6.24,
+      "place": "16 km WSW of Nile, Washington",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714066721"
     },
     {
