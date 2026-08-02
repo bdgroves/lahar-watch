@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-08-01T19:03:36Z",
+  "fetched_at": "2026-08-02T08:24:40Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714069021",
+      "time": "2026-08-02T00:42:15.450000+00:00",
+      "magnitude": 2.43,
+      "depth_km": 2.26,
+      "place": "22 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714069021"
+    },
     {
       "id": "uw714066721",
       "time": "2026-07-31T02:02:57.490000+00:00",
@@ -219,5 +228,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714042732"
     }
   ],
-  "count": 24
+  "count": 25
 }
