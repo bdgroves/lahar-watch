@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-08-06T08:36:20Z",
+  "fetched_at": "2026-08-06T23:54:59Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714072701",
+      "time": "2026-08-06T10:17:25.900000+00:00",
+      "magnitude": 0.83,
+      "depth_km": 8.43,
+      "place": "18 km S of Greenwater, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714072701"
+    },
     {
       "id": "uw714071971",
       "time": "2026-08-05T15:33:22.240000+00:00",
@@ -264,5 +273,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714044942"
     }
   ],
-  "count": 29
+  "count": 30
 }
