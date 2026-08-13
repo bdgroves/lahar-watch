@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-08-13T07:27:02Z",
+  "fetched_at": "2026-08-13T18:58:20Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714077971",
+      "time": "2026-08-13T02:13:13.580000+00:00",
+      "magnitude": 0.75,
+      "depth_km": 8.72,
+      "place": "11 km SW of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714077971"
+    },
     {
       "id": "uw714076192",
       "time": "2026-08-12T04:49:34.480000+00:00",
@@ -273,5 +282,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714050192"
     }
   ],
-  "count": 30
+  "count": 31
 }
