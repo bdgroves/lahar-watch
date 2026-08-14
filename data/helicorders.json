@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-13T18:58:21Z",
+  "fetched_at": "2026-08-14T07:24:49Z",
   "stations": {
     "MUIR": {
       "file": "data/helicorders/MUIR.png",
@@ -8,9 +8,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     },
     "CR01": {
@@ -20,9 +20,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     },
     "WR02": {
@@ -32,9 +32,9 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     },
     "TC04": {
@@ -44,22 +44,15 @@
       "net": "UW",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     },
     "PARA": {
-      "file": "data/helicorders/PARA.png",
+      "ok": false,
       "label": "Paradise \u00b7 Nisqually",
-      "sta": "PARA",
-      "net": "CC",
-      "cha": "BHZ",
-      "loc": "--",
-      "window_start": "2026-08-11T18:58:21",
-      "window_end": "2026-08-12T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (CC.PARA.--.BHZ)"
     },
     "CRY5": {
       "file": "data/helicorders/CRY5.png",
@@ -68,22 +61,15 @@
       "net": "CC",
       "cha": "HHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     },
     "NQ01": {
-      "file": "data/helicorders/NQ01.png",
+      "ok": false,
       "label": "Nisqually \u00b7 Longmire",
-      "sta": "MILD",
-      "net": "CC",
-      "cha": "BHZ",
-      "loc": "--",
-      "window_start": "2026-08-11T18:58:21",
-      "window_end": "2026-08-12T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (CC.MILD.--.BHZ)"
     },
     "PUPY": {
       "file": "data/helicorders/PUPY.png",
@@ -92,9 +78,9 @@
       "net": "UW",
       "cha": "EHZ",
       "loc": "--",
-      "window_start": "2026-08-12T18:58:21",
-      "window_end": "2026-08-13T18:58:21",
-      "fetched_at": "2026-08-13T18:58:21Z",
+      "window_start": "2026-08-13T07:24:49",
+      "window_end": "2026-08-14T07:24:49",
+      "fetched_at": "2026-08-14T07:24:49Z",
       "ok": true
     }
   },
