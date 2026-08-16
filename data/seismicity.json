@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-16T06:39:35Z",
+  "fetched_at": "2026-08-16T18:23:14Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -226,25 +226,7 @@
       "place": "11 km SW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714056032"
-    },
-    {
-      "id": "uw714054521",
-      "time": "2026-07-17T17:39:58.400000+00:00",
-      "magnitude": 0.6,
-      "depth_km": -0.92,
-      "place": "13 km W of Greenwater, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714054521"
-    },
-    {
-      "id": "uw714054361",
-      "time": "2026-07-17T12:57:27.720000+00:00",
-      "magnitude": 0.71,
-      "depth_km": 2.17,
-      "place": "12 km ESE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714054361"
     }
   ],
-  "count": 27
+  "count": 25
 }
