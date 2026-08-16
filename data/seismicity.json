@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-15T18:23:27Z",
+  "fetched_at": "2026-08-16T06:39:35Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -244,16 +244,7 @@
       "place": "12 km ESE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714054361"
-    },
-    {
-      "id": "uw714054001",
-      "time": "2026-07-16T22:21:33.380000+00:00",
-      "magnitude": 1.16,
-      "depth_km": -0.69,
-      "place": "1 km ESE of McMillin, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714054001"
     }
   ],
-  "count": 28
+  "count": 27
 }
