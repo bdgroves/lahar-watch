@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-08-20T18:33:48Z",
+  "fetched_at": "2026-08-21T06:46:50Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714082052",
+      "time": "2026-08-20T14:04:22.230000+00:00",
+      "magnitude": 1.29,
+      "depth_km": 6.47,
+      "place": "11 km W of Packwood, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714082052"
+    },
+    {
+      "id": "uw714081952",
+      "time": "2026-08-20T10:30:06+00:00",
+      "magnitude": 1.27,
+      "depth_km": 5.89,
+      "place": "17 km WSW of Nile, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714081952"
+    },
     {
       "id": "uw714080171",
       "time": "2026-08-16T12:09:22.450000+00:00",
@@ -58,9 +76,9 @@
     },
     {
       "id": "uw714073492",
-      "time": "2026-08-08T14:58:19.520000+00:00",
-      "magnitude": 2.16435194015503,
-      "depth_km": 11.4,
+      "time": "2026-08-08T14:58:19.510000+00:00",
+      "magnitude": 0.84,
+      "depth_km": 11.45,
       "place": "12 km NE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714073492"
@@ -226,16 +244,7 @@
       "place": "21 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714057022"
-    },
-    {
-      "id": "uw714056922",
-      "time": "2026-07-22T04:17:08.560000+00:00",
-      "magnitude": 1.07,
-      "depth_km": 7.3,
-      "place": "17 km SW of Nile, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714056922"
     }
   ],
-  "count": 26
+  "count": 27
 }
