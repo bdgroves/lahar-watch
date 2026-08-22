@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-08-21T18:31:28Z",
+  "fetched_at": "2026-08-22T06:40:06Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw714082622",
-      "time": "2026-08-21T14:17:56.650000+00:00",
-      "magnitude": 0.930000007,
-      "depth_km": 0.839999973773956,
+      "time": "2026-08-21T14:17:56.620000+00:00",
+      "magnitude": 0.98,
+      "depth_km": 1.19,
       "place": "22 km ENE of Ashford, Washington",
-      "status": "automatic",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714082622"
     },
     {
