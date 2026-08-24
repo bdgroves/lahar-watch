@@ -1,12 +1,12 @@
 {
-  "fetched_at": "2026-08-23T18:23:12Z",
+  "fetched_at": "2026-08-24T06:58:32Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw714083212",
-      "time": "2026-08-22T14:12:34.880000+00:00",
-      "magnitude": 1.70308011770248,
-      "depth_km": -0.910000026226044,
+      "time": "2026-08-22T14:12:34.920000+00:00",
+      "magnitude": 1.67,
+      "depth_km": 2.01,
       "place": "8 km E of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083212"
@@ -37,6 +37,15 @@
       "place": "24 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083062"
+    },
+    {
+      "id": "uw714082862",
+      "time": "2026-08-21T21:35:11.020000+00:00",
+      "magnitude": 0.82,
+      "depth_km": 17.06,
+      "place": "3 km S of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714082862"
     },
     {
       "id": "uw714082622",
@@ -262,15 +271,6 @@
       "place": "3 km ESE of Buckley, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714062571"
-    },
-    {
-      "id": "uw714061111",
-      "time": "2026-07-24T23:06:28.240000+00:00",
-      "magnitude": 0.9,
-      "depth_km": 9.26,
-      "place": "13 km E of Wilkeson, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714061111"
     }
   ],
   "count": 30
