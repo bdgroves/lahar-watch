@@ -1,53 +1,25 @@
 {
-  "fetched_at": "2026-08-25T06:48:31Z",
+  "fetched_at": "2026-08-25T18:34:34Z",
   "stations": {
     "MUIR": {
-      "file": "data/helicorders/MUIR.png",
+      "ok": false,
       "label": "Camp Muir \u00b7 Summit",
-      "sta": "RCM",
-      "net": "UW",
-      "cha": "HHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (UW.RCM.--.HHZ)"
     },
     "CR01": {
-      "file": "data/helicorders/CR01.png",
+      "ok": false,
       "label": "Camp Sherman \u00b7 Carbon",
-      "sta": "RCS",
-      "net": "UW",
-      "cha": "EHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (UW.RCS.--.EHZ)"
     },
     "WR02": {
-      "file": "data/helicorders/WR02.png",
+      "ok": false,
       "label": "White River",
-      "sta": "STOR",
-      "net": "UW",
-      "cha": "HHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (UW.STOR.--.HHZ)"
     },
     "TC04": {
-      "file": "data/helicorders/TC04.png",
+      "ok": false,
       "label": "Tahoma Creek",
-      "sta": "TDH",
-      "net": "UW",
-      "cha": "HHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (UW.TDH.--.HHZ)"
     },
     "PARA": {
       "ok": false,
@@ -55,16 +27,9 @@
       "reason": "no data in IRIS past 48h (CC.PARA.--.BHZ)"
     },
     "CRY5": {
-      "file": "data/helicorders/CRY5.png",
+      "ok": false,
       "label": "Crystal Mtn \u00b7 White NE",
-      "sta": "CRYS",
-      "net": "CC",
-      "cha": "HHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (CC.CRYS.--.HHZ)"
     },
     "NQ01": {
       "ok": false,
@@ -72,16 +37,9 @@
       "reason": "no data in IRIS past 48h (CC.MILD.--.BHZ)"
     },
     "PUPY": {
-      "file": "data/helicorders/PUPY.png",
+      "ok": false,
       "label": "Puyallup Valley",
-      "sta": "PUPY",
-      "net": "UW",
-      "cha": "EHZ",
-      "loc": "--",
-      "window_start": "2026-08-24T06:48:31",
-      "window_end": "2026-08-25T06:48:31",
-      "fetched_at": "2026-08-25T06:48:31Z",
-      "ok": true
+      "reason": "no data in IRIS past 48h (UW.PUPY.--.EHZ)"
     }
   },
   "source": "https://service.iris.edu/irisws/timeseriesplot/1/query"
