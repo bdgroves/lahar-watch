@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-08-24T18:34:50Z",
+  "fetched_at": "2026-08-25T06:48:30Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714084822",
+      "time": "2026-08-24T03:53:11.990000+00:00",
+      "magnitude": 0.98,
+      "depth_km": 6.75,
+      "place": "17 km WSW of Nile, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714084822"
+    },
     {
       "id": "uw714084512",
       "time": "2026-08-23T17:30:39.580000+00:00",
@@ -21,6 +30,42 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714084192"
     },
     {
+      "id": "uw714083812",
+      "time": "2026-08-22T23:58:13.750000+00:00",
+      "magnitude": 0.59,
+      "depth_km": 13.84,
+      "place": "3 km SSE of Enumclaw, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083812"
+    },
+    {
+      "id": "uw714083642",
+      "time": "2026-08-22T22:53:03.110000+00:00",
+      "magnitude": 0.82,
+      "depth_km": 0.94,
+      "place": "17 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083642"
+    },
+    {
+      "id": "uw714083612",
+      "time": "2026-08-22T22:38:09.820000+00:00",
+      "magnitude": 1.36,
+      "depth_km": 0.45,
+      "place": "7 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083612"
+    },
+    {
+      "id": "uw714083452",
+      "time": "2026-08-22T19:54:34.360000+00:00",
+      "magnitude": 0.94,
+      "depth_km": 2.54,
+      "place": "8 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083452"
+    },
+    {
       "id": "uw714083212",
       "time": "2026-08-22T14:12:34.920000+00:00",
       "magnitude": 1.67,
@@ -28,6 +73,24 @@
       "place": "8 km E of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083212"
+    },
+    {
+      "id": "uw714083182",
+      "time": "2026-08-22T14:02:33.760000+00:00",
+      "magnitude": 1.17,
+      "depth_km": 2.76,
+      "place": "7 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083182"
+    },
+    {
+      "id": "uw714083122",
+      "time": "2026-08-22T11:25:07.970000+00:00",
+      "magnitude": 0.79,
+      "depth_km": 1.63,
+      "place": "8 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083122"
     },
     {
       "id": "uw714083102",
@@ -48,6 +111,15 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083092"
     },
     {
+      "id": "uw714083082",
+      "time": "2026-08-22T10:47:34.900000+00:00",
+      "magnitude": 0.7,
+      "depth_km": -1.86,
+      "place": "24 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083082"
+    },
+    {
       "id": "uw714083062",
       "time": "2026-08-22T10:21:27.940000+00:00",
       "magnitude": 1.37,
@@ -55,6 +127,24 @@
       "place": "24 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083062"
+    },
+    {
+      "id": "uw714083052",
+      "time": "2026-08-22T10:21:21.400000+00:00",
+      "magnitude": 0.84,
+      "depth_km": -2.14,
+      "place": "24 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714083052"
+    },
+    {
+      "id": "uw714005233",
+      "time": "2026-08-22T10:21:16.370000+00:00",
+      "magnitude": 0.56,
+      "depth_km": -2.06,
+      "place": "24 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714005233"
     },
     {
       "id": "uw714082982",
@@ -300,5 +390,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714062571"
     }
   ],
-  "count": 33
+  "count": 43
 }
