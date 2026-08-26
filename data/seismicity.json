@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-08-25T18:34:33Z",
+  "fetched_at": "2026-08-26T06:50:19Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714087401",
+      "time": "2026-08-25T22:35:22.550000+00:00",
+      "magnitude": 1.04,
+      "depth_km": -2.74,
+      "place": "24 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714087401"
+    },
     {
       "id": "uw714085432",
       "time": "2026-08-24T20:09:17.520000+00:00",
@@ -388,15 +397,6 @@
       "place": "22 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714063691"
-    },
-    {
-      "id": "uw714062571",
-      "time": "2026-07-26T20:02:53.150000+00:00",
-      "magnitude": 1.6,
-      "depth_km": 14.7,
-      "place": "3 km ESE of Buckley, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714062571"
     }
   ],
   "count": 44
