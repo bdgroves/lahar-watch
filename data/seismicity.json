@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-28T02:01:04Z",
+  "fetched_at": "2026-08-28T18:16:56Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -370,25 +370,7 @@
       "place": "0 km NNW of Eatonville, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714066341"
-    },
-    {
-      "id": "uw714064761",
-      "time": "2026-07-29T07:55:29.080000+00:00",
-      "magnitude": 0.7,
-      "depth_km": 0.52,
-      "place": "22 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714064761"
-    },
-    {
-      "id": "uw714064731",
-      "time": "2026-07-29T03:52:57.690000+00:00",
-      "magnitude": 0.5,
-      "depth_km": 5.5,
-      "place": "13 km NNE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714064731"
     }
   ],
-  "count": 43
+  "count": 41
 }
