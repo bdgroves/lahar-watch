@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-29T12:25:34Z",
+  "fetched_at": "2026-08-29T20:21:55Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -388,16 +388,7 @@
       "place": "16 km WSW of Nile, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714066721"
-    },
-    {
-      "id": "uw714066341",
-      "time": "2026-07-30T20:05:33.810000+00:00",
-      "magnitude": 1.53,
-      "depth_km": -0.38,
-      "place": "0 km NNW of Eatonville, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714066341"
     }
   ],
-  "count": 44
+  "count": 43
 }
