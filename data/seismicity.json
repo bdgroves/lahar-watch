@@ -1,7 +1,34 @@
 {
-  "fetched_at": "2026-08-28T18:16:56Z",
+  "fetched_at": "2026-08-29T01:26:14Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714089641",
+      "time": "2026-08-28T10:28:51.990000+00:00",
+      "magnitude": 0.57,
+      "depth_km": 8.76,
+      "place": "15 km S of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714089641"
+    },
+    {
+      "id": "uw714088212",
+      "time": "2026-08-27T15:38:31.480000+00:00",
+      "magnitude": 0.6,
+      "depth_km": 8.53,
+      "place": "15 km SSE of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714088212"
+    },
+    {
+      "id": "uw714088162",
+      "time": "2026-08-27T15:05:51.400000+00:00",
+      "magnitude": 0.83,
+      "depth_km": 7.93,
+      "place": "16 km S of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714088162"
+    },
     {
       "id": "uw714087431",
       "time": "2026-08-25T23:10:17.130000+00:00",
@@ -372,5 +399,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714066341"
     }
   ],
-  "count": 41
+  "count": 44
 }
