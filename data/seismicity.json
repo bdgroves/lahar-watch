@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-08-30T20:30:37Z",
+  "fetched_at": "2026-08-31T12:55:02Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw714091521",
-      "time": "2026-08-30T00:03:13.620000+00:00",
-      "magnitude": 1.60976052284241,
-      "depth_km": 2.20000004768372,
+      "time": "2026-08-30T00:03:13.530000+00:00",
+      "magnitude": 1.53,
+      "depth_km": 4.25,
       "place": "20 km S of Packwood, Washington",
-      "status": "automatic",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714091521"
     },
     {
