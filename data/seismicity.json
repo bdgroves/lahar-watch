@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-31T22:24:11Z",
+  "fetched_at": "2026-09-01T11:13:51Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -370,25 +370,7 @@
       "place": "3 km ESE of Enumclaw, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071021"
-    },
-    {
-      "id": "uw714069081",
-      "time": "2026-08-02T01:02:11.620000+00:00",
-      "magnitude": 0.63,
-      "depth_km": 0.79,
-      "place": "22 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714069081"
-    },
-    {
-      "id": "uw714069021",
-      "time": "2026-08-02T00:42:15.600000+00:00",
-      "magnitude": 2.24,
-      "depth_km": -0.93,
-      "place": "23 km ENE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714069021"
     }
   ],
-  "count": 43
+  "count": 41
 }
