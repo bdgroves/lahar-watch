@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-09-01T11:13:51Z",
+  "fetched_at": "2026-09-01T20:30:17Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714093051",
+      "time": "2026-09-01T08:21:13.810000+00:00",
+      "magnitude": 1.02,
+      "depth_km": 2.18,
+      "place": "6 km E of Kapowsin, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714093051"
+    },
     {
       "id": "uw714091901",
       "time": "2026-08-30T14:38:09.820000+00:00",
@@ -372,5 +381,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071021"
     }
   ],
-  "count": 41
+  "count": 42
 }
