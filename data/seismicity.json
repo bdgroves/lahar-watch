@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-03T10:47:32Z",
+  "fetched_at": "2026-09-03T20:27:38Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -361,25 +361,7 @@
       "place": "9 km SE of Enumclaw, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071681"
-    },
-    {
-      "id": "uw714071341",
-      "time": "2026-08-04T17:55:47.380000+00:00",
-      "magnitude": 0.63,
-      "depth_km": -1.01,
-      "place": "12 km ESE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071341"
-    },
-    {
-      "id": "uw714071021",
-      "time": "2026-08-04T11:16:19.780000+00:00",
-      "magnitude": 1.23,
-      "depth_km": 16.89,
-      "place": "3 km ESE of Enumclaw, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071021"
     }
   ],
-  "count": 42
+  "count": 40
 }
