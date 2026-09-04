@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-04T10:46:39Z",
+  "fetched_at": "2026-09-04T20:14:25Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -343,16 +343,7 @@
       "place": "18 km S of Greenwater, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714072701"
-    },
-    {
-      "id": "uw714071971",
-      "time": "2026-08-05T15:33:22.240000+00:00",
-      "magnitude": 0.56,
-      "depth_km": 2.85,
-      "place": "8 km SE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714071971"
     }
   ],
-  "count": 39
+  "count": 38
 }
