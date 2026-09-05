@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-09-04T20:14:25Z",
+  "fetched_at": "2026-09-05T10:04:12Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714095072",
+      "time": "2026-09-04T22:08:43.130000+00:00",
+      "magnitude": 1.79448437690735,
+      "depth_km": -0.48,
+      "place": "3 km SW of Kapowsin, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095072"
+    },
     {
       "id": "uw714093051",
       "time": "2026-09-01T08:21:13.780000+00:00",
@@ -303,17 +312,17 @@
       "id": "uw714076192",
       "time": "2026-08-12T04:49:34.480000+00:00",
       "magnitude": 0.74,
-      "depth_km": 0.64,
+      "depth_km": 0.68,
       "place": "22 km ENE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714076192"
     },
     {
       "id": "uw714076152",
-      "time": "2026-08-12T01:52:24.240000+00:00",
+      "time": "2026-08-12T01:52:24.200000+00:00",
       "magnitude": 0.82,
-      "depth_km": 6.17,
-      "place": "12 km WNW of Packwood, Washington",
+      "depth_km": 6.61,
+      "place": "13 km WNW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714076152"
     },
@@ -345,5 +354,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714072701"
     }
   ],
-  "count": 38
+  "count": 39
 }
