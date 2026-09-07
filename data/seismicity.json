@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-07T11:46:25Z",
+  "fetched_at": "2026-09-07T21:04:33Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -352,16 +352,7 @@
       "place": "13 km E of Wilkeson, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714075132"
-    },
-    {
-      "id": "uw714073492",
-      "time": "2026-08-08T14:58:19.510000+00:00",
-      "magnitude": 0.84,
-      "depth_km": 11.45,
-      "place": "12 km NE of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714073492"
     }
   ],
-  "count": 40
+  "count": 39
 }
