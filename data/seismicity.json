@@ -1,7 +1,25 @@
 {
-  "fetched_at": "2026-09-08T10:44:38Z",
+  "fetched_at": "2026-09-08T20:40:56Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714096972",
+      "time": "2026-09-08T13:49:03.190000+00:00",
+      "magnitude": 1.55518841743469,
+      "depth_km": 3.51999998092651,
+      "place": "21 km SSE of Packwood, Washington",
+      "status": "automatic",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096972"
+    },
+    {
+      "id": "uw714096912",
+      "time": "2026-09-08T08:03:44.560000+00:00",
+      "magnitude": 1.06,
+      "depth_km": 2.32,
+      "place": "8 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096912"
+    },
     {
       "id": "uw714096352",
       "time": "2026-09-07T00:11:41.190000+00:00",
@@ -10,6 +28,33 @@
       "place": "15 km SSE of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096352"
+    },
+    {
+      "id": "uw714095912",
+      "time": "2026-09-06T08:31:12.590000+00:00",
+      "magnitude": 0.58,
+      "depth_km": 13,
+      "place": "4 km S of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095912"
+    },
+    {
+      "id": "uw714095642",
+      "time": "2026-09-05T21:50:15.430000+00:00",
+      "magnitude": 0.67,
+      "depth_km": 1.07,
+      "place": "23 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095642"
+    },
+    {
+      "id": "uw714095632",
+      "time": "2026-09-05T21:49:21.380000+00:00",
+      "magnitude": 1.21,
+      "depth_km": 2,
+      "place": "8 km E of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095632"
     },
     {
       "id": "uw714095362",
@@ -354,5 +399,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714075132"
     }
   ],
-  "count": 39
+  "count": 44
 }
