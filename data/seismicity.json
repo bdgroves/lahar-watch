@@ -1,14 +1,14 @@
 {
-  "fetched_at": "2026-09-08T20:40:56Z",
+  "fetched_at": "2026-09-09T10:52:21Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
       "id": "uw714096972",
-      "time": "2026-09-08T13:49:03.190000+00:00",
-      "magnitude": 1.55518841743469,
-      "depth_km": 3.51999998092651,
-      "place": "21 km SSE of Packwood, Washington",
-      "status": "automatic",
+      "time": "2026-09-08T13:49:03.130000+00:00",
+      "magnitude": 1.37,
+      "depth_km": 7.04,
+      "place": "20 km SSE of Packwood, Washington",
+      "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096972"
     },
     {
@@ -21,6 +21,24 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096912"
     },
     {
+      "id": "uw714096712",
+      "time": "2026-09-07T19:14:42.810000+00:00",
+      "magnitude": 0.71,
+      "depth_km": 8.39,
+      "place": "15 km SSE of Carbonado, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096712"
+    },
+    {
+      "id": "uw714096672",
+      "time": "2026-09-07T18:02:15.530000+00:00",
+      "magnitude": 0.57,
+      "depth_km": 7.6,
+      "place": "16 km NNE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714096672"
+    },
+    {
       "id": "uw714096352",
       "time": "2026-09-07T00:11:41.190000+00:00",
       "magnitude": 0.66,
@@ -31,9 +49,9 @@
     },
     {
       "id": "uw714095912",
-      "time": "2026-09-06T08:31:12.590000+00:00",
+      "time": "2026-09-06T08:31:12.620000+00:00",
       "magnitude": 0.58,
-      "depth_km": 13,
+      "depth_km": 12.72,
       "place": "4 km S of Carbonado, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095912"
@@ -399,5 +417,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714075132"
     }
   ],
-  "count": 44
+  "count": 46
 }
