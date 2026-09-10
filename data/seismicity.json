@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-09T20:21:52Z",
+  "fetched_at": "2026-09-10T10:47:56Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -406,16 +406,7 @@
       "place": "13 km WNW of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714076152"
-    },
-    {
-      "id": "uw714075132",
-      "time": "2026-08-11T04:13:40.820000+00:00",
-      "magnitude": 0.55,
-      "depth_km": 8.48,
-      "place": "13 km E of Wilkeson, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714075132"
     }
   ],
-  "count": 46
+  "count": 45
 }
