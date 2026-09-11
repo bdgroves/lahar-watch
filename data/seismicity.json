@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-09-11T10:44:42Z",
+  "fetched_at": "2026-09-11T20:24:11Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714100021",
+      "time": "2026-09-11T13:18:01.290000+00:00",
+      "magnitude": 1.3,
+      "depth_km": 7.71,
+      "place": "18 km SW of Nile, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714100021"
+    },
     {
       "id": "uw714096972",
       "time": "2026-09-08T13:49:03.160000+00:00",
@@ -390,5 +399,5 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714077971"
     }
   ],
-  "count": 43
+  "count": 44
 }
