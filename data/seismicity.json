@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-11T20:24:11Z",
+  "fetched_at": "2026-09-12T10:13:24Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -388,16 +388,7 @@
       "place": "8 km ESE of Ashford, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714080161"
-    },
-    {
-      "id": "uw714077971",
-      "time": "2026-08-13T02:13:13.580000+00:00",
-      "magnitude": 0.75,
-      "depth_km": 8.72,
-      "place": "11 km SW of Packwood, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714077971"
     }
   ],
-  "count": 44
+  "count": 43
 }
