@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-09-15T11:15:43Z",
+  "fetched_at": "2026-09-15T20:50:15Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714102801",
+      "time": "2026-09-15T17:20:55.100000+00:00",
+      "magnitude": 0.58,
+      "depth_km": 0.24,
+      "place": "22 km ENE of Ashford, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714102801"
+    },
     {
       "id": "uw714102071",
       "time": "2026-09-14T21:15:50.060000+00:00",
@@ -442,15 +451,6 @@
       "place": "17 km WSW of Nile, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714081952"
-    },
-    {
-      "id": "uw714080171",
-      "time": "2026-08-16T12:09:22.450000+00:00",
-      "magnitude": 1.04,
-      "depth_km": 2.63,
-      "place": "8 km E of Ashford, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714080171"
     }
   ],
   "count": 50
