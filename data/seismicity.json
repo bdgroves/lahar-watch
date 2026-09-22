@@ -1,7 +1,16 @@
 {
-  "fetched_at": "2026-09-22T11:05:39Z",
+  "fetched_at": "2026-09-22T20:51:09Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
+    {
+      "id": "uw714107771",
+      "time": "2026-09-22T17:12:57.270000+00:00",
+      "magnitude": 0.96,
+      "depth_km": 16.02,
+      "place": "4 km WSW of Mineral, Washington",
+      "status": "reviewed",
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714107771"
+    },
     {
       "id": "uw714107281",
       "time": "2026-09-21T20:50:16.860000+00:00",
@@ -343,15 +352,6 @@
       "place": "17 km WSW of Nile, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714084822"
-    },
-    {
-      "id": "uw714084512",
-      "time": "2026-08-23T17:30:39.580000+00:00",
-      "magnitude": 0.6,
-      "depth_km": 3.27,
-      "place": "23 km SSE of Greenwater, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714084512"
     }
   ],
   "count": 39
