@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-26T20:37:15Z",
+  "fetched_at": "2026-09-27T11:33:04Z",
   "source": "https://earthquake.usgs.gov/fdsnws/event/1/query",
   "events": [
     {
@@ -280,16 +280,7 @@
       "place": "20 km S of Packwood, Washington",
       "status": "reviewed",
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714091521"
-    },
-    {
-      "id": "uw714089641",
-      "time": "2026-08-28T10:28:51.990000+00:00",
-      "magnitude": 0.57,
-      "depth_km": 8.76,
-      "place": "15 km S of Carbonado, Washington",
-      "status": "reviewed",
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714089641"
     }
   ],
-  "count": 32
+  "count": 31
 }
