@@ -1,438 +1,379 @@
 """
 fetch_sensors.py
 ────────────────
-Fetches lahar-relevant sensor data from:
-  • USGS Earthquake / Seismic API  (earthquake.usgs.gov)
-  • USGS HANS Public API (volcanoes.usgs.gov/hans-public) — Mt. Rainier alert level
-  • IRIS FDSN Station Service — UW + CC network station availability
-  • USGS Water Services — stream gauge levels on lahar drainages
-  • IRIS timeseriesplot — waveform PNG images fetched server-side (no browser CORS)
+Everything on lahar-watch that can't be read live by the browser, refreshed every hour.
 
-Helicorder channels verified against IRIS availability 2026-03-14:
-  UW.RCM  → HHZ  (Camp Muir, 10,100 ft summit)
-  UW.RCS  → EHZ  (Camp Sherman / Carbon River)
-  UW.STOR → HHZ  (White River area)
-  UW.TDH  → HHZ  (Tahoma Creek drainage)
-  CC.PARA → BHZ  (Paradise / Nisqually, 5,400 ft)
-  CC.CRYS → HHZ  (Crystal Mountain / White River NE)
-  CC.MILD → BHZ  (Nisqually / Longmire)
-  UW.PUPY → EHZ  (Puyallup River valley — replaces STAR which has restricted data)
+  • Stations  — every seismic and infrasound station within ~55 km of Mount Rainier from the
+                EarthScope (IRIS) FDSN station service: the USGS Cascades Volcano Observatory's
+                CC network (which includes the lahar detection stations) and the University of
+                Washington's UW network (Pacific Northwest Seismic Network).
+  • Status    — whether each station has actually delivered data in the last 20 minutes, from
+                the FDSN dataselect service (a station that exists in the catalogue but has
+                gone quiet shows as such).
+  • RSAM      — real-time seismic amplitude: the average ground-motion level in 10-minute
+                windows, 1–10 Hz, from each station's vertical seismometer. Kept for 7 days.
+                It is relative (raw counts), so each station is compared with its own normal.
+  • Alert     — USGS Hazard Notification System: Mount Rainier's alert level and newest notice.
+  • Quakes    — USGS ComCat (located by PNSN): the last 30 days within 20 km of the summit,
+                weekly counts for two years and yearly counts since 2000, for "is this normal?".
+  • Rivers    — NOAA's National Water Prediction Service gauges on the lahar rivers: the last
+                7 days, the official forecast, flood categories and historic crests.
+  • Waveforms — 24-hour helicorder images from the EarthScope timeseriesplot service.
 
-Writes results to data/ as JSON files consumed by the dashboard.
+Writes data/*.json (and data/helicorders/*.png). State that has to persist between runs (the
+RSAM history) is kept on the `data` branch, which the workflow restores before running.
 
 Usage:
-    pixi run fetch                               # full fetch including helicorders
-    python scripts/fetch_sensors.py --no-heli   # skip images (faster dev loop)
-    python scripts/fetch_sensors.py --status    # fetch + rich status table
+    python scripts/fetch_sensors.py            # everything
+    python scripts/fetch_sensors.py --no-heli  # skip the waveform images
 """
 
 import argparse
+import io
 import json
+import math
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
-from rich.console import Console
-from rich.table import Table
 
-console  = Console()
-DATA_DIR = Path(__file__).parent.parent / "data"
-DATA_DIR.mkdir(exist_ok=True)
+DATA = Path(__file__).parent.parent / "data"
+DATA.mkdir(exist_ok=True)
+UA = {"User-Agent": "lahar-watch/2.0 (github.com/bdgroves/lahar-watch)"}
+SUMMIT = (46.853, -121.760)
+FDSN = "https://service.earthscope.org"
+NOW = datetime.now(timezone.utc)
 
-# ── Station registry (used for IRIS status checks) ────────────────────────────
-# UW = University of Washington  |  CC = Cascade Chain (PNSN volcano network)
-STATIONS = [
-    {"id": "PR05",       "name": "Puyallup River",      "drainage": "Puyallup",  "elev_ft": 2340,  "net": "CC", "sta": "PR05", "type": "LMS"},
-    {"id": "CR01",       "name": "Carbon River",         "drainage": "Carbon",    "elev_ft": 1860,  "net": "UW", "sta": "RCS",  "type": "LMS"},
-    {"id": "WR02",       "name": "White River East",     "drainage": "White",     "elev_ft": 3100,  "net": "UW", "sta": "FMW",  "type": "LMS"},
-    {"id": "PARA",       "name": "Paradise / Nisqually", "drainage": "Nisqually", "elev_ft": 5400,  "net": "CC", "sta": "PARA", "type": "LMS"},
-    {"id": "TC04",       "name": "Tahoma Creek",         "drainage": "Tahoma",    "elev_ft": 2900,  "net": "UW", "sta": "TDH",  "type": "LMS"},
-    {"id": "CRY5",       "name": "Crystal Mountain",     "drainage": "White NE",  "elev_ft": 5800,  "net": "CC", "sta": "CRYS", "type": "LMS"},
-    {"id": "MT.WOW",     "name": "Mt. Wow Westside",     "drainage": "Puyallup",  "elev_ft": 4150,  "net": "CC", "sta": "WOW",  "type": "LMS"},
-    {"id": "NQ01",       "name": "Nisqually River",      "drainage": "Nisqually", "elev_ft": 2100,  "net": "CC", "sta": "MILD", "type": "LMS"},
-    {"id": "MUIR",       "name": "Camp Muir Summit",     "drainage": "Summit",    "elev_ft": 10100, "net": "UW", "sta": "RCM",  "type": "LMS"},
-    {"id": "PUPY",       "name": "Puyallup Valley",      "drainage": "Puyallup",  "elev_ft": 580,   "net": "UW", "sta": "PUPY", "type": "LMS"},
-    {"id": "AFM-PUY-01", "name": "AFM Puyallup Lower",  "drainage": "Puyallup",  "elev_ft": 820,   "net": None, "sta": None,   "type": "AFM"},
-    {"id": "AFM-PUY-02", "name": "AFM Puyallup Mid",    "drainage": "Puyallup",  "elev_ft": 680,   "net": None, "sta": None,   "type": "AFM"},
-    {"id": "AFM-CAR-01", "name": "AFM Carbon Lower",    "drainage": "Carbon",    "elev_ft": 490,   "net": None, "sta": None,   "type": "AFM"},
+# Waveform images: one station per drainage, plus the summit. Channel is picked from the catalogue.
+HELI = [
+    ("UW", "RCM", "Camp Muir · on the volcano, 10,100 ft"),
+    ("CC", "TABR", "Tahoma Bridge · in the Tahoma Creek lahar path"),
+    ("CC", "WOW", "Mount Wow · above the Nisqually"),
+    ("CC", "PR05", "Puyallup River 05 · upper Puyallup"),
+    ("CC", "TRON", "Electron · lower Puyallup"),
+    ("CC", "CRBN", "Carbon River ranger station"),
+    ("CC", "GRWR", "Greenwater · White River"),
+    ("CC", "PARA", "Paradise"),
 ]
 
-# USGS stream gauges — site numbers verified 2026-03-14
-STREAM_GAUGES = {
-    "Puyallup at Orting":   "12093500",
-    "Carbon at Orting":     "12094000",
-    "White at Buckley":     "12099200",
-    "Nisqually at McKenna": "12089500",
-}
-
-# Helicorder targets — all verified active in IRIS as of 2026-03-14
-# PUPY replaces STAR (UW.STAR.EHZ has availability but timeseriesplot returns 404 — restricted feed)
-HELI_TARGETS = [
-    {"sta": "RCM",  "net": "UW", "cha": "HHZ", "loc": "--", "id": "MUIR", "label": "Camp Muir · Summit"},
-    {"sta": "RCS",  "net": "UW", "cha": "EHZ", "loc": "--", "id": "CR01", "label": "Camp Sherman · Carbon"},
-    {"sta": "STOR", "net": "UW", "cha": "HHZ", "loc": "--", "id": "WR02", "label": "White River"},
-    {"sta": "TDH",  "net": "UW", "cha": "HHZ", "loc": "--", "id": "TC04", "label": "Tahoma Creek"},
-    {"sta": "PARA", "net": "CC", "cha": "BHZ", "loc": "--", "id": "PARA", "label": "Paradise · Nisqually"},
-    {"sta": "CRYS", "net": "CC", "cha": "HHZ", "loc": "--", "id": "CRY5", "label": "Crystal Mtn · White NE"},
-    {"sta": "MILD", "net": "CC", "cha": "BHZ", "loc": "--", "id": "NQ01", "label": "Nisqually · Longmire"},
-    {"sta": "PUPY", "net": "UW", "cha": "EHZ", "loc": "--", "id": "PUPY", "label": "Puyallup Valley"},
+# NOAA NWPS river gauges on the lahar rivers, upstream to downstream
+GAUGES = [
+    ("ELEW1", "Puyallup"), ("ORTW1", "Puyallup"), ("PUYW1", "Puyallup"),
+    ("FFXW1", "Carbon"), ("SPEW1", "Carbon"),
+    ("WRRW1", "White"), ("WBCW1", "White"), ("WRAW1", "White"),
+    ("NISW1", "Nisqually"), ("ALRW1", "Nisqually"),
 ]
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
-
-def utcnow_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+def log(*a):
+    print(*a, flush=True)
 
 
-def safe_get(url: str, params: dict = None, timeout: int = 10) -> dict | None:
-    try:
-        r = requests.get(url, params=params, timeout=timeout)
-        r.raise_for_status()
-        return r.json()
-    except requests.RequestException as e:
-        console.print(f"[yellow]⚠ Request failed:[/yellow] {url}\n  {e}")
-        return None
-
-
-def write_json(filename: str, data: dict) -> None:
-    path = DATA_DIR / filename
-    path.write_text(json.dumps(data, indent=2))
-    console.print(f"[green]✓[/green] Wrote [bold]{path.name}[/bold]")
-
-
-# ── 1. USGS Volcano Alert Level ───────────────────────────────────────────────
-
-def fetch_volcano_alert() -> dict:
-    """
-    USGS HANS Public API — getMonitoredVolcanoes.
-    Mount Rainier: volcano_cd = 'wa6', vnum = '321030'
-    """
-    url  = "https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes"
-    data = safe_get(url)
-
-    result = {
-        "fetched_at": utcnow_iso(),
-        "volcano":    "Mount Rainier",
-        "vnum":       "321030",
-        "volcano_cd": "wa6",
-        "source":     url,
-    }
-
-    if data:
-        rainier = next((v for v in data if v.get("volcano_cd") == "wa6"), None)
-        if rainier:
-            result["alert_level"]     = rainier.get("color_code", "GREEN")
-            result["activity_level"]  = rainier.get("alert_level", "NORMAL")
-            result["activity_notice"] = (
-                f"{rainier.get('alert_level','NORMAL')} / {rainier.get('color_code','GREEN')}"
-                f" — last update {rainier.get('sent_utc','unknown')[:10]}"
-            )
-            result["last_updated"] = rainier.get("sent_utc", utcnow_iso())
-            result["notice_url"]   = rainier.get("notice_url", "")
-            result["notice_type"]  = rainier.get("notice_type_cd", "")
-        else:
-            result["alert_level"]     = "GREEN"
-            result["activity_level"]  = "NORMAL"
-            result["activity_notice"] = "Normal background activity — no notices issued"
-            result["last_updated"]    = utcnow_iso()
-    else:
-        result["alert_level"]     = "UNKNOWN"
-        result["activity_level"]  = "UNKNOWN"
-        result["activity_notice"] = "Could not reach USGS HANS API"
-        result["last_updated"]    = utcnow_iso()
-
-    return result
-
-
-# ── 2. Recent seismicity near Rainier ─────────────────────────────────────────
-
-def fetch_seismicity() -> dict:
-    """USGS Earthquake API — M0.5+ events within 50 km of Rainier, past 7 days."""
-    url    = "https://earthquake.usgs.gov/fdsnws/event/1/query"
-    params = {
-        "format": "geojson", "latitude": 46.853, "longitude": -121.760,
-        "maxradiuskm": 50, "minmagnitude": 0.5, "orderby": "time", "limit": 50,
-    }
-    data   = safe_get(url, params=params)
-    result = {"fetched_at": utcnow_iso(), "source": url, "events": []}
-
-    if data and "features" in data:
-        for feat in data["features"]:
-            props  = feat["properties"]
-            coords = feat["geometry"]["coordinates"]
-            result["events"].append({
-                "id":        feat["id"],
-                "time":      datetime.fromtimestamp(props["time"] / 1000, tz=timezone.utc).isoformat(),
-                "magnitude": props.get("mag"),
-                "depth_km":  coords[2],
-                "place":     props.get("place"),
-                "status":    props.get("status"),
-                "url":       props.get("url"),
-            })
-        result["count"] = len(result["events"])
-    else:
-        result["count"] = 0
-
-    return result
-
-
-# ── 3. USGS Stream Gauges (NWIS) ──────────────────────────────────────────────
-
-def fetch_stream_gauges() -> dict:
-    """USGS NWIS — instantaneous stage (ft) and discharge (cfs), all 4 drainages."""
-    url    = "https://waterservices.usgs.gov/nwis/iv/"
-    params = {
-        "format": "json", "sites": ",".join(STREAM_GAUGES.values()),
-        "parameterCd": "00060,00065", "siteStatus": "active",
-    }
-    data   = safe_get(url, params=params)
-    result = {"fetched_at": utcnow_iso(), "source": url, "gauges": {}}
-    name_by_site = {v: k for k, v in STREAM_GAUGES.items()}
-
-    if data:
+def get(url, params=None, timeout=40, tries=3, raw=False):
+    for i in range(tries):
         try:
-            for series in data["value"]["timeSeries"]:
-                site_code  = series["sourceInfo"]["siteCode"][0]["value"]
-                param_code = series["variable"]["variableCode"][0]["value"]
-                values     = series["values"][0]["value"]
-                latest_val = float(values[-1]["value"]) if values else None
-                latest_dt  = values[-1]["dateTime"]     if values else None
-                gauge_name = name_by_site.get(site_code, site_code)
-
-                if gauge_name not in result["gauges"]:
-                    result["gauges"][gauge_name] = {"site_no": site_code}
-
-                if param_code == "00060":
-                    result["gauges"][gauge_name]["discharge_cfs"] = latest_val
-                    result["gauges"][gauge_name]["discharge_dt"]  = latest_dt
-                elif param_code == "00065":
-                    result["gauges"][gauge_name]["stage_ft"]  = latest_val
-                    result["gauges"][gauge_name]["stage_dt"]  = latest_dt
-        except (KeyError, IndexError, TypeError) as e:
-            console.print(f"[yellow]⚠ NWIS parse error:[/yellow] {e}")
-
-    return result
-
-
-# ── 4. Station status via IRIS FDSN ───────────────────────────────────────────
-
-def fetch_station_status() -> dict:
-    """IRIS FDSN station/1 — queries UW and CC networks, keys as NET.STA."""
-    url              = "https://service.iris.edu/fdsnws/station/1/query"
-    now              = utcnow_iso()
-    known_stations: set[str] = set()
-
-    for net in ("UW", "CC"):
-        net_stations = [s["sta"] for s in STATIONS if s["net"] == net and s["sta"]]
-        if not net_stations:
-            continue
-        params = {"network": net, "station": ",".join(net_stations), "level": "station", "format": "text"}
-        try:
-            r = requests.get(url, params=params, timeout=15)
-            if r.ok:
-                for line in r.text.splitlines():
-                    if line.startswith("#") or not line.strip():
-                        continue
-                    parts = line.split("|")
-                    if len(parts) >= 2:
-                        known_stations.add(f"{parts[0].strip()}.{parts[1].strip()}")
-            else:
-                console.print(f"[yellow]⚠ IRIS {net} HTTP {r.status_code}[/yellow]")
+            r = requests.get(url, params=params, headers=UA, timeout=timeout)
+            if r.status_code in (204, 404):
+                return None
+            r.raise_for_status()
+            return r if raw else r.json()
         except requests.RequestException as e:
-            console.print(f"[yellow]⚠ IRIS {net} failed:[/yellow] {e}")
-
-    stations_out = []
-    for s in STATIONS:
-        key    = f"{s['net']}.{s['sta']}" if s["net"] and s["sta"] else None
-        status = ("nominal"    if key and key in known_stations else
-                  "legacy_afm" if not s["sta"] else "unknown")
-        stations_out.append({
-            "id":         s["id"],
-            "name":       s["name"],
-            "drainage":   s["drainage"],
-            "elev_ft":    s["elev_ft"],
-            "type":       s["type"],
-            "net":        s["net"] or "—",
-            "sta":        s["sta"] or "—",
-            "checked_at": now,
-            "status":     status,
-        })
-
-    return {
-        "fetched_at":    now,
-        "stations":      stations_out,
-        "known_in_iris": sorted(known_stations),
-        "source":        url,
-    }
+            if i == tries - 1:
+                log(f"  ! {url.split('?')[0]}: {e}")
+                return None
+            time.sleep(2 * (i + 1))
 
 
-# ── 5. Helicorder images via IRIS timeseriesplot ──────────────────────────────
+def write(name, obj):
+    (DATA / name).write_text(json.dumps(obj, separators=(",", ":")))
+    log(f"  wrote {name}")
 
-def fetch_helicorders() -> dict:
-    """
-    Downloads 24h waveform PNG images from IRIS timeseriesplot service.
-    Uses a rolling window ending now — more reliable than currentutcday.
-    Falls back to the previous 24h window if today's data isn't ready yet.
 
-    API: https://service.iris.edu/irisws/timeseriesplot/1/
-    All targets in HELI_TARGETS are verified active in IRIS as of 2026-03-14.
-    """
-    heli_dir   = DATA_DIR / "helicorders"
-    heli_dir.mkdir(exist_ok=True)
+def iso(t):
+    return t.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    base_url   = "https://service.iris.edu/irisws/timeseriesplot/1/query"
-    now        = datetime.now(timezone.utc)
-    fetched_at = utcnow_iso()
-    fmt        = "%Y-%m-%dT%H:%M:%S"
-    results    = {}
 
-    windows = [
-        (now - timedelta(hours=24), now),
-        (now - timedelta(hours=48), now - timedelta(hours=24)),
-    ]
+def km(lat1, lon1, lat2, lon2):
+    p = math.pi / 180
+    a = math.sin((lat2 - lat1) * p / 2) ** 2 + math.cos(lat1 * p) * math.cos(lat2 * p) * math.sin((lon2 - lon1) * p / 2) ** 2
+    return 12742 * math.asin(math.sqrt(a))
 
-    for t in HELI_TARGETS:
-        success = False
-        for start_dt, end_dt in windows:
-            params = {
-                "net":    t["net"],
-                "sta":    t["sta"],
-                "loc":    t["loc"],
-                "cha":    t["cha"],
-                "start":  start_dt.strftime(fmt),
-                "end":    end_dt.strftime(fmt),
-                "width":  "900",
-                "height": "200",
-            }
-            try:
-                r = requests.get(base_url, params=params, timeout=30,
-                                 headers={"User-Agent": "lahar-watch/1.0"})
-                if r.ok and "image" in r.headers.get("content-type", ""):
-                    filename = f"{t['id']}.png"
-                    (heli_dir / filename).write_bytes(r.content)
-                    window_label = "24h" if start_dt == windows[0][0] else "prev 24h"
-                    results[t["id"]] = {
-                        "file":          f"data/helicorders/{filename}",
-                        "label":         t.get("label", t["id"]),
-                        "sta":           t["sta"],
-                        "net":           t["net"],
-                        "cha":           t["cha"],
-                        "loc":           t["loc"],
-                        "window_start":  start_dt.strftime(fmt),
-                        "window_end":    end_dt.strftime(fmt),
-                        "fetched_at":    fetched_at,
-                        "ok":            True,
-                    }
-                    console.print(
-                        f"[green]✓[/green] Helicorder [bold]{t['id']}[/bold] "
-                        f"({t['net']}.{t['sta']}.{t['loc']}.{t['cha']}) [{window_label}]"
-                    )
-                    success = True
-                    break
-            except requests.RequestException as e:
-                console.print(f"[yellow]⚠[/yellow] Helicorder {t['id']}: {e}")
+
+# ── stations ─────────────────────────────────────────────────────────────────
+def stations():
+    """Current stations within ~55 km, with a vertical seismometer channel and infrasound if present."""
+    r = get(f"{FDSN}/fdsnws/station/1/query", {"network": "CC,UW", "latitude": SUMMIT[0], "longitude": SUMMIT[1],
+                                               "maxradius": 0.5, "level": "channel", "format": "text",
+                                               "endafter": iso(NOW)}, raw=True, timeout=90)
+    if r is None:
+        raise SystemExit("station catalogue unavailable")
+    st = {}
+    for line in r.text.splitlines():
+        if line.startswith("#") or not line.strip():
+            continue
+        p = [x.strip() for x in line.split("|")]
+        net, sta, loc, cha, lat, lon, elev = p[0], p[1], p[2], p[3], float(p[4]), float(p[5]), float(p[6])
+        s = st.setdefault(f"{net}.{sta}", {"net": net, "sta": sta, "lat": lat, "lon": lon, "elev_m": elev,
+                                            "chans": set(), "start": p[15][:10]})
+        s["chans"].add((loc, cha))
+        s["start"] = min(s["start"], p[15][:10])
+    # names and installation dates from the station level
+    r2 = get(f"{FDSN}/fdsnws/station/1/query", {"network": "CC,UW", "latitude": SUMMIT[0], "longitude": SUMMIT[1],
+                                                "maxradius": 0.5, "level": "station", "format": "text"}, raw=True)
+    names, first = {}, {}
+    for line in (r2.text.splitlines() if r2 is not None else []):
+        if line.startswith("#") or not line.strip():
+            continue
+        p = [x.strip() for x in line.split("|")]
+        k = f"{p[0]}.{p[1]}"
+        names[k] = p[5]
+        first[k] = min(first.get(k, "9999"), p[6][:10])
+    out = []
+    for k, s in st.items():
+        chans = s["chans"]
+        z = None
+        for pref in ("HHZ", "BHZ", "EHZ", "SHZ", "HNZ", "ENZ"):
+            c = sorted(l for l, ch in chans if ch == pref)
+            if c:
+                z = (c[0], pref)
                 break
-
-        if not success and t["id"] not in results:
-            results[t["id"]] = {
-                "ok":     False,
-                "label":  t.get("label", t["id"]),
-                "reason": f"no data in IRIS past 48h ({t['net']}.{t['sta']}.{t['loc']}.{t['cha']})",
-            }
-            console.print(
-                f"[yellow]⚠[/yellow] Helicorder {t['id']}: "
-                f"no data ({t['net']}.{t['sta']}.{t['loc']}.{t['cha']})"
-            )
-
-    manifest = {"fetched_at": fetched_at, "stations": results, "source": base_url}
-    write_json("helicorders.json", manifest)
-    return manifest
+        infra = sorted({l for l, ch in chans if ch.endswith("DF")})
+        if not z and not infra:
+            continue
+        out.append({"id": k, "net": s["net"], "sta": s["sta"], "name": names.get(k, s["sta"]),
+                    "lat": s["lat"], "lon": s["lon"], "elev_ft": round(s["elev_m"] * 3.281),
+                    "km_from_summit": round(km(SUMMIT[0], SUMMIT[1], s["lat"], s["lon"]), 1),
+                    "since": first.get(k, s["start"]), "z": z, "infrasound": len(infra)})
+    out.sort(key=lambda x: x["km_from_summit"])
+    log(f"  {len(out)} stations")
+    return out
 
 
-# ── Rich status table ─────────────────────────────────────────────────────────
+def recent(st, minutes=60):
+    """Last `minutes` of the vertical channel: (latest sample time, RSAM per 10 min) or (None, [])."""
+    if not st["z"]:
+        return None, []
+    loc, cha = st["z"]
+    end = NOW
+    start = end - timedelta(minutes=minutes)
+    r = get(f"{FDSN}/fdsnws/dataselect/1/query", {"net": st["net"], "sta": st["sta"], "loc": loc or "--", "cha": cha,
+                                                  "start": iso(start)[:-1], "end": iso(end)[:-1], "nodata": 404},
+            raw=True, timeout=60, tries=2)
+    if r is None or not r.content:
+        return None, []
+    try:
+        from obspy import read
+        stream = read(io.BytesIO(r.content))
+    except Exception as e:
+        log(f"  ! {st['id']}: unreadable data ({e})")
+        return None, []
+    last = max(tr.stats.endtime for tr in stream).datetime.replace(tzinfo=timezone.utc)
+    try:
+        stream.merge(method=1, fill_value="interpolate")   # short telemetry gaps
+        tr = stream[0]
+        tr.data = tr.data.astype("float64")
+        tr.detrend("demean")
+        tr.filter("bandpass", freqmin=1.0, freqmax=10.0, corners=2, zerophase=False)
+    except Exception as e:
+        log(f"  ! {st['id']}: filter failed ({e})")
+        return last, []
+    out = []
+    t0 = start.replace(second=0, microsecond=0)
+    t0 = t0 - timedelta(minutes=t0.minute % 10)
+    import numpy as np
+    from obspy import UTCDateTime
+    for k in range(minutes // 10 + 1):
+        a = t0 + timedelta(minutes=10 * k)
+        b = a + timedelta(minutes=10)
+        if b > end:
+            break
+        seg = tr.slice(UTCDateTime(a), UTCDateTime(b))
+        if seg.stats.npts < 0.8 * 600 * seg.stats.sampling_rate:
+            continue
+        out.append((int(a.timestamp()), round(float(np.mean(np.abs(seg.data))), 2)))
+    return last, out
 
-def print_status_table(volcano: dict, seismicity: dict, gauges: dict, stations: dict) -> None:
-    console.rule("[bold orange1]lahar-watch · Status Report[/bold orange1]")
 
-    alert = volcano.get("alert_level", "UNKNOWN")
-    color = {"GREEN": "green", "YELLOW": "yellow", "ORANGE": "orange1", "RED": "red"}.get(alert, "white")
-    console.print(f"\n🌋  Mt. Rainier Alert Level: [{color} bold]{alert}[/{color} bold]")
-    console.print(f"    {volcano.get('activity_notice', '')}")
-    if volcano.get("notice_url"):
-        console.print(f"    [dim]{volcano['notice_url']}[/dim]")
-    console.print()
-
-    count = seismicity.get("count", 0)
-    console.print(f"🔴  Recent seismicity (50 km / 7 days): [bold]{count} events[/bold]")
-    for ev in seismicity.get("events", [])[:5]:
-        console.print(f"    M{ev['magnitude']}  {ev['place']}  depth {ev['depth_km']} km  {ev['time'][:16]}")
-
-    console.print("\n💧  Stream Gauges:")
-    tbl = Table(show_header=True, header_style="bold cyan", box=None)
-    tbl.add_column("Gauge",           style="white", min_width=28)
-    tbl.add_column("Stage (ft)",      justify="right")
-    tbl.add_column("Discharge (cfs)", justify="right")
-    for name, g in gauges.get("gauges", {}).items():
-        tbl.add_row(name, str(g.get("stage_ft", "—")), str(g.get("discharge_cfs", "—")))
-    console.print(tbl)
-
-    console.print("\n📡  Station Status:")
-    stbl = Table(show_header=True, header_style="bold cyan", box=None)
-    stbl.add_column("ID",       min_width=10)
-    stbl.add_column("Net.Sta",  min_width=10)
-    stbl.add_column("Drainage", min_width=12)
-    stbl.add_column("Elev ft",  justify="right")
-    stbl.add_column("Type",     min_width=5)
-    stbl.add_column("Status")
-    for s in stations.get("stations", []):
-        status  = s.get("status", "unknown")
-        sc      = {"nominal":"green","unknown":"yellow","legacy_afm":"dim","offline":"red"}.get(status,"white")
-        net_sta = f"{s.get('net','—')}.{s.get('sta','—')}"
-        stbl.add_row(s["id"], net_sta, s["drainage"], str(s["elev_ft"]), s["type"], f"[{sc}]{status}[/{sc}]")
-    console.print(stbl)
-    console.print(f"\n[dim]Fetched at {utcnow_iso()}[/dim]\n")
+def station_status(sts):
+    """Live check and RSAM for every station, keeping 7 days of RSAM history between runs."""
+    path = DATA / "rsam.json"
+    hist = json.loads(path.read_text()) if path.exists() else {}
+    cutoff = int((NOW - timedelta(days=7)).timestamp())
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        res = list(ex.map(recent, sts))
+    for st, (last, rs) in zip(sts, res):
+        age = (NOW - last).total_seconds() / 60 if last else None
+        st["last_data"] = iso(last) if last else None
+        st["status"] = "live" if age is not None and age <= 20 else ("late" if age is not None else "silent")
+        if st["infrasound"] and not st["z"]:
+            st["status"] = "infrasound only"
+        h = dict(hist.get(st["id"], []))
+        for t, v in rs:
+            h[t] = v
+        hist[st["id"]] = sorted([t, v] for t, v in h.items() if t >= cutoff)
+        vals = [v for t, v in hist[st["id"]]]
+        if vals:
+            med = sorted(vals)[len(vals) // 2]
+            cur = rs[-1][1] if rs else None
+            st["rsam_now"] = cur
+            st["rsam_median_7d"] = med
+            st["rsam_ratio"] = round(cur / med, 2) if cur and med else None
+    path.write_text(json.dumps(hist, separators=(",", ":")))
+    live = sum(1 for s in sts if s["status"] == "live")
+    log(f"  {live} of {len(sts)} stations sent data in the last 20 minutes")
+    return sts
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# ── volcano alert ────────────────────────────────────────────────────────────
+def alert():
+    base = "https://volcanoes.usgs.gov/hans-public/api"
+    v = get(f"{base}/volcano/getVolcano/wa6") or {}
+    mon = get(f"{base}/volcano/getMonitoredVolcanoes") or []
+    w = next((x for x in mon if x.get("volcano_cd") == "wa6"), {})
+    out = {"fetched_at": iso(NOW), "volcano": "Mount Rainier", "threat": v.get("nvews_threat"),
+           "alert_level": w.get("alert_level"), "color_code": w.get("color_code"),
+           "notice_sent_utc": w.get("sent_utc"), "notice_url": w.get("notice_url"), "notice_type": w.get("notice_type_cd")}
+    if w.get("notice_data"):
+        n = get(w["notice_data"]) or {}
+        # keep the readable parts of the notice
+        txt = {}
+        for k in ("synopsis", "volcanic_activity_summary", "other_hazards", "remarks", "notice_type_desc", "title", "subject"):
+            val = n.get(k) if isinstance(n, dict) else None
+            if isinstance(val, str) and val.strip():
+                txt[k] = val.strip()
+        if isinstance(n, dict) and not txt:          # field names vary: keep any longer text fields
+            for k, val in n.items():
+                if isinstance(val, str) and len(val) > 60 and not val.startswith("http"):
+                    txt[k] = val.strip()[:2000]
+        out["notice"] = txt
+    log(f"  alert {out['color_code']} / {out['alert_level']}")
+    return out
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="lahar-watch data fetcher")
-    parser.add_argument("--status",  action="store_true", help="Print rich status table")
-    parser.add_argument("--no-heli", action="store_true", help="Skip helicorder image fetch")
-    parser.add_argument("--debug",   action="store_true", help="Verbose output")
-    args = parser.parse_args()
 
-    console.print("[bold orange1]lahar-watch[/bold orange1] · fetching data...\n")
+# ── earthquakes ──────────────────────────────────────────────────────────────
+def quakes():
+    q = "https://earthquake.usgs.gov/fdsnws/event/1"
+    near = {"latitude": SUMMIT[0], "longitude": SUMMIT[1], "maxradiuskm": 20}
+    ev = get(f"{q}/query", {"format": "geojson", **near, "starttime": iso(NOW - timedelta(days=30)), "orderby": "time"}) or {}
+    events = [{"t": f["properties"]["time"] // 1000, "m": f["properties"].get("mag"), "mt": f["properties"].get("magType"),
+               "d": round(f["geometry"]["coordinates"][2], 1), "lat": round(f["geometry"]["coordinates"][1], 4),
+               "lon": round(f["geometry"]["coordinates"][0], 4), "place": f["properties"].get("place"),
+               "url": f["properties"].get("url")} for f in ev.get("features", [])]
+    # weekly counts over two years (one query) and yearly counts since 2000 (cached for a day)
+    two = get(f"{q}/query", {"format": "geojson", **near, "starttime": iso(NOW - timedelta(days=735)), "orderby": "time-asc"}, timeout=120) or {}
+    wk = {}
+    for f in two.get("features", []):
+        d = datetime.fromtimestamp(f["properties"]["time"] / 1000, timezone.utc).date()
+        w = (d - timedelta(days=d.weekday())).isoformat()          # the Monday of its week (UTC)
+        wk[w] = wk.get(w, 0) + 1
+    this_monday = NOW.date() - timedelta(days=NOW.weekday())
+    weeks = [[(this_monday - timedelta(weeks=i)).isoformat(), wk.get((this_monday - timedelta(weeks=i)).isoformat(), 0)]
+             for i in range(104, -1, -1)]
+    path = DATA / "quakes.json"
+    old = json.loads(path.read_text()) if path.exists() else {}
+    years = old.get("years") if old.get("years_built") == NOW.date().isoformat() else None
+    if not years:
+        years = []
+        for y in range(2000, NOW.year + 1):
+            c = get(f"{q}/count", {**near, "starttime": f"{y}-01-01", "endtime": f"{y + 1}-01-01"}, raw=True)
+            years.append([y, int(c.text) if c is not None else None])
+    out = {"fetched_at": iso(NOW), "radius_km": 20, "events": events, "weeks": weeks, "years": years,
+           "years_built": NOW.date().isoformat()}
+    log(f"  {len(events)} earthquakes within 20 km in 30 days")
+    return out
 
-    volcano    = fetch_volcano_alert()
-    seismicity = fetch_seismicity()
-    gauges     = fetch_stream_gauges()
-    stations   = fetch_station_status()
 
-    write_json("volcano_alert.json",  volcano)
-    write_json("seismicity.json",     seismicity)
-    write_json("stream_gauges.json",  gauges)
-    write_json("station_status.json", stations)
+# ── rivers ───────────────────────────────────────────────────────────────────
+def rivers():
+    out = {"fetched_at": iso(NOW), "gauges": []}
+    for lid, drainage in GAUGES:
+        g = get(f"https://api.water.noaa.gov/nwps/v1/gauges/{lid}")
+        if not g:
+            continue
+        sf = get(f"https://api.water.noaa.gov/nwps/v1/gauges/{lid}/stageflow") or {}
+        def series(kind):
+            d = (sf.get(kind) or {}).get("data") or []
+            pts = []
+            for x in d:
+                t = x.get("validTime")
+                if not t:
+                    continue
+                pts.append([t[:16], x.get("primary") if x.get("primary", -999) > -999 else None,
+                            x.get("secondary") if x.get("secondary", -999) > -999 else None])
+            return pts
+        obs, fc = series("observed"), series("forecast")
+        cutoff = (NOW - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M")
+        obs = [p for p in obs if p[0] >= cutoff]
+        if len(obs) > 400:                              # thin 15-minute data to hourly
+            obs = [p for i, p in enumerate(obs) if i % 4 == 0 or i == len(obs) - 1]
+        units = ((sf.get("observed") or {}).get("primaryUnits"), (sf.get("observed") or {}).get("secondaryUnits"))
+        cats = ((g.get("flood") or {}).get("categories")) or {}
+        crests = ((g.get("flood") or {}).get("crests") or {}).get("historic") or []
+        out["gauges"].append({
+            "lid": lid, "drainage": drainage, "name": g.get("name"), "usgs": g.get("usgsId"),
+            "lat": g.get("latitude"), "lon": g.get("longitude"),
+            "status": (g.get("status") or {}).get("observed"), "units": units,
+            "flood": {k: {kk: (vv if vv not in (-9999, -999) else None) for kk, vv in v.items()} for k, v in cats.items()},
+            "crests": [{"t": c.get("occurredTime", "")[:10], "stage": c.get("stage"), "flow": c.get("flow")} for c in crests[:5]],
+            "observed": obs, "forecast": fc[:60],
+        })
+    log(f"  {len(out['gauges'])} river gauges")
+    return out
 
-    if not args.no_heli:
-        console.print("\n[bold]Fetching helicorder images...[/bold]")
-        fetch_helicorders()
 
-    summary = {
-        "fetched_at":       utcnow_iso(),
-        "alert_level":      volcano.get("alert_level", "UNKNOWN"),
-        "activity_level":   volcano.get("activity_level", "UNKNOWN"),
-        "seismic_count":    seismicity.get("count", 0),
-        "stations_total":   len(stations.get("stations", [])),
-        "stations_nominal": sum(1 for s in stations.get("stations", []) if s.get("status") == "nominal"),
-    }
-    write_json("summary.json", summary)
+# ── waveform images ──────────────────────────────────────────────────────────
+def helicorders(sts):
+    d = DATA / "helicorders"
+    d.mkdir(exist_ok=True)
+    by = {s["id"]: s for s in sts}
+    res = {}
+    for net, sta, label in HELI:
+        s = by.get(f"{net}.{sta}")
+        if not s or not s["z"]:
+            continue
+        loc, cha = s["z"]
+        r = get(f"{FDSN}/irisws/timeseriesplot/1/query", {"net": net, "sta": sta, "loc": loc or "--", "cha": cha,
+                                                         "start": iso(NOW - timedelta(hours=24))[:-1], "end": iso(NOW)[:-1],
+                                                         "width": 1000, "height": 220}, raw=True, timeout=90, tries=2)
+        if r is not None and "image" in r.headers.get("content-type", ""):
+            (d / f"{sta}.png").write_bytes(r.content)
+            res[f"{net}.{sta}"] = {"file": f"data/helicorders/{sta}.png", "label": label, "channel": f"{net}.{sta}.{loc or '--'}.{cha}",
+                                   "start": iso(NOW - timedelta(hours=24)), "end": iso(NOW)}
+        else:
+            res[f"{net}.{sta}"] = {"file": None, "label": label, "channel": f"{net}.{sta}.{loc or '--'}.{cha}"}
+    log(f"  {sum(1 for v in res.values() if v['file'])} waveform images")
+    return {"fetched_at": iso(NOW), "stations": res}
 
-    if args.status:
-        print_status_table(volcano, seismicity, gauges, stations)
 
-    console.print("\n[green bold]✓ Done.[/green bold] All data written to data/")
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--no-heli", action="store_true")
+    a = ap.parse_args()
+    failures = []
+    log("stations")
+    sts = stations()
+    station_status(sts)
+    write("stations.json", {"fetched_at": iso(NOW), "stations": sts})
+    for name, fn in (("alert.json", alert), ("quakes.json", quakes), ("rivers.json", rivers)):
+        log(name.split(".")[0])
+        try:
+            write(name, fn())
+        except Exception as e:
+            log(f"  ! {name} failed: {e}")
+            failures.append(name)
+    if not a.no_heli:
+        log("helicorders")
+        try:
+            write("helicorders.json", helicorders(sts))
+        except Exception as e:
+            log(f"  ! helicorders failed: {e}")
+    write("summary.json", {"fetched_at": iso(NOW), "stations": len(sts),
+                           "live": sum(1 for s in sts if s["status"] == "live"), "failures": failures})
+    if len(failures) >= 2:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
