@@ -249,8 +249,18 @@ def alert():
         if isinstance(n, dict) and not txt:          # field names vary: keep any longer text fields
             for k, val in n.items():
                 if isinstance(val, str) and len(val) > 60 and not val.startswith("http"):
-                    txt[k] = val.strip()[:2000]
-        out["notice"] = txt
+                    txt[k] = val.strip()
+        # the readable part: the notice's summary section, as plain paragraphs
+        import html as _h
+        import re as _re
+        raw = txt.get("notice_html") or " ".join(txt.values())
+        m = _re.search(r'<span name="summary">(.*?)</span>', raw, _re.S)
+        body = m.group(1) if m else raw
+        paras = [_h.unescape(_re.sub(r"<[^>]+>", "", p)).replace("\xa0", " ").strip() for p in _re.split(r"</p>|<br\s*/?>", body)]
+        out["notice_text"] = [p for p in paras if len(p) > 80 and not p.startswith(("CASCADES", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))][:6]
+        out.pop("notice", None)   # the full HTML isn't needed on the page
+        t = _re.search(r"<b>([A-Z ]+(?:STATEMENT|UPDATE|ADVISORY|WARNING|WATCH|NOTICE)[A-Z ]*)</b>", raw)
+        out["notice_title"] = t.group(1).title() if t else None
     log(f"  alert {out['color_code']} / {out['alert_level']}")
     return out
 
