@@ -217,7 +217,8 @@ def station_status(sts):
             h[t] = v
         hist[st["id"]] = sorted([t, v] for t, v in h.items() if t >= cutoff)
         vals = [v for t, v in hist[st["id"]]]
-        if vals:
+        st["rsam_hours"] = round(len(vals) / 6, 1)
+        if len(vals) >= 72:                      # at least 12 hours before comparing with "normal"
             med = sorted(vals)[len(vals) // 2]
             cur = rs[-1][1] if rs else None
             st["rsam_now"] = cur

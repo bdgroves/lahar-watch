@@ -3,421 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lahar Travel Time — lahar-watch</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Lahar Watch — Warning time</title>
+<meta name="description" content="How much warning a lahar from Mount Rainier would give, from the USGS: published travel times, the 2022 D-Claw worst-case simulations, the detection-to-siren chain, and the lahars Rainier has already sent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0b0f14; --surface: #111720; --border: #1e2d3a;
-    --accent: #f97316; --warn: #ef4444; --ok: #22c55e;
-    --caution: #eab308; --muted: #4a6070; --text: #d6e4ef; --subtext: #7a95a8;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-  body::before {
-    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(239,68,68,0.06) 0%, transparent 70%);
-  }
-  header {
-    position:relative; z-index:10; border-bottom:1px solid var(--border);
-    padding:0 28px; display:flex; align-items:center; justify-content:space-between;
-    height:56px; background:rgba(11,15,20,0.95); backdrop-filter:blur(8px);
-  }
-  .logo { display:flex; align-items:baseline; gap:10px; }
-  .logo-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--accent); }
-  .logo-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
-  .header-nav { display:flex; gap:2px; margin-left:24px; }
-  .nav-link { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); text-decoration:none; padding:6px 12px; border-radius:4px; transition:all 0.15s; }
-  .nav-link:hover { color:var(--text); background:rgba(255,255,255,0.05); }
-  .nav-link.active { color:var(--accent); background:rgba(249,115,22,0.1); }
-  .clock { font-family:'Space Mono',monospace; font-size:11px; color:var(--subtext); }
+:root{--bg:#0b0f14;--surface:#111720;--surface2:#0e141c;--border:#1e2d3a;--accent:#f97316;--warn:#ef4444;--ok:#22c55e;--caution:#eab308;--muted:#4a6070;--text:#d6e4ef;--subtext:#7a95a8;--blue:#38bdf8;--violet:#a78bfa;
+  --fd:'Bebas Neue',sans-serif;--fm:'Space Mono',monospace;--fb:'DM Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 var(--fb);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(249,115,22,.06),transparent 70%),radial-gradient(ellipse 40% 60% at 80% 80%,rgba(239,68,68,.04),transparent 70%);pointer-events:none;z-index:0}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;background:rgba(11,15,20,.95);backdrop-filter:blur(8px);flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo-title{font:22px var(--fd);letter-spacing:2px;color:var(--accent)}
+.logo-sub{font:10px var(--fm);color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{font:11px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--subtext);text-decoration:none;padding:6px 10px;border-radius:4px;border:1px solid transparent}
+nav a.on,nav a:hover{color:var(--accent);border-color:var(--border);background:var(--surface)}
+.clock{font:11px var(--fm);color:var(--subtext);text-align:right}
+.clock b{color:var(--ok);font-weight:400}
+main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px 24px 40px}
+.back{font:11px var(--fm);color:var(--muted);text-decoration:none;letter-spacing:1px}
+h2{font:26px var(--fd);letter-spacing:1.5px;color:var(--text);margin:30px 0 4px}
+.lede{color:var(--subtext);max-width:900px;margin-bottom:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;min-width:0}
+.card h3{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.card h3 em{font-style:normal;color:var(--accent)}
+.big{font:44px/1 var(--fd);letter-spacing:1px}
+.big small{font:13px var(--fb);color:var(--subtext);letter-spacing:0;margin-left:6px}
+.note{font-size:12.5px;color:var(--subtext);margin-top:8px}
+.note b{color:var(--text);font-weight:600}
+.pill{display:inline-block;font:11px var(--fm);padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--subtext)}
+.GREEN{color:var(--ok)}.YELLOW{color:var(--caution)}.ORANGE{color:var(--accent)}.RED{color:var(--warn)}
+#map{height:560px;border-radius:8px;border:1px solid var(--border);background:#0b0f14;position:relative;z-index:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font:11px var(--fm);color:var(--subtext);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.legend i.dot{width:10px;height:10px;border-radius:50%}
+.leaflet-container{font:12px var(--fb)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.leaflet-popup-content b{color:var(--accent)}
+.leaflet-control-attribution{background:rgba(11,15,20,.8)!important;color:var(--muted)!important}.leaflet-control-attribution a{color:var(--subtext)!important}
+.leaflet-control-layers{background:var(--surface)!important;color:var(--text)!important;border:1px solid var(--border)!important}
+.leaflet-bar a{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font:10px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid rgba(30,45,58,.6);vertical-align:middle}
+td.n{text-align:right;font-family:var(--fm);font-size:11.5px}
+tr.grp td{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding-top:14px;border-bottom:1px solid var(--border)}
+.st{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.st.live{background:var(--ok);box-shadow:0 0 6px var(--ok)}.st.late{background:var(--caution)}.st.silent{background:var(--warn)}
+.bar{position:relative;height:6px;background:var(--surface2);border-radius:3px;min-width:70px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--blue)}
+.scroll{overflow-x:auto;max-width:100%}
+#eq-more{background:none;border:1px solid var(--border);color:var(--accent);font:11px var(--fm);padding:6px 12px;border-radius:4px;cursor:pointer;margin-top:10px}
+.chart{position:relative;height:240px}
+.chart.sm{height:150px}
+.rivers{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.river .cat{font:11px var(--fm)}
+.cat.no_flooding,.cat.ok{color:var(--ok)}.cat.action{color:var(--caution)}.cat.minor{color:var(--accent)}.cat.moderate,.cat.major{color:var(--warn)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.facts .card p{font-size:13px;color:var(--subtext);margin-top:6px}
+.facts .card .big{font-size:34px}
+.notice p{color:var(--subtext);margin-top:8px;font-size:13px;max-width:900px}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);margin-top:30px;padding:18px 24px;font:11px var(--fm);color:var(--muted)}
+footer span{margin-right:16px;display:inline-block}
+footer .ok{color:var(--ok)}footer .stale{color:var(--caution)}footer .bad{color:var(--warn)}
+@media(max-width:1000px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:600px){main{padding:14px 14px 30px}header{padding:8px 14px}.grid4{grid-template-columns:1fr}#map{height:420px}.big{font-size:38px}.clock{display:none}td.hide,th.hide{display:none}}
 
-  main { position:relative; z-index:1; padding:24px; max-width:1200px; margin:0 auto; }
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.steps .card b.n{font:30px var(--fd);color:var(--accent);display:block}
+.steps .card p{font-size:13px;color:var(--subtext);margin-top:6px}
+#ttmap{height:460px;border-radius:8px;border:1px solid var(--border);position:relative;z-index:0}
+@media(max-width:1000px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.steps{grid-template-columns:1fr}#ttmap{height:360px}}
 
-  .page-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--text); margin-bottom:4px; }
-  .page-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; margin-bottom:24px; }
-
-  /* ── Layout ─────────────────────────────────── */
-  .calc-layout { display:grid; grid-template-columns:340px 1fr; gap:20px; }
-
-  /* ── Controls panel ──────────────────────────── */
-  .controls { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; display:flex; flex-direction:column; gap:16px; }
-
-  .ctrl-section { font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:4px; }
-
-  .drain-select { display:flex; flex-direction:column; gap:6px; }
-  .drain-btn {
-    padding:10px 14px; border-radius:6px; border:1px solid var(--border);
-    background:transparent; color:var(--subtext); cursor:pointer; text-align:left;
-    transition:all 0.15s; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .drain-btn:hover { border-color:var(--muted); color:var(--text); }
-  .drain-btn.active { border-color:var(--accent); background:rgba(249,115,22,0.1); color:var(--text); }
-  .drain-btn .drain-pct { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); }
-
-  /* Scenario selector */
-  .scenario-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .scenario-btn {
-    padding:10px; border-radius:6px; border:1px solid var(--border);
-    background:transparent; color:var(--subtext); cursor:pointer;
-    transition:all 0.15s; font-size:11px; font-family:'DM Sans',sans-serif; text-align:left;
-  }
-  .scenario-btn .sc-label { font-weight:600; display:block; margin-bottom:2px; font-size:12px; }
-  .scenario-btn .sc-sub { font-family:'Space Mono',monospace; font-size:8px; color:var(--muted); }
-  .scenario-btn:hover { border-color:var(--muted); color:var(--text); }
-  .scenario-btn.active { border-color:var(--warn); background:rgba(239,68,68,0.08); color:var(--text); }
-
-  /* Volume slider */
-  .slider-wrap { display:flex; flex-direction:column; gap:6px; }
-  .slider-label { display:flex; justify-content:space-between; align-items:center; }
-  .slider-val { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--accent); }
-  .slider-unit { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); }
-  input[type=range] {
-    width:100%; accent-color:var(--accent); height:4px; cursor:pointer;
-    background: linear-gradient(to right, var(--accent) 50%, var(--border) 50%);
-  }
-
-  /* ── Results panel ────────────────────────────── */
-  .results { display:flex; flex-direction:column; gap:16px; }
-
-  /* Timeline diagram */
-  .timeline-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-  .timeline-header { padding:12px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-  .panel-title { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--subtext); }
-  .timeline-body { padding:18px; }
-
-  .tl-track { position:relative; height:6px; background:rgba(255,255,255,0.05); border-radius:3px; margin:28px 0 16px; }
-  .tl-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px; transition:width 0.6s ease; }
-  .tl-markers { position:absolute; top:0; left:0; right:0; height:100%; }
-  .tl-marker { position:absolute; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; }
-  .tl-marker-line { width:1px; height:14px; background:var(--border); margin-top:-14px; }
-  .tl-marker-label { font-family:'Space Mono',monospace; font-size:8px; color:var(--subtext); white-space:nowrap; margin-top:6px; }
-  .tl-marker-time { font-family:'Bebas Neue',sans-serif; font-size:13px; margin-top:1px; }
-
-  /* Community cards */
-  .community-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
-
-  .community-card {
-    background:var(--surface); border:1px solid var(--border); border-radius:8px;
-    padding:14px; position:relative; overflow:hidden; transition:border-color 0.2s;
-  }
-  .community-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-  .community-card.zone-red::before { background:var(--warn); }
-  .community-card.zone-yellow::before { background:var(--caution); }
-  .community-card.zone-green::before { background:var(--ok); }
-
-  .comm-name { font-weight:600; font-size:13px; margin-bottom:2px; }
-  .comm-drainage { font-family:'Space Mono',monospace; font-size:9px; color:var(--subtext); margin-bottom:10px; }
-  .comm-time { font-family:'Bebas Neue',sans-serif; font-size:30px; line-height:1; }
-  .comm-unit { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); margin-left:2px; }
-  .comm-pop { font-size:10px; color:var(--subtext); margin-top:6px; }
-  .urgency-badge { display:inline-block; padding:2px 8px; border-radius:3px; font-family:'Space Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:0.5px; margin-top:6px; }
-  .urgency-critical { background:rgba(239,68,68,0.15); color:var(--warn); border:1px solid rgba(239,68,68,0.3); }
-  .urgency-warning  { background:rgba(234,179,8,0.12); color:var(--caution); border:1px solid rgba(234,179,8,0.3); }
-  .urgency-monitor  { background:rgba(34,197,94,0.1); color:var(--ok); border:1px solid rgba(34,197,94,0.25); }
-
-  /* Detection note */
-  .detection-strip {
-    background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.2);
-    border-radius:8px; padding:12px 16px; display:flex; gap:16px; align-items:center;
-  }
-  .det-label { font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); flex-shrink:0; }
-  .det-bar { flex:1; height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
-  .det-fill { height:100%; background:var(--accent); border-radius:2px; }
-  .det-times { font-family:'Space Mono',monospace; font-size:10px; color:var(--subtext); flex-shrink:0; }
 </style>
 </head>
 <body>
-<a class="bg-home" href="https://brooksgroves.com/">&larr; brooksgroves.com</a>
-<style>.bg-home{display:block;position:relative;z-index:50;padding:8px 16px 0;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em;color:inherit;opacity:.65;text-decoration:none;width:max-content}.bg-home:hover{opacity:1;text-decoration:underline}</style>
-
 <header>
-  <div class="logo">
-    <span class="logo-title">WA Lahar Net</span>
-    <span class="logo-sub">Travel Time Calculator · Mt. Rainier</span>
-  </div>
-  <nav class="header-nav">
-    <a href="index.html" class="nav-link">Dashboard</a>
-    <a href="seismic.html" class="nav-link">Seismic</a>
-    <a href="travel-time.html" class="nav-link active">Travel Time</a>
-    <a href="status.html" class="nav-link">Status</a>
-  </nav>
-  <div class="clock" id="clock">--:--:-- PDT</div>
+  <div class="logo"><span class="logo-title">LAHAR WATCH</span><span class="logo-sub">Mount Rainier · live</span></div>
+  <nav><a href="index.html">Dashboard</a><a href="seismic.html">Seismic</a><a href="travel-time.html" class="on">Warning time</a><a href="status.html">Status</a></nav>
+  <div class="clock"><b>●</b> <span id="clock"></span></div>
 </header>
-
 <main>
-  <div class="page-title">Lahar Travel Time Calculator</div>
-  <div class="page-sub">Model warning windows for downstream communities based on drainage, scenario, and lahar volume · Based on USGS lahar inundation models</div>
+  <a class="back" href="https://brooksgroves.com">← brooksgroves.com</a>
 
-  <div class="calc-layout">
-
-    <!-- Controls -->
-    <div class="controls">
-
-      <div>
-        <div class="ctrl-section">1 — Select Drainage</div>
-        <div class="drain-select" id="drainSelect"></div>
-      </div>
-
-      <div>
-        <div class="ctrl-section">2 — Scenario / Trigger</div>
-        <div class="scenario-grid" id="scenarioGrid"></div>
-      </div>
-
-      <div>
-        <div class="ctrl-section">3 — Estimated Volume</div>
-        <div class="slider-wrap">
-          <div class="slider-label">
-            <span style="font-size:11px;color:var(--subtext)">Volume</span>
-            <span><span class="slider-val" id="volDisplay">0.5</span> <span class="slider-unit">km³</span></span>
-          </div>
-          <input type="range" id="volSlider" min="0.01" max="4" step="0.01" value="0.5"
-            oninput="updateVolume(this.value)">
-          <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
-            <span>0.01 km³ (small)</span><span>4 km³ (Osceola-scale)</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="background:#0d1821;border:1px solid var(--border);border-radius:6px;padding:12px;">
-        <div class="ctrl-section" style="margin-bottom:8px;">Reference Events</div>
-        <div style="font-size:11px;color:var(--subtext);line-height:1.7;">
-          <div><span style="color:var(--accent)">Electron Mudflow (~1507)</span> — ~0.1 km³ · west flank collapse · no eruption</div>
-          <div style="margin-top:4px;"><span style="color:var(--warn)">Osceola Mudflow (~5,600 BP)</span> — ~3.8 km³ · reached Commencement Bay</div>
-          <div style="margin-top:4px;"><span style="color:var(--caution)">Mt St Helens 1980</span> — ~0.5 km³ debris avalanche</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Results -->
-    <div class="results">
-
-      <!-- Detection pipeline -->
-      <div class="detection-strip">
-        <span class="det-label">Detection → Alert</span>
-        <div class="det-bar"><div class="det-fill" id="detFill" style="width:5%"></div></div>
-        <span class="det-times">Sensor detect: <strong style="color:var(--ok)">~10s</strong> · EOC alert: <strong style="color:var(--ok)">~30s</strong> · Sirens: <strong style="color:var(--caution)">~2 min</strong></span>
-      </div>
-
-      <!-- Timeline -->
-      <div class="timeline-card">
-        <div class="timeline-header">
-          <span class="panel-title" id="timelineTitle">Puyallup River — Warning Timeline</span>
-          <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--subtext)" id="timelineScenario">Eruption scenario</span>
-        </div>
-        <div class="timeline-body">
-          <div class="tl-track" id="tlTrack">
-            <div class="tl-fill" id="tlFill" style="width:0%;background:linear-gradient(to right,#22c55e,#eab308,#ef4444)"></div>
-            <div class="tl-markers" id="tlMarkers"></div>
-          </div>
-          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);display:flex;justify-content:space-between;margin-top:8px;">
-            <span>T+0 — Lahar initiates</span>
-            <span id="tlEnd">T+3h 00m — Puget Lowlands</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Community cards -->
-      <div>
-        <div style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--subtext);margin-bottom:10px;">Warning Windows by Community</div>
-        <div class="community-grid" id="communityGrid"></div>
-      </div>
-
-    </div>
+  <h2>How much warning?</h2>
+  <p class="lede">It depends on how big the lahar is, where on the mountain it starts, and which valley it takes, so no single number is right. These are the figures the USGS has published, with their sources.</p>
+  <div class="facts">
+    <div class="card"><h3>Inside the park</h3><div class="big">~5 min</div><p>For a lahar to reach residential areas inside Mount Rainier National Park, such as Longmire (<a href="https://www.usgs.gov/volcanoes/mount-rainier/science/monitoring-lahars-mount-rainier">USGS</a>).</p></div>
+    <div class="card"><h3>Outside the park</h3><div class="big">15–60 min</div><p>For residential areas outside the park (<a href="https://www.usgs.gov/volcanoes/mount-rainier/science/monitoring-lahars-mount-rainier">USGS</a>).</p></div>
+    <div class="card"><h3>Once a lahar is detected</h3><div class="big">40 min – 3 h</div><p>The warning the detection system gives most communities to move to safety (<a href="https://www.usgs.gov/news/state-news-release/trump-administration-officials-tour-new-mt-rainier-lahar-detection-stations">USGS, 2020</a>).</p></div>
   </div>
+
+  <h2>A worst case, simulated</h2>
+  <p class="lede">In 2022 the USGS published computer simulations (the D-Claw model) of the largest likely landslide-triggered lahars from the weak, altered rock of Rainier's west flank: 260 million cubic metres, about the size of the Electron Mudflow of roughly 500 years ago, behaving as mobile flows. Two starting points gave these arrival times (<a href="https://pubs.usgs.gov/publication/ofr20211118">George, Iverson and Cannon, 2022, USGS Open-File Report 2021-1118</a>):</p>
+  <div class="grid2">
+    <div class="card"><h3>From the Tahoma Glacier headwall <em>Nisqually</em></h3><div class="big">~20 min</div><p class="note">to Ashford, and about <b>50 minutes</b> to the head of Alder Lake.</p></div>
+    <div class="card"><h3>From the Sunset Amphitheater <em>Puyallup</em></h3><div class="big">~1 hour</div><p class="note">to the Orting lowlands, arriving as a flow front about <b>4 metres deep moving about 4 m/s</b> (9 mph): slow enough to outrun on foot only if you have already started.</p></div>
+  </div>
+  <div id="ttmap" style="margin-top:14px"></div>
+  <p class="note">Hazard zones: Hoblitt and others, 1998, <a href="https://pubs.usgs.gov/of/1998/0428/">USGS Open-File Report 98-428</a>. Red: small lahars, more often than every 100 years. Orange: moderate, every 100–500 years. Yellow: large, every 500–1,000 years.</p>
+
+  <h2>From detection to sirens</h2>
+  <div class="steps">
+    <div class="card"><b class="n">1</b><h3>A lahar starts</h3><p>From an eruption, or with no warning at all from a landslide of weakened rock, as the Electron Mudflow did. It can also start from heavy rain or a glacial outburst on a smaller scale.</p></div>
+    <div class="card"><b class="n">2</b><h3>The valley stations hear it</h3><p>Seismometers and infrasound sensors along the Puyallup, Carbon, White and Nisqually pick up the flow. Data from each site reach the 24-hour emergency operations centres at Washington Emergency Management and South Sound 911 within 10 seconds (<a href="https://www.usgs.gov/news/state-news-release/trump-administration-officials-tour-new-mt-rainier-lahar-detection-stations">USGS</a>).</p></div>
+    <div class="card"><b class="n">3</b><h3>The alert goes out</h3><p>All Hazard Alert Broadcast sirens in the towns from Orting to the Port of Tacoma, the Emergency Alert System, television, radio and NOAA Weather Radio (<a href="https://www.usgs.gov/volcanoes/mount-rainier/science/monitoring-lahars-mount-rainier">USGS</a>).</p></div>
+    <div class="card"><b class="n">4</b><h3>People walk to high ground</h3><p>Not drive: roads jam. Schools in the Puyallup valley practise it every year in what the USGS calls <a href="https://www.usgs.gov/news/featured-story/preparing-volcano-hazards-where-worlds-largest-lahar-evacuation-drill-held">the world's largest lahar evacuation drill</a>. Know your route: <a href="https://www.piercecountywa.gov/5888/Outdoor-Warning-System">Pierce County</a>.</p></div>
+  </div>
+
+  <h2>Lahars Rainier has already sent</h2>
+  <p class="lede">At least nine large lahars in the last 5,600 years (<a href="https://www.usgs.gov/volcanoes/mount-rainier/science/significant-lahars-mount-rainier">USGS</a>). The towns of the Puyallup, White and Carbon valleys are built on their deposits.</p>
+  <div class="card scroll"><table>
+    <thead><tr><th>Lahar</th><th>When</th><th>Size</th><th>What started it</th><th>Where it went</th></tr></thead>
+    <tbody>
+      <tr><td><b>Osceola Mudflow</b></td><td>5,600 years ago</td><td>2–3 km³</td><td>Avalanches of hydrothermally altered rock from the summit and northeast slope, during eruptions</td><td>Down the White River to Puget Sound near Auburn, burying about 550 km²</td></tr>
+      <tr><td><b>Round Pass Mudflow</b></td><td>2,500–2,600 years ago</td><td>—</td><td>Collapse of the Sunset Amphitheater and Tahoma Glacier headwall</td><td>Down the Puyallup, and the Nisqually via Tahoma Creek</td></tr>
+      <tr><td><b>National Lahar</b></td><td>2,200–2,300 years ago</td><td>“Among the largest”</td><td>An explosive eruption</td><td>Down the Nisqually at least 100 km</td></tr>
+      <tr><td><b>Electron Mudflow</b></td><td>About 500 years ago</td><td>—</td><td>A landslide of altered rock, no eruption</td><td>Down the Puyallup about 100 km to the Puget Sound lowland; Orting stands on it</td></tr>
+    </tbody></table>
+    <p class="note">Source: USGS, <a href="https://www.usgs.gov/volcanoes/mount-rainier/science/significant-lahars-mount-rainier">Significant lahars at Mount Rainier</a>. The USGS gives no volume for the Round Pass and Electron flows on that page.</p>
+  </div>
+
 </main>
-
+<footer id="fresh"></footer>
 <script>
-// ── Clock ──────────────────────────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  const p = n => String(n).padStart(2,'0');
-  document.getElementById('clock').textContent = `${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())} PDT`;
-}
-setInterval(updateClock, 1000); updateClock();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PT={timeZone:'America/Los_Angeles'};
+const ago=t=>{ const m=(Date.now()-t)/60000; return m<1?'just now':m<60?`${Math.round(m)} min ago`:m<48*60?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} days ago`; };
+async function J(u,ms=20000){ const c=new AbortController(), t=setTimeout(()=>c.abort(),ms); try{ const r=await fetch(u,{signal:c.signal,cache:'no-store'}); if(!r.ok) throw new Error(r.status); return await r.json(); } finally{ clearTimeout(t); } }
+function clock(){ $('clock').textContent=new Date().toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }
+setInterval(clock,1000); clock();
 
-// ── Data model ─────────────────────────────────────────────────────────────
-// Travel times from USGS lahar inundation models + published research
-// Base times are for a ~0.5 km³ eruption-triggered lahar
-// Scaled by volume factor relative to 0.5 km³ reference
+const map=L.map('ttmap',{scrollWheelZoom:false}).setView([46.93,-122.05],9);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:14,attribution:'Esri, HERE, Garmin, © OpenStreetMap'}).addTo(map);
+map.createPane('labels'); map.getPane('labels').style.zIndex=450; map.getPane('labels').style.pointerEvents='none';
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:14,pane:'labels',opacity:.8}).addTo(map);
+const Z={case3:'rgba(239,68,68,.55)',case2:'rgba(249,115,22,.45)',case1:'rgba(234,179,8,.25)'};
+J('data/hazard_zones.geojson').then(g=>{ for(const z of ['case1','case2','case3']) L.geoJSON({type:'FeatureCollection',features:g.features.filter(f=>f.properties.zone===z)},{style:{color:Z[z].replace(/[\d.]+\)$/,'0.9)'),weight:.6,fillColor:Z[z],fillOpacity:1}}).addTo(map); }).catch(()=>{});
+L.marker([46.853,-121.760],{icon:L.divIcon({className:'',html:'<div style="font:18px/1 var(--fd);color:#fde68a;text-shadow:0 0 6px #000">▲</div>',iconSize:[18,18],iconAnchor:[9,12]})}).bindTooltip('Mount Rainier').addTo(map);
+for(const [n,lat,lon,t,dir] of [['Ashford',46.7590,-122.0313,'~20 min · Tahoma Glacier scenario','bottom'],['Head of Alder Lake (Elbe)',46.7660,-122.1930,'~50 min · Tahoma Glacier scenario','left'],['Orting',47.0973,-122.2043,'~1 hour · Sunset Amphitheater scenario','left']])
+  L.circleMarker([lat,lon],{radius:7,color:'#fde68a',weight:2,fillColor:'#f97316',fillOpacity:.9}).bindTooltip(`<b>${n}</b><br>${t}`,{permanent:true,direction:dir}).addTo(map);
+$('fresh').innerHTML='Figures as published by the USGS; follow the links for the full reports. This is an independent explainer, not an official warning: in an emergency follow <a href="https://www.piercecountywa.gov/5888/Outdoor-Warning-System">Pierce County</a> and local officials. Code: <a href="https://github.com/bdgroves/lahar-watch">github.com/bdgroves/lahar-watch</a>';
 
-const DRAINAGES = [
-  { id: 'puyallup', label: 'Puyallup River', coverage: '80%' },
-  { id: 'carbon',   label: 'Carbon River',   coverage: '65%' },
-  { id: 'white',    label: 'White River',     coverage: '70%' },
-  { id: 'nisqually',label: 'Nisqually River', coverage: '55%' },
-  { id: 'tahoma',   label: 'Tahoma Creek',   coverage: '40%' },
-];
-
-const SCENARIOS = [
-  { id: 'eruption',  label: 'Eruption',       sub: 'Rapid snow/ice melt', speedFactor: 1.0 },
-  { id: 'collapse',  label: 'W. Flank Collapse', sub: 'No eruption, landslide', speedFactor: 0.85 },
-  { id: 'rapid',     label: 'Rapid Onset',    sub: 'Summit event', speedFactor: 1.2 },
-  { id: 'slow',      label: 'Slow Build',     sub: 'Incremental debris', speedFactor: 0.65 },
-];
-
-// Communities: { name, drainage, distKm, baseMins (at 0.5 km³ eruption), population }
-const COMMUNITIES = {
-  puyallup: [
-    { name: 'Ashford',        drainage: 'Puyallup', distKm: 8,   baseMins: 8,   pop: '1,200',  inside: true  },
-    { name: 'Orting',         drainage: 'Puyallup', distKm: 56,  baseMins: 33,  pop: '8,000',  inside: false },
-    { name: 'Buckley',        drainage: 'Carbon',   distKm: 72,  baseMins: 44,  pop: '4,800',  inside: false },
-    { name: 'Bonney Lake',    drainage: 'Puyallup', distKm: 80,  baseMins: 55,  pop: '21,000', inside: false },
-    { name: 'Sumner',         drainage: 'Puyallup', distKm: 92,  baseMins: 70,  pop: '10,000', inside: false },
-    { name: 'Puyallup City',  drainage: 'Puyallup', distKm: 98,  baseMins: 82,  pop: '43,000', inside: false },
-  ],
-  carbon: [
-    { name: 'Carbonado',      drainage: 'Carbon',   distKm: 30,  baseMins: 28,  pop: '700',    inside: false },
-    { name: 'Wilkeson',       drainage: 'Carbon',   distKm: 36,  baseMins: 33,  pop: '500',    inside: false },
-    { name: 'Orting',         drainage: 'Carbon',   distKm: 54,  baseMins: 40,  pop: '8,000',  inside: false },
-    { name: 'Buckley',        drainage: 'Carbon',   distKm: 60,  baseMins: 44,  pop: '4,800',  inside: false },
-    { name: 'Auburn',         drainage: 'White',    distKm: 88,  baseMins: 68,  pop: '87,000', inside: false },
-  ],
-  white: [
-    { name: 'Greenwater',     drainage: 'White',    distKm: 22,  baseMins: 18,  pop: '300',    inside: false },
-    { name: 'Enumclaw',       drainage: 'White',    distKm: 48,  baseMins: 38,  pop: '12,000', inside: false },
-    { name: 'Buckley',        drainage: 'White',    distKm: 60,  baseMins: 46,  pop: '4,800',  inside: false },
-    { name: 'Auburn',         drainage: 'White',    distKm: 78,  baseMins: 62,  pop: '87,000', inside: false },
-    { name: 'Kent',           drainage: 'White',    distKm: 90,  baseMins: 76,  pop: '132,000',inside: false },
-  ],
-  nisqually: [
-    { name: 'Ashford',        drainage: 'Nisqually',distKm: 10,  baseMins: 10,  pop: '1,200',  inside: true  },
-    { name: 'Eatonville',     drainage: 'Nisqually',distKm: 35,  baseMins: 40,  pop: '3,000',  inside: false },
-    { name: 'McKenna',        drainage: 'Nisqually',distKm: 62,  baseMins: 68,  pop: '1,800',  inside: false },
-    { name: 'Yelm',           drainage: 'Nisqually',distKm: 72,  baseMins: 80,  pop: '10,000', inside: false },
-    { name: 'Olympia area',   drainage: 'Nisqually',distKm: 95,  baseMins: 105, pop: '53,000', inside: false },
-  ],
-  tahoma: [
-    { name: 'Ashford',        drainage: 'Tahoma',   distKm: 5,   baseMins: 5,   pop: '1,200',  inside: true  },
-    { name: 'Elbe',           drainage: 'Tahoma',   distKm: 18,  baseMins: 15,  pop: '400',    inside: false },
-    { name: 'Morton',         drainage: 'Tahoma',   distKm: 45,  baseMins: 42,  pop: '1,200',  inside: false },
-  ],
-};
-
-// State
-let activeDrainage = 'puyallup';
-let activeScenario = 'eruption';
-let volume = 0.5;
-
-// ── Volume scaling ──────────────────────────────────────────────────────────
-// Larger lahars are faster due to more momentum; rough power law
-function volumeScaleFactor(vol) {
-  // At vol=0.5 → factor=1.0; at vol=4.0 → factor~0.7 (faster, less time)
-  // At vol=0.05 → factor~1.4 (smaller = slower)
-  return Math.pow(0.5 / vol, 0.18);
-}
-
-function calcMins(baseMins, scenario, vol) {
-  const sf = scenario.speedFactor * volumeScaleFactor(vol);
-  // sf < 1 means faster lahar → less time
-  return Math.round(baseMins * sf);
-}
-
-function fmtTime(mins) {
-  if (mins < 60) return `${mins}`;
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return m === 0 ? `${h}h` : `${h}h ${m}m`;
-}
-
-function fmtTimeUnit(mins) {
-  return mins < 60 ? 'min' : '';
-}
-
-// ── Urgency zone ───────────────────────────────────────────────────────────
-function urgency(mins) {
-  if (mins < 20) return { zone: 'zone-red', badge: 'urgency-critical', label: '⚠ Critical — Immediate Evac' };
-  if (mins < 60) return { zone: 'zone-yellow', badge: 'urgency-warning', label: '⚡ Warning — Begin Evac' };
-  return { zone: 'zone-green', badge: 'urgency-monitor', label: '✓ Monitor — Prepare' };
-}
-
-// ── Render ─────────────────────────────────────────────────────────────────
-function renderDrainages() {
-  document.getElementById('drainSelect').innerHTML = DRAINAGES.map(d => `
-    <button class="drain-btn ${d.id === activeDrainage ? 'active' : ''}"
-      onclick="setDrainage('${d.id}')">
-      ${d.label}
-      <span class="drain-pct">${d.coverage}</span>
-    </button>`).join('');
-}
-
-function renderScenarios() {
-  document.getElementById('scenarioGrid').innerHTML = SCENARIOS.map(s => `
-    <button class="scenario-btn ${s.id === activeScenario ? 'active' : ''}"
-      onclick="setScenario('${s.id}')">
-      <span class="sc-label">${s.label}</span>
-      <span class="sc-sub">${s.sub}</span>
-    </button>`).join('');
-}
-
-function renderResults() {
-  const scenario = SCENARIOS.find(s => s.id === activeScenario);
-  const communities = COMMUNITIES[activeDrainage] || [];
-  const drainage = DRAINAGES.find(d => d.id === activeDrainage);
-
-  // Timeline header
-  document.getElementById('timelineTitle').textContent = `${drainage.label} — Warning Timeline`;
-  document.getElementById('timelineScenario').textContent = `${scenario.label} · ${volume} km³`;
-
-  // Compute times
-  const times = communities.map(c => ({ ...c, mins: calcMins(c.baseMins, scenario, volume) }));
-  const maxMins = Math.max(...times.map(t => t.mins), 10);
-
-  // Timeline markers
-  const markers = document.getElementById('tlMarkers');
-  markers.innerHTML = times.map(c => {
-    const pct = Math.min((c.mins / (maxMins * 1.1)) * 100, 98);
-    const u = urgency(c.mins);
-    const color = u.zone === 'zone-red' ? 'var(--warn)' : u.zone === 'zone-yellow' ? 'var(--caution)' : 'var(--ok)';
-    return `<div class="tl-marker" style="left:${pct}%">
-      <div class="tl-marker-line" style="background:${color}"></div>
-      <div class="tl-marker-label" style="color:${color}">${c.name}</div>
-      <div class="tl-marker-time" style="color:${color}">${fmtTime(c.mins)}</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('tlFill').style.width = '100%';
-  document.getElementById('tlEnd').textContent = `T+${fmtTime(maxMins)} — ${communities[communities.length-1]?.name || 'distal'}`;
-
-  // Community cards
-  document.getElementById('communityGrid').innerHTML = times.map(c => {
-    const u = urgency(c.mins);
-    return `<div class="community-card ${u.zone}">
-      <div class="comm-name">${c.name}</div>
-      <div class="comm-drainage">${c.drainage} drainage · ${c.distKm} km</div>
-      <div>
-        <span class="comm-time">${fmtTime(c.mins)}</span>
-        <span class="comm-unit">${fmtTimeUnit(c.mins)}</span>
-      </div>
-      <div class="comm-pop">Pop. ~${c.pop}${c.inside ? ' · inside park' : ''}</div>
-      <div class="urgency-badge ${u.badge}">${u.label}</div>
-    </div>`;
-  }).join('');
-}
-
-function render() {
-  renderDrainages();
-  renderScenarios();
-  renderResults();
-}
-
-// ── Event handlers ─────────────────────────────────────────────────────────
-function setDrainage(id) { activeDrainage = id; render(); }
-function setScenario(id) { activeScenario = id; render(); }
-function updateVolume(val) {
-  volume = parseFloat(val);
-  document.getElementById('volDisplay').textContent = volume.toFixed(2);
-  // Update slider gradient
-  const slider = document.getElementById('volSlider');
-  const pct = ((volume - 0.01) / (4 - 0.01)) * 100;
-  slider.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--border) ${pct}%)`;
-  renderResults();
-}
-
-// ── Init ───────────────────────────────────────────────────────────────────
-render();
-updateVolume(0.5);
 </script>
 </body>
 </html>

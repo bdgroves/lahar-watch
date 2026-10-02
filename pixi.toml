@@ -9,10 +9,7 @@ platforms = ["win-64", "linux-64", "osx-arm64"]
 [dependencies]
 python = ">=3.11"
 requests = ">=2.31"
-pandas = ">=2.1"
-python-dotenv = ">=1.0"
-rich = ">=13.0"
-schedule = ">=1.2"
+obspy = ">=1.4"
 
 [feature.dev.dependencies]
 pytest = ">=7.4"
@@ -25,8 +22,7 @@ default = { features = ["dev"], solve-group = "default" }
 # ── Tasks ────────────────────────────────────────────────────────────────────
 [tasks]
 
-fetch    = { cmd = "python scripts/fetch_sensors.py",          description = "Pull latest USGS/PNSN sensor data" }
-status   = { cmd = "python scripts/fetch_sensors.py --status", description = "Print live station status table" }
+fetch    = { cmd = "python scripts/fetch_sensors.py",          description = "Fetch stations, data latency, RSAM, alert, quakes, rivers, waveforms" }
 validate = { cmd = "python scripts/validate_data.py",          description = "Check data/ JSON files are well-formed" }
 test     = { cmd = "pytest tests/ -v",                         description = "Run test suite" }
 lint     = { cmd = "ruff check scripts/",                      description = "Lint Python scripts" }

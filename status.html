@@ -3,403 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>System Status — lahar-watch</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Lahar Watch — Status</title>
+<meta name="description" content="Whether each data source behind Lahar Watch is answering right now, and how old each hourly file is.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg:#0b0f14; --surface:#111720; --border:#1e2d3a;
-    --accent:#f97316; --warn:#ef4444; --ok:#22c55e;
-    --caution:#eab308; --muted:#4a6070; --text:#d6e4ef; --subtext:#7a95a8;
-  }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
-  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-    background: radial-gradient(ellipse 50% 40% at 80% 10%, rgba(34,197,94,0.04) 0%, transparent 70%); }
+:root{--bg:#0b0f14;--surface:#111720;--surface2:#0e141c;--border:#1e2d3a;--accent:#f97316;--warn:#ef4444;--ok:#22c55e;--caution:#eab308;--muted:#4a6070;--text:#d6e4ef;--subtext:#7a95a8;--blue:#38bdf8;--violet:#a78bfa;
+  --fd:'Bebas Neue',sans-serif;--fm:'Space Mono',monospace;--fb:'DM Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 var(--fb);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(249,115,22,.06),transparent 70%),radial-gradient(ellipse 40% 60% at 80% 80%,rgba(239,68,68,.04),transparent 70%);pointer-events:none;z-index:0}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;background:rgba(11,15,20,.95);backdrop-filter:blur(8px);flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo-title{font:22px var(--fd);letter-spacing:2px;color:var(--accent)}
+.logo-sub{font:10px var(--fm);color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{font:11px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--subtext);text-decoration:none;padding:6px 10px;border-radius:4px;border:1px solid transparent}
+nav a.on,nav a:hover{color:var(--accent);border-color:var(--border);background:var(--surface)}
+.clock{font:11px var(--fm);color:var(--subtext);text-align:right}
+.clock b{color:var(--ok);font-weight:400}
+main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px 24px 40px}
+.back{font:11px var(--fm);color:var(--muted);text-decoration:none;letter-spacing:1px}
+h2{font:26px var(--fd);letter-spacing:1.5px;color:var(--text);margin:30px 0 4px}
+.lede{color:var(--subtext);max-width:900px;margin-bottom:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;min-width:0}
+.card h3{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.card h3 em{font-style:normal;color:var(--accent)}
+.big{font:44px/1 var(--fd);letter-spacing:1px}
+.big small{font:13px var(--fb);color:var(--subtext);letter-spacing:0;margin-left:6px}
+.note{font-size:12.5px;color:var(--subtext);margin-top:8px}
+.note b{color:var(--text);font-weight:600}
+.pill{display:inline-block;font:11px var(--fm);padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--subtext)}
+.GREEN{color:var(--ok)}.YELLOW{color:var(--caution)}.ORANGE{color:var(--accent)}.RED{color:var(--warn)}
+#map{height:560px;border-radius:8px;border:1px solid var(--border);background:#0b0f14;position:relative;z-index:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font:11px var(--fm);color:var(--subtext);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.legend i.dot{width:10px;height:10px;border-radius:50%}
+.leaflet-container{font:12px var(--fb)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.leaflet-popup-content b{color:var(--accent)}
+.leaflet-control-attribution{background:rgba(11,15,20,.8)!important;color:var(--muted)!important}.leaflet-control-attribution a{color:var(--subtext)!important}
+.leaflet-control-layers{background:var(--surface)!important;color:var(--text)!important;border:1px solid var(--border)!important}
+.leaflet-bar a{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font:10px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid rgba(30,45,58,.6);vertical-align:middle}
+td.n{text-align:right;font-family:var(--fm);font-size:11.5px}
+tr.grp td{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding-top:14px;border-bottom:1px solid var(--border)}
+.st{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.st.live{background:var(--ok);box-shadow:0 0 6px var(--ok)}.st.late{background:var(--caution)}.st.silent{background:var(--warn)}
+.bar{position:relative;height:6px;background:var(--surface2);border-radius:3px;min-width:70px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--blue)}
+.scroll{overflow-x:auto;max-width:100%}
+#eq-more{background:none;border:1px solid var(--border);color:var(--accent);font:11px var(--fm);padding:6px 12px;border-radius:4px;cursor:pointer;margin-top:10px}
+.chart{position:relative;height:240px}
+.chart.sm{height:150px}
+.rivers{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.river .cat{font:11px var(--fm)}
+.cat.no_flooding,.cat.ok{color:var(--ok)}.cat.action{color:var(--caution)}.cat.minor{color:var(--accent)}.cat.moderate,.cat.major{color:var(--warn)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.facts .card p{font-size:13px;color:var(--subtext);margin-top:6px}
+.facts .card .big{font-size:34px}
+.notice p{color:var(--subtext);margin-top:8px;font-size:13px;max-width:900px}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);margin-top:30px;padding:18px 24px;font:11px var(--fm);color:var(--muted)}
+footer span{margin-right:16px;display:inline-block}
+footer .ok{color:var(--ok)}footer .stale{color:var(--caution)}footer .bad{color:var(--warn)}
+@media(max-width:1000px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:600px){main{padding:14px 14px 30px}header{padding:8px 14px}.grid4{grid-template-columns:1fr}#map{height:420px}.big{font-size:38px}.clock{display:none}td.hide,th.hide{display:none}}
 
-  header { position:relative; z-index:10; border-bottom:1px solid var(--border);
-    padding:0 28px; display:flex; align-items:center; justify-content:space-between;
-    height:56px; background:rgba(11,15,20,0.95); backdrop-filter:blur(8px); }
-  .logo { display:flex; align-items:baseline; gap:10px; }
-  .logo-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--accent); }
-  .logo-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
-  .header-nav { display:flex; gap:2px; margin-left:24px; }
-  .nav-link { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); text-decoration:none; padding:6px 12px; border-radius:4px; transition:all 0.15s; }
-  .nav-link:hover { color:var(--text); background:rgba(255,255,255,0.05); }
-  .nav-link.active { color:var(--accent); background:rgba(249,115,22,0.1); }
-  .clock { font-family:'Space Mono',monospace; font-size:11px; color:var(--subtext); }
-
-  main { position:relative; z-index:1; padding:24px; max-width:900px; margin:0 auto; }
-  .page-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--text); margin-bottom:4px; }
-  .page-sub { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; margin-bottom:24px; }
-
-  .status-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-
-  /* ── CI/CD Badge block ──────────────────────────── */
-  .badge-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; grid-column:1/-1; }
-  .badge-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
-  .badge-title { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--subtext); }
-  .badge-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .gh-badge { height:20px; display:block; }
-  .badge-link { text-decoration:none; }
-  .badge-label { font-family:'Space Mono',monospace; font-size:10px; color:var(--subtext); }
-
-  /* Inline badge replacement (in case shields.io is slow) */
-  .badge-pill {
-    display:inline-flex; align-items:center; gap:0; border-radius:4px; overflow:hidden;
-    font-family:'Space Mono',monospace; font-size:10px; text-decoration:none; height:20px;
-  }
-  .badge-pill-left { background:#555; color:#fff; padding:3px 8px; }
-  .badge-pill-right { background:#2ea44f; color:#fff; padding:3px 8px; }
-  .badge-pill-right.warn { background:#cf222e; }
-  .badge-pill-right.yellow { background:#9a6700; }
-
-  /* ── API health cards ───────────────────────────── */
-  .api-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
-  .api-title { font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--subtext); margin-bottom:14px; }
-  .api-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(30,45,58,0.5); }
-  .api-row:last-child { border-bottom:none; }
-  .api-name { font-size:12px; font-weight:600; }
-  .api-url { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); margin-top:1px; }
-  .api-status { display:flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:9px; }
-  .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-  .dot-ok { background:var(--ok); box-shadow:0 0 5px var(--ok); }
-  .dot-warn { background:var(--caution); }
-  .dot-err { background:var(--warn); }
-  .dot-checking { background:var(--muted); animation:blink 1s ease infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* ── Data file table ────────────────────────────── */
-  .data-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; grid-column:1/-1; }
-  .data-card-header { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-  table { width:100%; border-collapse:collapse; font-size:12px; }
-  thead th { padding:8px 14px; text-align:left; font-family:'Space Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); font-weight:400; border-bottom:1px solid var(--border); }
-  tbody tr { border-bottom:1px solid rgba(30,45,58,0.5); }
-  tbody td { padding:9px 14px; }
-  .mono { font-family:'Space Mono',monospace; font-size:10px; }
-  .sub { color:var(--subtext); font-size:10px; }
-  .badge-small { display:inline-block; padding:2px 7px; border-radius:3px; font-family:'Space Mono',monospace; font-size:8px; }
-  .badge-ok  { background:rgba(34,197,94,0.12); color:var(--ok); border:1px solid rgba(34,197,94,0.25); }
-  .badge-stale { background:rgba(234,179,8,0.12); color:var(--caution); border:1px solid rgba(234,179,8,0.25); }
-  .badge-miss  { background:rgba(239,68,68,0.12); color:var(--warn); border:1px solid rgba(239,68,68,0.25); }
-
-  /* ── Schedule card ──────────────────────────────── */
-  .schedule-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
-  .cron-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(30,45,58,0.5); }
-  .cron-row:last-child { border-bottom:none; }
-  .cron-label { font-size:12px; }
-  .cron-val { font-family:'Space Mono',monospace; font-size:10px; color:var(--subtext); }
-  .cron-next { font-family:'Space Mono',monospace; font-size:9px; color:var(--ok); }
-
-  /* ── Links ──────────────────────────────────────── */
-  .link-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
-  .link-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(30,45,58,0.5); }
-  .link-row:last-child { border-bottom:none; }
-  .link-icon { font-size:14px; width:20px; text-align:center; flex-shrink:0; }
-  .link-text a { color:var(--accent); text-decoration:none; font-size:12px; font-weight:600; }
-  .link-text a:hover { text-decoration:underline; }
-  .link-desc { font-size:10px; color:var(--subtext); margin-top:1px; }
 </style>
 </head>
 <body>
-<a class="bg-home" href="https://brooksgroves.com/">&larr; brooksgroves.com</a>
-<style>.bg-home{display:block;position:relative;z-index:50;padding:8px 16px 0;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em;color:inherit;opacity:.65;text-decoration:none;width:max-content}.bg-home:hover{opacity:1;text-decoration:underline}</style>
-
 <header>
-  <div class="logo">
-    <span class="logo-title">WA Lahar Net</span>
-    <span class="logo-sub">System Status</span>
-  </div>
-  <nav class="header-nav">
-    <a href="index.html" class="nav-link">Dashboard</a>
-    <a href="seismic.html" class="nav-link">Seismic</a>
-    <a href="travel-time.html" class="nav-link">Travel Time</a>
-    <a href="status.html" class="nav-link active">Status</a>
-  </nav>
-  <div class="clock" id="clock">--:--:-- PDT</div>
+  <div class="logo"><span class="logo-title">LAHAR WATCH</span><span class="logo-sub">Mount Rainier · live</span></div>
+  <nav><a href="index.html">Dashboard</a><a href="seismic.html">Seismic</a><a href="travel-time.html">Warning time</a><a href="status.html" class="on">Status</a></nav>
+  <div class="clock"><b>●</b> <span id="clock"></span></div>
 </header>
-
 <main>
-  <div class="page-title">System Status</div>
-  <div class="page-sub">Pipeline health · API availability · Data freshness · GitHub Actions CI/CD</div>
+  <a class="back" href="https://brooksgroves.com">← brooksgroves.com</a>
 
-  <div class="status-grid">
+  <h2>Is it working?</h2>
+  <p class="lede">Each source checked from your browser right now, with what it actually returned, and how old each of the hourly files is.</p>
+  <div class="card scroll"><h3>Live sources <em id="chk-sub">checking…</em></h3><table id="chk"><thead><tr><th>Source</th><th>What we ask</th><th>Result</th><th class="n">Time</th></tr></thead><tbody></tbody></table></div>
+  <div class="card scroll" style="margin-top:14px"><h3>Hourly files</h3><table id="files"><thead><tr><th>File</th><th>Holds</th><th>Updated</th></tr></thead><tbody></tbody></table></div>
+  <div class="card" style="margin-top:14px"><h3>Pipeline</h3><p class="note">A GitHub Action runs every hour at 17 minutes past: it asks every station for its last hour of data, computes the ground-motion levels, fetches the waveform images, the alert, the earthquakes and the rivers, and redeploys the site. <a href="https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml">Run history →</a></p>
+    <p style="margin-top:10px"><img src="https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml/badge.svg" alt="pipeline status"></p></div>
 
-    <!-- CI/CD Badges -->
-    <div class="badge-card">
-      <div class="badge-header">
-        <span class="badge-title">GitHub Actions — CI/CD Pipeline</span>
-        <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)">bdgroves/lahar-watch</span>
-      </div>
-      <div class="badge-row">
-        <a class="badge-link" href="https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml" target="_blank">
-          <img class="gh-badge"
-            src="https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml/badge.svg"
-            alt="Deploy Status"
-            onerror="this.style.display='none';document.getElementById('badge-fallback').style.display='flex'">
-        </a>
-        <!-- Fallback pill if badge image fails (e.g. before repo exists) -->
-        <a id="badge-fallback" class="badge-pill" style="display:none"
-          href="https://github.com/bdgroves/lahar-watch/actions" target="_blank">
-          <span class="badge-pill-left">deploy</span>
-          <span class="badge-pill-right" id="badgeStatus">passing</span>
-        </a>
-        <span class="badge-label">Fetch Sensor Data &amp; Deploy · runs 06:00 + 18:00 UTC</span>
-
-        <a class="badge-link" href="https://github.com/bdgroves/lahar-watch" target="_blank">
-          <span class="badge-pill">
-            <span class="badge-pill-left">repo</span>
-            <span class="badge-pill-right">bdgroves/lahar-watch</span>
-          </span>
-        </a>
-
-        <a class="badge-link" href="https://bdgroves.github.io/lahar-watch" target="_blank">
-          <span class="badge-pill">
-            <span class="badge-pill-left">pages</span>
-            <span class="badge-pill-right">live ↗</span>
-          </span>
-        </a>
-      </div>
-    </div>
-
-    <!-- API health -->
-    <div class="api-card">
-      <div class="api-title">Upstream API Health</div>
-
-      <div class="api-row">
-        <div>
-          <div class="api-name">USGS Earthquake API</div>
-          <div class="api-url">earthquake.usgs.gov/fdsnws/event/1</div>
-        </div>
-        <div class="api-status">
-          <div class="dot dot-checking" id="dot-usgs-eq"></div>
-          <span id="txt-usgs-eq">checking…</span>
-        </div>
-      </div>
-
-      <div class="api-row">
-        <div>
-          <div class="api-name">USGS Volcano Notifications</div>
-          <div class="api-url">volcanoes.usgs.gov/hans-public/api</div>
-        </div>
-        <div class="api-status">
-          <div class="dot dot-checking" id="dot-usgs-vns"></div>
-          <span id="txt-usgs-vns">checking…</span>
-        </div>
-      </div>
-
-      <div class="api-row">
-        <div>
-          <div class="api-name">USGS NWIS Water Services</div>
-          <div class="api-url">waterservices.usgs.gov/nwis/iv</div>
-        </div>
-        <div class="api-status">
-          <div class="dot dot-checking" id="dot-nwis"></div>
-          <span id="txt-nwis">checking…</span>
-        </div>
-      </div>
-
-      <div class="api-row">
-        <div>
-          <div class="api-name">IRIS FDSN Availability</div>
-          <div class="api-url">service.iris.edu/irisws/availability/1</div>
-        </div>
-        <div class="api-status">
-          <div class="dot dot-checking" id="dot-iris"></div>
-          <span id="txt-iris">checking…</span>
-        </div>
-      </div>
-
-      <div class="api-row">
-        <div>
-          <div class="api-name">PNSN Helicorders</div>
-          <div class="api-url">pnsn.org/helicorder/image</div>
-        </div>
-        <div class="api-status">
-          <div class="dot dot-checking" id="dot-pnsn"></div>
-          <span id="txt-pnsn">checking…</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Schedule -->
-    <div class="schedule-card">
-      <div class="api-title">Fetch Schedule (GitHub Actions)</div>
-      <div class="cron-row">
-        <div><div class="cron-label">Morning fetch</div><div class="cron-val">cron: 0 6 * * * (UTC)</div></div>
-        <div class="cron-next" id="nextMorning">–</div>
-      </div>
-      <div class="cron-row">
-        <div><div class="cron-label">Evening fetch</div><div class="cron-val">cron: 0 18 * * * (UTC)</div></div>
-        <div class="cron-next" id="nextEvening">–</div>
-      </div>
-      <div class="cron-row">
-        <div><div class="cron-label">Manual trigger</div><div class="cron-val">workflow_dispatch</div></div>
-        <a href="https://github.com/bdgroves/lahar-watch/actions/workflows/deploy.yml"
-          target="_blank" style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent);">
-          Run now ↗
-        </a>
-      </div>
-      <div class="cron-row">
-        <div><div class="cron-label">Pages refresh</div><div class="cron-val">dashboard JS: every 5 min</div></div>
-        <span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--subtext)">client-side</span>
-      </div>
-    </div>
-
-    <!-- Data files -->
-    <div class="data-card">
-      <div class="data-card-header">
-        <span style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--subtext)">Data File Freshness</span>
-        <span id="lastFetchDisplay" style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)">loading…</span>
-      </div>
-      <table>
-        <thead><tr>
-          <th>File</th><th>Description</th><th>Fetched At</th><th>Age</th><th>Status</th>
-        </tr></thead>
-        <tbody id="dataFileTable">
-          <tr><td colspan="5" class="sub" style="padding:14px;text-align:center;">Loading…</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Links -->
-    <div class="link-card" style="grid-column:1/-1">
-      <div class="api-title" style="margin-bottom:8px">Resources & Links</div>
-      <div class="link-row">
-        <span class="link-icon">🌋</span>
-        <div class="link-text">
-          <a href="https://www.usgs.gov/volcanoes/mount-rainier" target="_blank">USGS Mt. Rainier Volcano</a>
-          <div class="link-desc">Official USGS monitoring page — alert levels, news, hazard maps</div>
-        </div>
-      </div>
-      <div class="link-row">
-        <span class="link-icon">📡</span>
-        <div class="link-text">
-          <a href="https://pnsn.org/earthquakes/recent" target="_blank">Pacific Northwest Seismic Network (PNSN)</a>
-          <div class="link-desc">Real-time seismicity, helicorder feeds, station viewer</div>
-        </div>
-      </div>
-      <div class="link-row">
-        <span class="link-icon">🚨</span>
-        <div class="link-text">
-          <a href="https://www.piercecountywa.gov/5888/Outdoor-Warning-System" target="_blank">Pierce County Lahar Warning System</a>
-          <div class="link-desc">AFM network, AHAB sirens, evacuation information</div>
-        </div>
-      </div>
-      <div class="link-row">
-        <span class="link-icon">💧</span>
-        <div class="link-text">
-          <a href="https://waterdata.usgs.gov/wa/nwis/rt" target="_blank">USGS Washington Real-Time Water Data</a>
-          <div class="link-desc">Live stream gauge readings across all Rainier drainages</div>
-        </div>
-      </div>
-      <div class="link-row">
-        <span class="link-icon">📋</span>
-        <div class="link-text">
-          <a href="https://github.com/bdgroves/lahar-watch" target="_blank">lahar-watch on GitHub</a>
-          <div class="link-desc">Source code, Issues, Actions runs, README</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </main>
-
+<footer id="fresh"></footer>
 <script>
-// ── Clock ─────────────────────────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  const p = n => String(n).padStart(2,'0');
-  document.getElementById('clock').textContent = `${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())} PDT`;
-}
-setInterval(updateClock, 1000); updateClock();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PT={timeZone:'America/Los_Angeles'};
+const ago=t=>{ const m=(Date.now()-t)/60000; return m<1?'just now':m<60?`${Math.round(m)} min ago`:m<48*60?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} days ago`; };
+async function J(u,ms=20000){ const c=new AbortController(), t=setTimeout(()=>c.abort(),ms); try{ const r=await fetch(u,{signal:c.signal,cache:'no-store'}); if(!r.ok) throw new Error(r.status); return await r.json(); } finally{ clearTimeout(t); } }
+function clock(){ $('clock').textContent=new Date().toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }
+setInterval(clock,1000); clock();
 
-// ── Next scheduled run ─────────────────────────────────────────────────────
-function nextRun(targetHourUTC) {
-  const now = new Date();
-  const next = new Date(now);
-  next.setUTCHours(targetHourUTC, 0, 0, 0);
-  if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
-  const diffMs = next - now;
-  const h = Math.floor(diffMs / 3600000);
-  const m = Math.floor((diffMs % 3600000) / 60000);
-  return `in ${h}h ${m}m`;
-}
-
-document.getElementById('nextMorning').textContent = nextRun(6);
-document.getElementById('nextEvening').textContent = nextRun(18);
-
-// ── Load data files ────────────────────────────────────────────────────────
-const DATA_FILES = [
-  { file: 'data/summary.json',        desc: 'Master pipeline summary',         key: 'fetched_at' },
-  { file: 'data/volcano_alert.json',  desc: 'USGS volcano alert level',        key: 'fetched_at' },
-  { file: 'data/seismicity.json',     desc: 'Recent earthquake events',        key: 'fetched_at' },
-  { file: 'data/stream_gauges.json',  desc: 'NWIS stream gauge readings',      key: 'fetched_at' },
-  { file: 'data/station_status.json', desc: 'IRIS/FDSN station availability',  key: 'fetched_at' },
-  { file: 'data/helicorders.json',    desc: 'PNSN helicorder image manifest',  key: 'fetched_at' },
+const CHECKS=[
+  ['USGS volcano alerts (HANS)','Mount Rainier\'s alert level','https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes',j=>{ const w=j.find(v=>v.volcano_cd==='wa6'); return w?`${w.color_code} / ${w.alert_level}`:null; }],
+  ['USGS earthquakes','Count within 20 km, last 7 days',`https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=20&starttime=${new Date(Date.now()-7*864e5).toISOString().slice(0,10)}`,j=>j.count!=null?`${j.count} earthquakes`:null],
+  ['NOAA river gauges (NWPS)','Puyallup River near Orting, latest','https://api.water.noaa.gov/nwps/v1/gauges/ORTW1',j=>{ const o=j.status?.observed; return o?`${Math.round(o.primary*1000).toLocaleString()} cfs, ${(o.floodCategory||'').replace('_',' ')}, ${ago(Date.parse(o.validTime))}`:null; }],
+  ['EarthScope station catalogue','Stations of the CC network','https://service.earthscope.org/fdsnws/station/1/query?network=CC&station=PR05,TABR&level=station&format=geocsv',null],
 ];
-
-async function loadDataFiles() {
-  const tbody = document.getElementById('dataFileTable');
-  const rows = await Promise.all(DATA_FILES.map(async f => {
-    try {
-      const res = await fetch(f.file + '?_t=' + Date.now());
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const ts = data[f.key];
-      const fetched = ts ? new Date(ts) : null;
-      const ageMin = fetched ? Math.round((Date.now() - fetched) / 60000) : null;
-      const ageStr = ageMin === null ? '—' : ageMin < 2 ? 'just now' : ageMin < 60 ? `${ageMin}m ago` : `${Math.floor(ageMin/60)}h ${ageMin%60}m ago`;
-      const badgeClass = ageMin === null ? 'badge-miss' : ageMin > 720 ? 'badge-stale' : 'badge-ok';
-      const badgeText = ageMin === null ? 'missing' : ageMin > 720 ? 'stale' : 'fresh';
-      const tsDisplay = fetched ? fetched.toISOString().slice(0,16).replace('T',' ') + ' UTC' : '—';
-      return `<tr>
-        <td class="mono">${f.file}</td>
-        <td class="sub">${f.desc}</td>
-        <td class="mono sub">${tsDisplay}</td>
-        <td class="mono sub">${ageStr}</td>
-        <td><span class="badge-small ${badgeClass}">${badgeText}</span></td>
-      </tr>`;
-    } catch {
-      return `<tr>
-        <td class="mono">${f.file}</td>
-        <td class="sub">${f.desc}</td>
-        <td class="sub">—</td><td class="sub">—</td>
-        <td><span class="badge-small badge-miss">not found</span></td>
-      </tr>`;
-    }
+async function run(){
+  let ok=0;
+  const rows=await Promise.all(CHECKS.map(async([n,what,u,parse])=>{
+    const t0=performance.now();
+    try{ const r=await fetch(u,{cache:'no-store'}); const ms=Math.round(performance.now()-t0);
+      if(!r.ok) return [n,what,`<span style="color:var(--warn)">HTTP ${r.status}</span>`,ms];
+      let txt='responded';
+      if(parse){ const v=parse(await r.json()); if(!v) return [n,what,'<span style="color:var(--caution)">answered, but without the expected data</span>',ms]; txt=v; } else { const s=await r.text(); txt=`${s.split('\n').filter(l=>l&&!l.startsWith('#')).length-1} stations listed`; }
+      ok++; return [n,what,`<span style="color:var(--ok)">●</span> ${esc(txt)}`,ms];
+    }catch(e){ return [n,what,`<span style="color:var(--warn)">● unreachable from this browser</span>`,Math.round(performance.now()-t0)]; }
   }));
-
-  tbody.innerHTML = rows.join('');
-  document.getElementById('lastFetchDisplay').textContent = `Checked ${new Date().toISOString().slice(11,19)} UTC`;
+  $('chk').querySelector('tbody').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td style="color:var(--subtext)">${r[1]}</td><td>${r[2]}</td><td class="n">${r[3]} ms</td></tr>`).join('');
+  $('chk-sub').textContent=`${ok} of ${CHECKS.length} answering`;
+  const F=[['stations.json','Every station, whether it sent data, its ground-motion level'],['rsam.json','Seven days of ground-motion levels'],['helicorders.json','The 24-hour waveform images'],['alert.json','The alert level and newest notice'],['quakes.json','Earthquakes, weekly and yearly counts'],['rivers.json','River gauges, flood categories, 7 days'],['hazard_zones.geojson','USGS lahar hazard zones (fixed)']];
+  const got=await Promise.all(F.map(([f])=>J(`data/${f}?t=${Date.now()}`).catch(()=>null)));
+  $('files').querySelector('tbody').innerHTML=F.map(([f,h],i)=>{ const j=got[i]; const t=j?.fetched_at?Date.parse(j.fetched_at):null; const age=t?(Date.now()-t)/60000:null;
+    return `<tr><td style="font-family:var(--fm);font-size:11.5px">${f}</td><td style="color:var(--subtext)">${h}</td><td>${!j?'<span style="color:var(--warn)">missing</span>':t?`<span style="color:${age>150?'var(--caution)':'var(--ok)'}">●</span> ${ago(t)}`:'<span style="color:var(--ok)">●</span> present'}</td></tr>`; }).join('');
+  $('fresh').innerHTML='Code: <a href="https://github.com/bdgroves/lahar-watch">github.com/bdgroves/lahar-watch</a>';
 }
+run();
 
-// ── API health checks ──────────────────────────────────────────────────────
-async function checkAPI(dotId, txtId, url) {
-  const dot = document.getElementById(dotId);
-  const txt = document.getElementById(txtId);
-  try {
-    const start = Date.now();
-    const res = await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
-    const ms = Date.now() - start;
-    // no-cors always gives opaque response; if we got here without throwing = reachable
-    dot.className = 'dot dot-ok';
-    txt.textContent = `reachable · ${ms}ms`;
-    txt.style.color = 'var(--ok)';
-  } catch {
-    dot.className = 'dot dot-err';
-    txt.textContent = 'unreachable';
-    txt.style.color = 'var(--warn)';
-  }
-}
-
-checkAPI('dot-usgs-eq',  'txt-usgs-eq',  'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=1&minmagnitude=9');
-checkAPI('dot-usgs-vns', 'txt-usgs-vns', 'https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes');
-checkAPI('dot-nwis',     'txt-nwis',     'https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12093500&parameterCd=00060');
-checkAPI('dot-iris',     'txt-iris',     'https://service.iris.edu/irisws/availability/1/query?network=UW&station=RCM&format=json');
-checkAPI('dot-pnsn',     'txt-pnsn',     'https://pnsn.org/helicorder/image?sta=RCM&net=UW&cha=EHZ&loc=--');
-
-// ── Init ──────────────────────────────────────────────────────────────────
-loadDataFiles();
 </script>
 </body>
 </html>

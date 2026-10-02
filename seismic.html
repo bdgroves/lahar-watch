@@ -3,444 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seismic Monitor — lahar-watch</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Lahar Watch — Seismic</title>
+<meta name="description" content="Twenty-four hours of real seismograms from the stations watching Mount Rainier, a week of ground-motion levels, and every recent earthquake by depth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0b0f14; --surface: #111720; --border: #1e2d3a;
-    --accent: #f97316; --warn: #ef4444; --ok: #22c55e;
-    --caution: #eab308; --muted: #4a6070; --text: #d6e4ef; --subtext: #7a95a8;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+:root{--bg:#0b0f14;--surface:#111720;--surface2:#0e141c;--border:#1e2d3a;--accent:#f97316;--warn:#ef4444;--ok:#22c55e;--caution:#eab308;--muted:#4a6070;--text:#d6e4ef;--subtext:#7a95a8;--blue:#38bdf8;--violet:#a78bfa;
+  --fd:'Bebas Neue',sans-serif;--fm:'Space Mono',monospace;--fb:'DM Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 var(--fb);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(249,115,22,.06),transparent 70%),radial-gradient(ellipse 40% 60% at 80% 80%,rgba(239,68,68,.04),transparent 70%);pointer-events:none;z-index:0}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;background:rgba(11,15,20,.95);backdrop-filter:blur(8px);flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px}
+.logo-title{font:22px var(--fd);letter-spacing:2px;color:var(--accent)}
+.logo-sub{font:10px var(--fm);color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{font:11px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--subtext);text-decoration:none;padding:6px 10px;border-radius:4px;border:1px solid transparent}
+nav a.on,nav a:hover{color:var(--accent);border-color:var(--border);background:var(--surface)}
+.clock{font:11px var(--fm);color:var(--subtext);text-align:right}
+.clock b{color:var(--ok);font-weight:400}
+main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px 24px 40px}
+.back{font:11px var(--fm);color:var(--muted);text-decoration:none;letter-spacing:1px}
+h2{font:26px var(--fd);letter-spacing:1.5px;color:var(--text);margin:30px 0 4px}
+.lede{color:var(--subtext);max-width:900px;margin-bottom:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;min-width:0}
+.card h3{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.card h3 em{font-style:normal;color:var(--accent)}
+.big{font:44px/1 var(--fd);letter-spacing:1px}
+.big small{font:13px var(--fb);color:var(--subtext);letter-spacing:0;margin-left:6px}
+.note{font-size:12.5px;color:var(--subtext);margin-top:8px}
+.note b{color:var(--text);font-weight:600}
+.pill{display:inline-block;font:11px var(--fm);padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--subtext)}
+.GREEN{color:var(--ok)}.YELLOW{color:var(--caution)}.ORANGE{color:var(--accent)}.RED{color:var(--warn)}
+#map{height:560px;border-radius:8px;border:1px solid var(--border);background:#0b0f14;position:relative;z-index:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font:11px var(--fm);color:var(--subtext);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.legend i.dot{width:10px;height:10px;border-radius:50%}
+.leaflet-container{font:12px var(--fb)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.leaflet-popup-content b{color:var(--accent)}
+.leaflet-control-attribution{background:rgba(11,15,20,.8)!important;color:var(--muted)!important}.leaflet-control-attribution a{color:var(--subtext)!important}
+.leaflet-control-layers{background:var(--surface)!important;color:var(--text)!important;border:1px solid var(--border)!important}
+.leaflet-bar a{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font:10px var(--fm);letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid rgba(30,45,58,.6);vertical-align:middle}
+td.n{text-align:right;font-family:var(--fm);font-size:11.5px}
+tr.grp td{font:10px var(--fm);letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding-top:14px;border-bottom:1px solid var(--border)}
+.st{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.st.live{background:var(--ok);box-shadow:0 0 6px var(--ok)}.st.late{background:var(--caution)}.st.silent{background:var(--warn)}
+.bar{position:relative;height:6px;background:var(--surface2);border-radius:3px;min-width:70px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--blue)}
+.scroll{overflow-x:auto;max-width:100%}
+#eq-more{background:none;border:1px solid var(--border);color:var(--accent);font:11px var(--fm);padding:6px 12px;border-radius:4px;cursor:pointer;margin-top:10px}
+.chart{position:relative;height:240px}
+.chart.sm{height:150px}
+.rivers{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.river .cat{font:11px var(--fm)}
+.cat.no_flooding,.cat.ok{color:var(--ok)}.cat.action{color:var(--caution)}.cat.minor{color:var(--accent)}.cat.moderate,.cat.major{color:var(--warn)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.facts .card p{font-size:13px;color:var(--subtext);margin-top:6px}
+.facts .card .big{font-size:34px}
+.notice p{color:var(--subtext);margin-top:8px;font-size:13px;max-width:900px}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);margin-top:30px;padding:18px 24px;font:11px var(--fm);color:var(--muted)}
+footer span{margin-right:16px;display:inline-block}
+footer .ok{color:var(--ok)}footer .stale{color:var(--caution)}footer .bad{color:var(--warn)}
+@media(max-width:1000px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:600px){main{padding:14px 14px 30px}header{padding:8px 14px}.grid4{grid-template-columns:1fr}#map{height:420px}.big{font-size:38px}.clock{display:none}td.hide,th.hide{display:none}}
 
-  body::before {
-    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background: radial-gradient(ellipse 50% 40% at 15% 5%, rgba(249,115,22,0.05) 0%, transparent 70%);
-  }
-
-  header {
-    position: relative; z-index: 10; border-bottom: 1px solid var(--border);
-    padding: 0 28px; display: flex; align-items: center; justify-content: space-between;
-    height: 56px; background: rgba(11,15,20,0.95); backdrop-filter: blur(8px);
-  }
-  .logo { display: flex; align-items: baseline; gap: 10px; }
-  .logo-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--accent); }
-  .logo-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
-  .header-nav { display: flex; gap: 2px; margin-left: 24px; }
-  .nav-link { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
-  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-  .nav-link.active { color: var(--accent); background: rgba(249,115,22,0.1); }
-  .header-right { display: flex; align-items: center; gap: 16px; }
-  .clock { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--subtext); }
-
-  main { position: relative; z-index: 1; padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
-
-  .page-title {
-    font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;
-    color: var(--text); margin-bottom: 4px;
-  }
-  .page-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
-
-  /* Station selector tabs */
-  .station-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
-  .tab-btn {
-    font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase;
-    letter-spacing: 1px; padding: 6px 14px; border-radius: 4px; cursor: pointer;
-    border: 1px solid var(--border); background: var(--surface); color: var(--subtext);
-    transition: all 0.15s;
-  }
-  .tab-btn:hover { color: var(--text); border-color: var(--muted); }
-  .tab-btn.active { background: rgba(249,115,22,0.12); border-color: var(--accent); color: var(--accent); }
-  .tab-btn .tab-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
-
-  /* Helicorder grid */
-  .helicorder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-
-  .heli-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-    animation: fadeUp 0.4s ease both;
-  }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: none; } }
-
-  .heli-header {
-    padding: 10px 14px; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .heli-station { font-weight: 600; font-size: 12px; }
-  .heli-meta { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--subtext); }
-  .heli-img-wrap { position: relative; background: #050a0f; line-height: 0; min-height: 120px; display: flex; align-items: center; justify-content: center; }
-  .heli-img { width: 100%; display: block; image-rendering: pixelated; }
-  .heli-loading { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); padding: 20px; }
-  .heli-error { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--warn); padding: 16px; text-align: center; }
-
-  /* Helicorder label overlay */
-  .heli-label {
-    position: absolute; top: 6px; left: 8px;
-    font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(249,115,22,0.7);
-    background: rgba(11,15,20,0.7); padding: 2px 6px; border-radius: 2px;
-    letter-spacing: 0.5px;
-  }
-
-  .heli-footer {
-    padding: 6px 14px; border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .heli-channel { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); }
-  .heli-link { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--accent); text-decoration: none; }
-  .heli-link:hover { text-decoration: underline; }
-
-  /* Seismicity list */
-  .two-col { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
-
-  .events-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .panel-header { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .panel-title { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--subtext); }
-
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead th { padding: 8px 12px; text-align: left; font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 400; border-bottom: 1px solid var(--border); }
-  tbody tr { border-bottom: 1px solid rgba(30,45,58,0.5); transition: background 0.12s; cursor: pointer; }
-  tbody tr:hover { background: rgba(249,115,22,0.04); }
-  tbody td { padding: 8px 12px; }
-  .td-mono { font-family: 'Space Mono', monospace; font-size: 10px; }
-  .td-sub { color: var(--subtext); font-size: 10px; }
-  .mag-chip { display: inline-block; padding: 1px 7px; border-radius: 3px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
-  .mag-lo { background: rgba(74,96,112,0.2); color: var(--muted); }
-  .mag-mid { background: rgba(234,179,8,0.15); color: var(--caution); }
-  .mag-hi { background: rgba(239,68,68,0.15); color: var(--warn); }
-
-  /* Stats sidebar */
-  .stats-sidebar { display: flex; flex-direction: column; gap: 12px; }
-
-  .stat-mini { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
-  .stat-mini-label { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
-  .stat-mini-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--accent); line-height: 1; }
-  .stat-mini-sub { font-size: 10px; color: var(--subtext); margin-top: 4px; }
-
-  .depth-chart { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
-  .depth-bars { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
-  .depth-row { display: flex; align-items: center; gap: 8px; }
-  .depth-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--subtext); width: 60px; flex-shrink: 0; }
-  .depth-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
-  .depth-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.8s ease; }
-  .depth-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); width: 20px; text-align: right; }
-
-  .note-card { background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.15); border-radius: 8px; padding: 14px; }
-  .note-title { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; }
-  .note-text { font-size: 11px; color: var(--subtext); line-height: 1.7; }
 </style>
 </head>
 <body>
-<a class="bg-home" href="https://brooksgroves.com/">&larr; brooksgroves.com</a>
-<style>.bg-home{display:block;position:relative;z-index:50;padding:8px 16px 0;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em;color:inherit;opacity:.65;text-decoration:none;width:max-content}.bg-home:hover{opacity:1;text-decoration:underline}</style>
-
 <header>
-  <div class="logo">
-    <span class="logo-title">WA Lahar Net</span>
-    <span class="logo-sub">Seismic Monitor · Mt. Rainier Region</span>
-  </div>
-  <nav class="header-nav">
-    <a href="index.html" class="nav-link">Dashboard</a>
-    <a href="seismic.html" class="nav-link active">Seismic</a>
-    <a href="travel-time.html" class="nav-link">Travel Time</a>
-    <a href="status.html" class="nav-link">Status</a>
-  </nav>
-  <div class="header-right">
-    <div class="clock" id="clock">--:--:-- PDT</div>
-  </div>
+  <div class="logo"><span class="logo-title">LAHAR WATCH</span><span class="logo-sub">Mount Rainier · live</span></div>
+  <nav><a href="index.html">Dashboard</a><a href="seismic.html" class="on">Seismic</a><a href="travel-time.html">Warning time</a><a href="status.html">Status</a></nav>
+  <div class="clock"><b>●</b> <span id="clock"></span></div>
 </header>
-
 <main>
-  <div class="page-title">Seismic Monitor</div>
-  <div class="page-sub">PNSN / UW Network · Live Helicorders + Recent Seismicity · 50 km radius of Mt. Rainier</div>
+  <a class="back" href="https://brooksgroves.com">← brooksgroves.com</a>
 
-  <!-- Station tabs -->
-  <div class="station-tabs" id="stationTabs"></div>
+  <h2>What the instruments hear</h2>
+  <p class="lede">Twenty-four hours of ground motion from one seismometer per drainage, and the summit. Each line is an hour. Earthquakes show as spikes, wind and rivers as a thicker trace. A lahar or large debris flow would show as a long, swelling band lasting many minutes, first on the stations high in the valley, then on the ones below.</p>
+  <div id="heli" class="grid2"></div>
 
-  <!-- Helicorder images (4-up grid) -->
-  <div class="helicorder-grid" id="helicorderGrid"></div>
+  <h2>Ground-motion level, last 7 days</h2>
+  <p class="lede">RSAM (real-time seismic amplitude): the average shaking every 10 minutes, filtered to 1–10 Hz, the band where volcanic tremor and debris flows show up. It is in raw instrument counts, so compare a station with itself, not with its neighbours. Daily cycles are mostly wind, traffic and meltwater.</p>
+  <div class="card"><h3>Pick stations <em id="rs-sub"></em></h3><div id="rs-pick" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div><div class="chart" style="height:300px"><canvas id="rsam"></canvas></div></div>
 
-  <!-- Events + stats -->
-  <div class="two-col">
-    <div class="events-panel">
-      <div class="panel-header">
-        <span class="panel-title">Recent Seismicity — 7 days</span>
-        <span id="eventCount" style="font-family:'Space Mono',monospace;font-size:9px;color:var(--subtext);">loading…</span>
-      </div>
-      <table>
-        <thead><tr>
-          <th>Mag</th><th>Depth</th><th>Location</th><th>Time (UTC)</th><th>Status</th>
-        </tr></thead>
-        <tbody id="eventTable"><tr><td colspan="5" class="td-sub" style="padding:16px;text-align:center;">Loading seismicity data…</td></tr></tbody>
-      </table>
-    </div>
+  <h2>Earthquakes by depth, last 30 days</h2>
+  <p class="lede">Every located earthquake within 20 km of the summit: when, how deep, and how big. Most at Rainier are shallow, a few kilometres beneath the summit, in the hydrothermal system above the magma.</p>
+  <div class="card"><div class="chart" style="height:300px"><canvas id="depth"></canvas></div></div>
 
-    <div class="stats-sidebar">
-      <div class="stat-mini">
-        <div class="stat-mini-label">Events (7 days)</div>
-        <div class="stat-mini-val" id="statCount">–</div>
-        <div class="stat-mini-sub">within 50 km of summit</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-label">Largest Magnitude</div>
-        <div class="stat-mini-val" id="statMaxMag">–</div>
-        <div class="stat-mini-sub" id="statMaxPlace">past 7 days</div>
-      </div>
-      <div class="depth-chart">
-        <div class="panel-title">Depth Distribution</div>
-        <div class="depth-bars" id="depthBars">
-          <div class="depth-row"><span class="depth-label">0–5 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d0">–</span></div>
-          <div class="depth-row"><span class="depth-label">5–15 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d1">–</span></div>
-          <div class="depth-row"><span class="depth-label">15–30 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d2">–</span></div>
-          <div class="depth-row"><span class="depth-label">&gt;30 km</span><div class="depth-bar-wrap"><div class="depth-bar-fill" style="width:0%"></div></div><span class="depth-count" id="d3">–</span></div>
-        </div>
-      </div>
-      <div class="note-card">
-        <div class="note-title">📡 About These Feeds</div>
-        <div class="note-text">Waveform images are fetched server-side from the <strong>IRIS timeseriesplot API</strong> during each GitHub Actions run (twice daily). Each image shows a rolling 24-hour window of ground motion. Station channels verified against IRIS availability — UW network (Camp Muir, Carbon, White River, Tahoma Creek, Puyallup Valley) and CC Cascade Chain network (Paradise, Crystal Mtn, Nisqually). Seismicity data from the <strong>USGS Earthquake Hazards API</strong>.</div>
-      </div>
-    </div>
-  </div>
 </main>
-
+<footer id="fresh"></footer>
 <script>
-// ── Clock ──────────────────────────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  const pad = n => String(n).padStart(2,'0');
-  document.getElementById('clock').textContent =
-    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} PDT`;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PT={timeZone:'America/Los_Angeles'};
+const ago=t=>{ const m=(Date.now()-t)/60000; return m<1?'just now':m<60?`${Math.round(m)} min ago`:m<48*60?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} days ago`; };
+async function J(u,ms=20000){ const c=new AbortController(), t=setTimeout(()=>c.abort(),ms); try{ const r=await fetch(u,{signal:c.signal,cache:'no-store'}); if(!r.ok) throw new Error(r.status); return await r.json(); } finally{ clearTimeout(t); } }
+function clock(){ $('clock').textContent=new Date().toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }
+setInterval(clock,1000); clock();
+
+const D={};
+const COL=['#f97316','#38bdf8','#22c55e','#a78bfa','#eab308','#ef4444'];
+let pick=['UW.RCM','CC.TABR','CC.PR05','CC.GRWR'], rsChart=null, dChart=null;
+async function load(){
+  const [h,r,st,q]=await Promise.all(['helicorders','rsam','stations','quakes'].map(f=>J(`data/${f}.json?t=${Date.now()}`).catch(()=>null)));
+  Object.assign(D,{h,r,st,q});
+  try{ const s=new Date(Date.now()-30*864e5).toISOString().slice(0,19);
+       const g=await J(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=20&starttime=${s}&orderby=time`);
+       D.q={...(D.q||{}),events:g.features.map(f=>({t:Math.round(f.properties.time/1000),m:f.properties.mag,d:f.geometry.coordinates[2],place:f.properties.place})),live:true}; }catch(e){}
+  heli(); rsam(); depth(); fresh();
 }
-setInterval(updateClock, 1000); updateClock();
-
-// ── Station registry ────────────────────────────────────────────────────────
-// Synced with HELI_TARGETS in fetch_sensors.py — channels verified 2026-03-14
-// UW = University of Washington  |  CC = Cascade Chain (PNSN volcano network)
-const STATIONS = [
-  { id: 'MUIR', label: 'Camp Muir · Summit',      net: 'UW', sta: 'RCM',  cha: 'HHZ', drainage: 'Summit',    active: true },
-  { id: 'CR01', label: 'CR01 · Carbon River',     net: 'UW', sta: 'RCS',  cha: 'EHZ', drainage: 'Carbon',    active: true },
-  { id: 'WR02', label: 'WR02 · White River',      net: 'UW', sta: 'STOR', cha: 'HHZ', drainage: 'White',     active: true },
-  { id: 'TC04', label: 'TC04 · Tahoma Creek',     net: 'UW', sta: 'TDH',  cha: 'HHZ', drainage: 'Tahoma',    active: true },
-  { id: 'PARA', label: 'PARA · Paradise',         net: 'CC', sta: 'PARA', cha: 'BHZ', drainage: 'Nisqually', active: true },
-  { id: 'CRY5', label: 'CRY5 · Crystal Mtn',     net: 'CC', sta: 'CRYS', cha: 'HHZ', drainage: 'White NE',  active: true },
-  { id: 'NQ01', label: 'NQ01 · Nisqually',        net: 'CC', sta: 'MILD', cha: 'BHZ', drainage: 'Nisqually', active: true },
-  { id: 'PUPY', label: 'PUPY · Puyallup Valley',  net: 'UW', sta: 'PUPY', cha: 'EHZ', drainage: 'Puyallup',  active: true },
-];
-
-let selected = STATIONS.slice(0, 4).map(s => s.id);
-
-// ── Render station tabs ─────────────────────────────────────────────────────
-function renderTabs() {
-  const wrap = document.getElementById('stationTabs');
-  wrap.innerHTML = STATIONS.map(s => `
-    <button class="tab-btn ${selected.includes(s.id) ? 'active' : ''}"
-      onclick="toggleStation('${s.id}', this)">
-      <span class="tab-dot" style="background:${selected.includes(s.id) ? 'var(--ok)' : 'var(--muted)'}"></span>
-      ${s.label}
-    </button>`).join('');
+function heli(){
+  const S=D.h?.stations||{}, v0=D.h?Date.parse(D.h.fetched_at):0;
+  $('heli').innerHTML=Object.entries(S).map(([k,v])=>`<div class="card"><h3>${esc(v.label)} <em>${esc(v.channel)}</em></h3>${v.file?`<a href="${esc(v.file)}?t=${v0}" target="_blank"><img src="${esc(v.file)}?t=${v0}" alt="24-hour seismogram, ${esc(v.label)}" style="width:100%;border-radius:4px;background:#fff" loading="lazy"></a>`:'<p class="note">No image this hour.</p>'}<p class="note">${v.start?`${new Date(v.start).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric'})} to ${new Date(v.end).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric',timeZoneName:'short'})}`:''}</p></div>`).join('')||'<p class="note">Waveform images are unavailable right now.</p>';
 }
-
-function toggleStation(id, btn) {
-  if (selected.includes(id)) {
-    if (selected.length === 1) return; // keep at least one
-    selected = selected.filter(s => s !== id);
-  } else {
-    selected = [...selected, id];
-  }
-  renderTabs();
-  renderHelicorders();
+function rsam(){
+  const R=D.r||{}, names=Object.fromEntries((D.st?.stations||[]).map(s=>[s.id,s.name]));
+  const ids=Object.keys(R).filter(k=>R[k].length>2&&names[k]).sort((a,b)=>a.split('.')[1].localeCompare(b.split('.')[1]));
+  pick=pick.filter(p=>ids.includes(p)); if(!pick.length) pick=ids.slice(0,3);
+  $('rs-pick').innerHTML=ids.map(k=>{ const i=pick.indexOf(k), c=i>=0?COL[i%COL.length]:null; return `<button data-k="${k}" title="${esc(names[k]||k)}" style="font:11px var(--fm);padding:4px 8px;border-radius:4px;cursor:pointer;border:1px solid ${c||'var(--border)'};background:${c?'var(--surface2)':'none'};color:${c||'var(--subtext)'}">${esc(k.split('.')[1])}</button>`; }).join('');
+  $('rs-pick').querySelectorAll('button').forEach(b=>b.onclick=()=>{ const k=b.dataset.k; pick=pick.includes(k)?pick.filter(x=>x!==k):[...pick,k].slice(-6); rsam(); });
+  const hrs=Math.max(0,...ids.map(k=>R[k].length))/6;
+  $('rs-sub').textContent=hrs<7*24-1?`${Math.round(hrs)} hour${Math.round(hrs)===1?'':'s'} of history so far; it fills to 7 days`:'7 days';
+  if(rsChart) rsChart.destroy();
+  rsChart=new Chart($('rsam'),{type:'line',data:{datasets:pick.map((k,i)=>({label:`${names[k]||k} (${k})`,data:R[k].map(([t,v])=>({x:t*1000,y:Math.max(v,.01)})),borderColor:COL[i%COL.length],borderWidth:1.4,pointRadius:0,tension:.15}))},
+    options:{responsive:true,maintainAspectRatio:false,animation:false,interaction:{mode:'nearest',axis:'x',intersect:false},
+      plugins:{legend:{labels:{color:'#7a95a8',font:{family:'Space Mono',size:10},boxWidth:12}},tooltip:{callbacks:{title:i=>new Date(i[0].parsed.x).toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit'}),label:i=>`${i.dataset.label}: ${i.parsed.y}`}}},
+      scales:{x:{type:'linear',ticks:{color:'#4a6070',font:{family:'Space Mono',size:10},maxTicksLimit:8,callback:v=>new Date(v).toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric'})},grid:{color:'rgba(30,45,58,.5)'}},
+              y:{type:'logarithmic',ticks:{color:'#4a6070',font:{family:'Space Mono',size:10}},grid:{color:'rgba(30,45,58,.5)'},title:{display:true,text:'counts (log scale)',color:'#4a6070'}}}}});
 }
-
-// ── Render helicorder panels ────────────────────────────────────────────────
-function pnsnLink(sta, net) {
-  return `https://pnsn.org/station/view/${net}.${sta}`;
+function depth(){
+  const E=(D.q?.events||[]).filter(e=>e.d!=null);
+  if(dChart) dChart.destroy();
+  dChart=new Chart($('depth'),{type:'scatter',data:{datasets:[{data:E.map(e=>({x:e.t*1000,y:e.d,m:e.m})),pointRadius:c=>3+2.5*Math.max(0,c.raw?.m||0),backgroundColor:'rgba(253,230,138,.55)',borderColor:'#fde68a',borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>`M${i.raw.m!=null?i.raw.m.toFixed(1):'?'} · ${i.raw.y.toFixed(1)} km deep · ${new Date(i.raw.x).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}`}}},
+      scales:{x:{type:'linear',ticks:{color:'#4a6070',font:{family:'Space Mono',size:10},maxTicksLimit:8,callback:v=>new Date(v).toLocaleDateString('en-US',{...PT,month:'short',day:'numeric'})},grid:{color:'rgba(30,45,58,.5)'}},
+              y:{reverse:true,title:{display:true,text:'depth below sea level, km',color:'#4a6070'},ticks:{color:'#4a6070',font:{family:'Space Mono',size:10}},grid:{color:'rgba(30,45,58,.5)'}}}}});
 }
+function fresh(){ $('fresh').innerHTML=`<span>● Waveforms and levels: ${D.h?ago(Date.parse(D.h.fetched_at)):'unavailable'} (hourly)</span> <span>● Earthquakes: ${D.q?.live?'live':'hourly copy'}</span><br><br>Waveforms: <a href="https://www.earthscope.org/">EarthScope</a> (IRIS) data services, networks UW (Pacific Northwest Seismic Network) and CC (USGS Cascades Volcano Observatory). Earthquakes: USGS. Code: <a href="https://github.com/bdgroves/lahar-watch">github.com/bdgroves/lahar-watch</a>`; }
+load(); setInterval(load,15*60e3);
 
-// Load manifest of server-fetched images from GitHub Actions
-let heliManifest = null;
-async function loadHeliManifest() {
-  try {
-    const r = await fetch('data/helicorders.json');
-    heliManifest = await r.json();
-  } catch { heliManifest = null; }
-}
-
-function renderHelicorders() {
-  const grid = document.getElementById('helicorderGrid');
-  const stations = STATIONS.filter(s => selected.includes(s.id));
-  grid.style.gridTemplateColumns = stations.length <= 2 ? '1fr 1fr' : '1fr 1fr';
-  grid.innerHTML = stations.map((s, i) => `
-    <div class="heli-card" style="animation-delay:${i * 0.06}s">
-      <div class="heli-header">
-        <div>
-          <span class="heli-station">${s.label}</span>
-          <span class="heli-meta" style="margin-left:8px;">${s.drainage} drainage</span>
-        </div>
-        <span class="heli-meta">${s.net}.${s.sta}.${s.cha}</span>
-      </div>
-      <div class="heli-img-wrap" id="wrap-${s.id}">
-        <div class="heli-loading" id="loading-${s.id}">Loading helicorder…</div>
-        <span class="heli-label">24h · ${s.cha}</span>
-      </div>
-      <div class="heli-footer">
-        <span class="heli-channel">Channel: ${s.cha} · Updated twice daily via Actions</span>
-        <a class="heli-link" href="${pnsnLink(s.sta, s.net)}" target="_blank">PNSN ↗</a>
-      </div>
-    </div>`).join('');
-
-  stations.forEach(s => loadHelicorder(s));
-}
-
-function loadHelicorder(s) {
-  const wrap    = document.getElementById(`wrap-${s.id}`);
-  const loading = document.getElementById(`loading-${s.id}`);
-  if (!wrap) return;
-
-  // Try server-side cached image first (no CORS issues)
-  const cached = heliManifest?.stations?.[s.id];
-  const localUrl = cached?.ok ? cached.file : `data/helicorders/${s.id}.png`;
-
-  const img = new Image();
-  img.className = 'heli-img';
-  img.alt = `${s.id} helicorder`;
-
-  img.onload = () => {
-    if (loading) loading.remove();
-    wrap.querySelector('.heli-label') && wrap.querySelector('.heli-label').remove();
-    wrap.insertBefore(img, wrap.firstChild);
-    // Add fetch time if available
-    if (cached?.fetched_at) {
-      const age = document.createElement('div');
-      age.style.cssText = 'font-family:Space Mono,monospace;font-size:8px;color:var(--muted);padding:4px 10px;border-top:1px solid var(--border)';
-      const dt = new Date(cached.fetched_at);
-      age.textContent = `fetched ${dt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})} · 24h window`;
-      wrap.parentElement.querySelector('.heli-footer').prepend(age);
-    }
-  };
-
-  img.onerror = () => {
-    // Fall back to direct PNSN request
-    const pnsnUrl = `https://pnsn.org/helicorder/image?sta=${s.sta}&net=${s.net}&cha=${s.cha}&loc=--`;
-    const img2 = new Image();
-    img2.className = 'heli-img';
-    img2.alt = img.alt;
-    img2.src = pnsnUrl;
-    img2.onload = () => {
-      if (loading) loading.remove();
-      wrap.appendChild(img2);
-    };
-    img2.onerror = () => {
-      if (loading) loading.remove();
-      wrap.innerHTML += `
-        <div class="heli-error">
-          ⚠ Image unavailable<br>
-          <span style="color:var(--muted);font-size:8px;display:block;margin-top:4px;">
-            Run <code style="color:var(--accent)">pixi run fetch</code> to cache locally, or
-            <a href="${pnsnLink(s.sta, s.net)}" target="_blank" style="color:var(--accent)">view on PNSN ↗</a>
-          </span>
-        </div>`;
-      wrap.querySelector('.heli-label')?.remove();
-    };
-  };
-
-  img.src = localUrl + `?_t=${Math.floor(Date.now() / 3600000)}`; // bust cache hourly
-}
-
-// ── Load seismicity from data/seismicity.json ───────────────────────────────
-async function loadSeismicity() {
-  let events = [];
-
-  try {
-    const res = await fetch('data/seismicity.json');
-    const data = await res.json();
-    events = data.events || [];
-  } catch {
-    // Fallback: fetch live from USGS
-    try {
-      const url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?' +
-        'format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=50' +
-        '&minmagnitude=0.5&orderby=time&limit=50';
-      const res = await fetch(url);
-      const data = await res.json();
-      events = (data.features || []).map(f => ({
-        magnitude: f.properties.mag,
-        depth_km: f.geometry.coordinates[2],
-        place: f.properties.place,
-        time: new Date(f.properties.time).toISOString(),
-        status: f.properties.status,
-        url: f.properties.url,
-      }));
-    } catch (e) {
-      console.warn('Could not load seismicity:', e);
-    }
-  }
-
-  renderEvents(events);
-}
-
-function renderEvents(events) {
-  const tbody = document.getElementById('eventTable');
-  const countEl = document.getElementById('eventCount');
-  const statCount = document.getElementById('statCount');
-  const statMaxMag = document.getElementById('statMaxMag');
-  const statMaxPlace = document.getElementById('statMaxPlace');
-
-  if (countEl) countEl.textContent = `${events.length} events`;
-  if (statCount) statCount.textContent = events.length;
-
-  if (events.length > 0) {
-    const maxEv = events.reduce((a, b) => (b.magnitude > a.magnitude ? b : a));
-    if (statMaxMag) statMaxMag.textContent = `M${maxEv.magnitude?.toFixed(1)}`;
-    if (statMaxPlace) statMaxPlace.textContent = maxEv.place?.replace(/, WA$/, '') || 'near Rainier';
-  }
-
-  // Depth distribution
-  const buckets = [0, 0, 0, 0];
-  events.forEach(e => {
-    const d = e.depth_km || 0;
-    if (d < 5) buckets[0]++;
-    else if (d < 15) buckets[1]++;
-    else if (d < 30) buckets[2]++;
-    else buckets[3]++;
-  });
-  const maxBucket = Math.max(...buckets, 1);
-  ['d0','d1','d2','d3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = buckets[i];
-    const bar = el?.closest('.depth-row')?.querySelector('.depth-bar-fill');
-    if (bar) bar.style.width = `${(buckets[i] / maxBucket) * 100}%`;
-  });
-
-  if (events.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="td-sub" style="padding:16px;text-align:center;">No events in past 7 days.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = events.map(ev => {
-    const mag = ev.magnitude;
-    const magClass = mag >= 3 ? 'mag-hi' : mag >= 2 ? 'mag-mid' : 'mag-lo';
-    const dt = ev.time ? ev.time.slice(0,16).replace('T',' ') : '—';
-    const place = (ev.place || '').replace(', Washington', '').replace(', WA', '');
-    const link = ev.url ? `<a href="${ev.url}" target="_blank" style="color:var(--accent);text-decoration:none;font-size:9px;">↗</a>` : '';
-    return `<tr>
-      <td><span class="mag-chip ${magClass}">M${mag?.toFixed(1)}</span></td>
-      <td class="td-mono">${ev.depth_km?.toFixed(1)} km</td>
-      <td class="td-sub">${place} ${link}</td>
-      <td class="td-mono td-sub">${dt}</td>
-      <td class="td-sub" style="font-size:9px;">${ev.status || '—'}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────
-loadHeliManifest().then(() => {
-  renderTabs();
-  renderHelicorders();
-});
-loadSeismicity();
-
-// Refresh helicorders every hour (Actions fetches twice daily)
-setInterval(renderHelicorders, 60 * 60 * 1000);
 </script>
 </body>
 </html>

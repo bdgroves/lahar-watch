@@ -1,67 +1,33 @@
-# Mt. Rainier Sensor Network — Technical Reference
+# The sensor network around Mount Rainier
 
-## Sensor Types
+The dashboard builds its station list from the [EarthScope](https://www.earthscope.org/) (IRIS) FDSN station
+service every hour, so `data/stations.json` on the `data` branch is the authoritative list: every current
+seismometer and infrasound sensor in the **CC** (USGS Cascades Volcano Observatory) and **UW** (Pacific
+Northwest Seismic Network) networks within about 55 km of the summit, with location, elevation, sensors,
+installation date, whether it reported in the last 20 minutes, and its ground-motion level.
 
-### Lahar Monitoring Stations (LMS) — Current Generation
-Installed 2017–present as part of the USGS modernization effort.
+## The lahar detection system
 
-Each LMS site includes some combination of:
-- **Broadband seismometer** — detects ground vibrations from lahar mass movement, earthquakes, and volcanic tremor. Transmits continuously in real-time.
-- **Infrasound array (×3 sensors)** — measures low-frequency pressure waves (0.5–20 Hz) traveling through the air. Three staggered sensors allow back-azimuth calculation to determine direction and speed of a debris flow.
-- **Tripwire arrays** — physical breakwire that triggers an alert when snapped by a lahar front.
-- **Webcam** — visual confirmation of events.
-- **GPS receiver** — tracks ground deformation that can precede a volcanic event.
+- Operating since **1998** (acoustic flow monitors and tripwires in the Carbon and Puyallup valleys).
+- Modernised from **2017**: real-time broadband seismometers, infrasound arrays, webcams and GPS; 14 new sites
+  by spring 2021, with the network expected to exceed 40 real-time stations when complete
+  ([USGS](https://www.usgs.gov/volcanoes/mount-rainier/science/monitoring-lahars-mount-rainier)).
+- **April 2022:** Mount Rainier National Park approved nine new stations on the southwest side, in the Puyallup
+  and Nisqually watersheds, two of them (Mount Wow and Tahoma Bridge) directly in lahar paths
+  ([Auburn Reporter](https://www.auburn-reporter.com/northwest/mount-rainier-park-approves-nine-new-lahar-monitoring-stations/)).
+  In the station catalogue, CC.WOW and CC.TABR start in September 2022.
+- **Autumn 2025:** White River stations CC.GRWR (Greenwater), CC.PALI (Palisades) and CC.SUNT (Sun Top) start on
+  8 September 2025, and CC.LONR (Lonesome Lake) on 2 October 2025.
+- Data from each site reach the 24-hour emergency operations centres at Washington Emergency Management and
+  South Sound 911 within 10 seconds; alerts go out through All Hazard Alert Broadcast sirens from Orting to the
+  Port of Tacoma, the Emergency Alert System and NOAA Weather Radio (USGS).
 
-### Acoustic Flow Monitors (AFM) — Legacy Generation (1998)
-Embedded underground sensors measuring ground vibrations. Older infrastructure maintained by Pierce County. Being phased out and replaced by LMS sites, but remain operational in parallel during the transition.
+## Warning time (published figures)
 
-## Drainage Hazard Summary
-
-| Drainage | Communities at Risk | Lahar Travel Time | Notes |
-|---|---|---|---|
-| Puyallup River | Orting, Puyallup, Fife, Port of Tacoma | 30–60 min to Orting | Most developed hazard zone; highest priority |
-| Carbon River | Orting, Buckley | 30–45 min to Orting | Converges with Puyallup near Orting |
-| White River | Enumclaw, Buckley, Auburn, Kent | 40–75 min | East side; newly sensored 2025 |
-| Nisqually River | Ashford, Eatonville, McKenna | 45–90 min | Less populated; longer warning window |
-| Tahoma Creek | Ashford, Elbe | 15–30 min | Short drainage; highest urgency; under-sensored |
-| Mowich River | Wilkeson, Carbonado | 45–75 min | No sensor coverage yet |
-
-## Warning Flow
-
-```
-Lahar initiates on Mt. Rainier
-        ↓
-Seismometer + infrasound array detect anomaly
-        ↓ (< 10 seconds)
-Signal transmitted to WA State EOC + South Sound 911
-        ↓
-Automated analysis confirms lahar signature
-        ↓
-Alerts dispatched to 24/7 monitoring centers
-        ↓
-AHAB sirens activated in Puyallup River Valley
-        ↓
-WA EMD Emergency Alert System broadcast
-        ↓
-Residents evacuate to high ground
-```
-
-## Key Facts for Stakeholders
-
-- **~80,000 people** live in active lahar-hazard zones
-- **2.5 million people** live in the broader 6-drainage region (Pierce County estimate)
-- **1-in-7 chance** of catastrophic lahar in next 75 years (USGS)
-- **40 min – 3 hours** warning time for most communities once lahar detected
-- **5 minutes** to reach park residential areas from summit collapse
-- **15–60 minutes** to reach communities outside the park
-- **>100 mph** lahar speed on steep upper slopes
-- **15–20 mph** lahar speed over Puget Lowlands
-
-## Planned Expansion (2025–2026)
-
-Following NPS approval in October 2025, USGS is installing:
-- **TB01 Tahoma Bridge** — deliberately placed in lahar path on west flank; going dark = speed data point
-- **MT.WOW upgrade** — existing site enhanced with infrasound array
-- **8 additional sites** across Nisqually and Mowich drainages
-
-When complete, all drainages except Mowich will have multi-sensor LMS coverage.
+| | Time | Source |
+|---|---|---|
+| Residential areas inside the park | about 5 minutes | USGS |
+| Residential areas outside the park | 15–60 minutes | USGS |
+| Most communities, once a large lahar is detected | at least 40 minutes, up to 3 hours | USGS, 2020 |
+| Worst-case west-flank landslide lahar (260 million m³), Tahoma Glacier headwall | Ashford ~20 min; head of Alder Lake ~50 min | George and others, 2022 (OFR 2021-1118) |
+| The same, from the Sunset Amphitheater | Orting lowlands ~1 hour, front ~4 m deep at ~4 m/s | George and others, 2022 |
