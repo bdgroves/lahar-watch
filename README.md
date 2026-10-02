@@ -51,7 +51,7 @@ The data files don't go into `main`'s history: the latest copy lives on the `dat
 Run locally:
 
 ```powershell
-pip install requests obspy
+pip install -r requirements.txt
 python scripts/fetch_sensors.py            # writes data/
 python scripts/validate_data.py
 python -m http.server 8080                 # http://localhost:8080

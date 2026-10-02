@@ -1,0 +1,2 @@
+requests>=2.31
+obspy>=1.4
