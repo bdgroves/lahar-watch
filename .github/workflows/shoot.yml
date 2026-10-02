@@ -1,0 +1,33 @@
+name: Screenshots
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: script to run
+        default: tools/shoot.mjs
+      browser:
+        description: chromium, webkit or firefox
+        default: chromium
+      queries:
+        description: place searches for search_test, separated by |
+        default: ''
+permissions:
+  contents: write
+jobs:
+  shoot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm i playwright@1.47 && npx playwright install --with-deps ${{ inputs.browser || 'chromium' }}
+      - run: mkdir -p tools/shots && BROWSER="${{ inputs.browser || 'chromium' }}" QS="${{ inputs.queries }}" node ${{ inputs.script || 'tools/shoot.mjs' }} > shoot.log 2>&1 || { cat shoot.log; echo "::error title=shoot::$(tail -20 shoot.log | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')"; exit 1; }
+      - name: Publish to the shots branch (keeps main clean)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan shots
+          git rm -rq --cached .
+          git add -f tools/shots
+          git commit -qm "Screenshots of the live site"
+          git push -f origin shots
