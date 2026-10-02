@@ -143,6 +143,8 @@ def stations():
         infra = sorted({l for l, ch in chans if ch.endswith("DF")})
         if not z and not infra:
             continue
+        if z and z[1] in ("HNZ", "ENZ") and not infra:
+            continue   # accelerometer-only sites in schools and fire stations: earthquake early warning, not volcano monitoring
         out.append({"id": k, "net": s["net"], "sta": s["sta"], "name": names.get(k, s["sta"]),
                     "lat": s["lat"], "lon": s["lon"], "elev_ft": round(s["elev_m"] * 3.281),
                     "km_from_summit": round(km(SUMMIT[0], SUMMIT[1], s["lat"], s["lon"]), 1),
