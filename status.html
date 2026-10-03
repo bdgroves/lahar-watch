@@ -114,7 +114,7 @@ const CHECKS=[
   ['USGS volcano alerts (HANS)','Mount Rainier\'s alert level','https://volcanoes.usgs.gov/hans-public/api/volcano/getMonitoredVolcanoes',j=>{ const w=j.find(v=>v.volcano_cd==='wa6'); return w?`${w.color_code} / ${w.alert_level}`:null; }],
   ['USGS earthquakes','Count within 20 km, last 7 days',`https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=20&starttime=${new Date(Date.now()-7*864e5).toISOString().slice(0,10)}`,j=>j.count!=null?`${j.count} earthquakes`:null],
   ['NOAA river gauges (NWPS)','Puyallup River near Orting, latest','https://api.water.noaa.gov/nwps/v1/gauges/ORTW1',j=>{ const o=j.status?.observed; return o?`${Math.round(o.primary*1000).toLocaleString()} cfs, ${(o.floodCategory||'').replace('_',' ')}, ${ago(Date.parse(o.validTime))}`:null; }],
-  ['EarthScope station catalogue','Stations of the CC network','https://service.earthscope.org/fdsnws/station/1/query?network=CC&station=PR05,TABR&level=station&format=geocsv',null],
+  ['EarthScope station catalogue','Two lahar stations (PR05, TABR)','https://service.earthscope.org/fdsnws/station/1/query?network=CC&station=PR05,TABR&level=station&format=geocsv',null],
 ];
 async function run(){
   let ok=0;
@@ -123,7 +123,7 @@ async function run(){
     try{ const r=await fetch(u,{cache:'no-store'}); const ms=Math.round(performance.now()-t0);
       if(!r.ok) return [n,what,`<span style="color:var(--warn)">HTTP ${r.status}</span>`,ms];
       let txt='responded';
-      if(parse){ const v=parse(await r.json()); if(!v) return [n,what,'<span style="color:var(--caution)">answered, but without the expected data</span>',ms]; txt=v; } else { const s=await r.text(); txt=`${s.split('\n').filter(l=>l&&!l.startsWith('#')).length-1} stations listed`; }
+      if(parse){ const v=parse(await r.json()); if(!v) return [n,what,'<span style="color:var(--caution)">answered, but without the expected data</span>',ms]; txt=v; } else { const s=await r.text(); txt=`${s.split('\n').filter(l=>l&&!l.startsWith('#')).length-1} of 2 stations listed`; }
       ok++; return [n,what,`<span style="color:var(--ok)">●</span> ${esc(txt)}`,ms];
     }catch(e){ return [n,what,`<span style="color:var(--warn)">● unreachable from this browser</span>`,Math.round(performance.now()-t0)]; }
   }));
