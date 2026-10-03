@@ -1,0 +1,136 @@
+{
+ "top": [
+  [
+   1160275706650,
+   4.5,
+   "md",
+   "earthquake",
+   "27 km NNE of Packwood, Washington",
+   [
+    -121.6001667,
+    46.8498333,
+    1.649
+   ],
+   "uw10701498"
+  ],
+  [
+   1160276871050,
+   2.8,
+   "md",
+   "earthquake",
+   "28 km NNE of Packwood, Washington",
+   [
+    -121.5898333,
+    46.8523333,
+    3.299
+   ],
+   "uw10702058"
+  ],
+  [
+   1160839848200,
+   2.7,
+   "md",
+   "earthquake",
+   "27 km NNE of Packwood, Washington",
+   [
+    -121.5938333,
+    46.8505,
+    3.069
+   ],
+   "uw10706758"
+  ],
+  [
+   1160835001880,
+   2.6,
+   "md",
+   "earthquake",
+   "27 km NNE of Packwood, Washington",
+   [
+    -121.5865,
+    46.8485,
+    4.129
+   ],
+   "uw10706658"
+  ],
+  [
+   1163569692620,
+   2.6,
+   "md",
+   "earthquake",
+   "11 km NNE of Ashford, Washington",
+   [
+    -121.9796667,
+    46.8556667,
+    5.296
+   ],
+   "uw10704153"
+  ],
+  [
+   1160276051460,
+   2.5,
+   "md",
+   "earthquake",
+   "27 km N of Packwood, Washington",
+   [
+    -121.601,
+    46.85,
+    3.099
+   ],
+   "uw10701863"
+  ]
+ ],
+ "m35": [
+  [
+   1160275706650,
+   4.5,
+   "md",
+   "earthquake",
+   "27 km NNE of Packwood, Washington",
+   [
+    -121.6001667,
+    46.8498333,
+    1.649
+   ],
+   "uw10701498"
+  ],
+  [
+   1092690353790,
+   4.01,
+   "md",
+   "earthquake",
+   "16 km ENE of Packwood, Washington",
+   [
+    -121.473,
+    46.6728333,
+    -1.104
+   ],
+   "uw10611773"
+  ],
+  [
+   1088200111560,
+   3.9,
+   "md",
+   "earthquake",
+   "17 km W of Packwood, Washington",
+   [
+    -121.8958333,
+    46.629,
+    -1.029
+   ],
+   "uw10614268"
+  ],
+  [
+   956385805680,
+   3.6,
+   "md",
+   "earthquake",
+   "12 km NNE of Ashford, Washington",
+   [
+    -121.9758333,
+    46.8625,
+    6.704
+   ],
+   "uw10496228"
+  ]
+ ]
+}
