@@ -145,6 +145,10 @@ const ago=t=>{ const m=(Date.now()-t)/60000; return m<1?'just now':m<60?`${Math.
 const SUMMIT=[46.853,-121.760];
 const D={};
 async function J(u,ms=20000){ const c=new AbortController(), t=setTimeout(()=>c.abort(),ms); try{ const r=await fetch(u,{signal:c.signal,cache:'no-store'}); if(!r.ok) throw new Error(r.status); return await r.json(); } finally{ clearTimeout(t); } }
+// Hourly data lives on the `data` branch; read it from there first so the site works whichever deploy is newest
+const RAW='https://raw.githubusercontent.com/bdgroves/lahar-watch/data/';
+const DJ=p=>J(RAW+p+`?t=${Math.floor(Date.now()/60000)}`).catch(()=>J(`${p}?t=${Date.now()}`));
+
 
 function clock(){ $('clock').textContent=new Date().toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }
 setInterval(clock,1000); clock();
@@ -169,7 +173,7 @@ async function drawZones(){
 // ── data ────────────────────────────────────────────────────────────────────
 async function loadAll(){
   const files=['stations','alert','quakes','rivers','summary'];
-  const got=await Promise.all(files.map(f=>J(`data/${f}.json?t=${Date.now()}`).catch(()=>null)));
+  const got=await Promise.all(files.map(f=>DJ(`data/${f}.json`).catch(()=>null)));
   files.forEach((f,i)=>D[f]=got[i]);
   // live sources in the browser, falling back to the hourly copy
   await Promise.all([liveAlert(), liveQuakes(), liveRivers()]);

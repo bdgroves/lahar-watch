@@ -108,6 +108,10 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const PT={timeZone:'America/Los_Angeles'};
 const ago=t=>{ const m=(Date.now()-t)/60000; return m<1?'just now':m<60?`${Math.round(m)} min ago`:m<48*60?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} days ago`; };
 async function J(u,ms=20000){ const c=new AbortController(), t=setTimeout(()=>c.abort(),ms); try{ const r=await fetch(u,{signal:c.signal,cache:'no-store'}); if(!r.ok) throw new Error(r.status); return await r.json(); } finally{ clearTimeout(t); } }
+// Hourly data lives on the `data` branch; read it from there first so the site works whichever deploy is newest
+const RAW='https://raw.githubusercontent.com/bdgroves/lahar-watch/data/';
+const DJ=p=>J(RAW+p+`?t=${Math.floor(Date.now()/60000)}`).catch(()=>J(`${p}?t=${Date.now()}`));
+
 function clock(){ $('clock').textContent=new Date().toLocaleString('en-US',{...PT,weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }
 setInterval(clock,1000); clock();
 
@@ -115,7 +119,7 @@ const D={};
 const COL=['#f97316','#38bdf8','#22c55e','#a78bfa','#eab308','#ef4444'];
 let pick=['UW.RCM','CC.TABR','CC.PR05','CC.GRWR'], rsChart=null, dChart=null;
 async function load(){
-  const [h,r,st,q]=await Promise.all(['helicorders','rsam','stations','quakes'].map(f=>J(`data/${f}.json?t=${Date.now()}`).catch(()=>null)));
+  const [h,r,st,q]=await Promise.all(['helicorders','rsam','stations','quakes'].map(f=>DJ(`data/${f}.json`).catch(()=>null)));
   Object.assign(D,{h,r,st,q});
   try{ const s=new Date(Date.now()-30*864e5).toISOString().slice(0,19);
        const g=await J(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=46.853&longitude=-121.760&maxradiuskm=20&starttime=${s}&orderby=time`);
@@ -124,7 +128,7 @@ async function load(){
 }
 function heli(){
   const S=D.h?.stations||{}, v0=D.h?Date.parse(D.h.fetched_at):0;
-  $('heli').innerHTML=Object.entries(S).map(([k,v])=>`<div class="card"><h3>${esc(v.label)} <em>${esc(v.channel)}</em></h3>${v.file?`<a href="${esc(v.file)}?t=${v0}" target="_blank"><img src="${esc(v.file)}?t=${v0}" alt="24-hour seismogram, ${esc(v.label)}" style="width:100%;border-radius:4px;background:#fff" loading="lazy"></a>`:'<p class="note">No image this hour.</p>'}<p class="note">${v.start?`${new Date(v.start).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric'})} to ${new Date(v.end).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric',timeZoneName:'short'})}`:''}</p></div>`).join('')||'<p class="note">Waveform images are unavailable right now.</p>';
+  $('heli').innerHTML=Object.entries(S).map(([k,v])=>`<div class="card"><h3>${esc(v.label)} <em>${esc(v.channel)}</em></h3>${v.file?`<a href="${RAW+esc(v.file)}?t=${v0}" target="_blank"><img src="${RAW+esc(v.file)}?t=${v0}" alt="24-hour seismogram, ${esc(v.label)}" style="width:100%;border-radius:4px;background:#fff" loading="lazy"></a>`:'<p class="note">No image this hour.</p>'}<p class="note">${v.start?`${new Date(v.start).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric'})} to ${new Date(v.end).toLocaleString('en-US',{...PT,month:'short',day:'numeric',hour:'numeric',timeZoneName:'short'})}`:''}</p></div>`).join('')||'<p class="note">Waveform images are unavailable right now.</p>';
 }
 function rsam(){
   const R=D.r||{}, names=Object.fromEntries((D.st?.stations||[]).map(s=>[s.id,s.name]));
