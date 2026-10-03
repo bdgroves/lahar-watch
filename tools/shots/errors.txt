@@ -1,0 +1,34 @@
+cwx: {
+ "sw": 1280,
+ "title": "CASCADIA-WX · Weather Balloons in FORTRAN",
+ "sites": 4,
+ "status": "LATEST BALLOON 2026-10-03 18Z LAST RUN 2026-10-03 21:10 UTC SITES 4 of 4 current RETURN CODE 00 NORMAL",
+ "cards": [
+  "QUILLAYUTE KUIL | 2026-10-03 12Z · 11 h ago | 13,961 ft | freezing level · above | 5,481",
+  "SALEM KSLE | 2026-10-03 12Z · 11 h ago | 15,235 ft | freezing level · much above | 5,984",
+  "MEDFORD KMFR | 2026-10-03 18Z · 5 h ago | 15,325 ft | freezing level · above | 6,863",
+  "SPOKANE KOTX | 2026-10-03 18Z · 5 h ago | 13,730 ft | freezing level · above | 6,154"
+ ],
+ "bands": 2,
+ "ar": 4,
+ "snow": "No NRCS data on file yet. The snow service was down when this version first ran; this section fills in on the first run after it answers.",
+ "form": 35,
+ "markers": 16
+}
+cwx-phone: {
+ "sw": 390,
+ "title": "CASCADIA-WX · Weather Balloons in FORTRAN",
+ "sites": 4,
+ "status": "LATEST BALLOON 2026-10-03 18Z LAST RUN 2026-10-03 21:10 UTC SITES 4 of 4 current RETURN CODE 00 NORMAL",
+ "cards": [
+  "QUILLAYUTE KUIL | 2026-10-03 12Z · 11 h ago | 13,961 ft | freezing level · above | 5,481",
+  "SALEM KSLE | 2026-10-03 12Z · 11 h ago | 15,235 ft | freezing level · much above | 5,984",
+  "MEDFORD KMFR | 2026-10-03 18Z · 5 h ago | 15,325 ft | freezing level · above | 6,863",
+  "SPOKANE KOTX | 2026-10-03 18Z · 5 h ago | 13,730 ft | freezing level · above | 6,154"
+ ],
+ "bands": 2,
+ "ar": 4,
+ "snow": "No NRCS data on file yet. The snow service was down when this version first ran; this section fills in on the first run after it answers.",
+ "form": 35,
+ "markers": 16
+}
