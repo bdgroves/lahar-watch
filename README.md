@@ -15,7 +15,7 @@
 | Page | What it shows |
 |---|---|
 | **[Dashboard](https://brooksgroves.com/lahar-watch/)** | Alert level and the newest Cascades Volcano Observatory notice · stations reporting in the last 20 minutes · earthquakes this week vs normal · rivers vs flood stage · map of stations, earthquakes, gauges and hazard zones · station table with each station's ground-motion level vs its own normal · weekly and yearly earthquake counts · 7-day hydrographs with NOAA's forecast and flood lines |
-| **[Seismic](https://brooksgroves.com/lahar-watch/seismic.html)** | 24-hour seismograms from one station per drainage and the summit · 7 days of ground-motion level (RSAM) for any station · earthquakes by depth |
+| **[Seismic](https://brooksgroves.com/lahar-watch/seismic.html)** | 24-hour helicorders (one line per hour, 1–10 Hz) from one station per drainage and the summit · 7 days of ground-motion level (RSAM) for any station · earthquakes by depth |
 | **[Warning time](https://brooksgroves.com/lahar-watch/travel-time.html)** | The published figures: ~5 min inside the park, 15–60 min outside, 40 min – 3 h once detected; the USGS 2022 D-Claw worst-case simulations; detection to sirens; the lahars Rainier has already sent |
 | **[Status](https://brooksgroves.com/lahar-watch/status.html)** | Each live source checked from your browser, with what it returned; the age of each hourly file |
 
@@ -61,7 +61,7 @@ python -m http.server 8080                 # http://localhost:8080
 
 | Source | Data |
 |---|---|
-| [EarthScope](https://www.earthscope.org/) (IRIS) FDSN station, dataselect, timeseriesplot | Station catalogue, last hour of data, seismogram images |
+| [EarthScope](https://www.earthscope.org/) (IRIS) FDSN station and dataselect | Station catalogue; the last hour of data from every station; 24 hours from eight, drawn as helicorders with ObsPy |
 | [USGS Hazard Notification System](https://volcanoes.usgs.gov/hans-public/volcano/wa6) | Alert level, aviation colour code, notices |
 | [USGS Earthquake Hazards](https://earthquake.usgs.gov/fdsnws/event/1/) | Earthquakes located by PNSN |
 | [NOAA National Water Prediction Service](https://water.noaa.gov/) | River gauges, forecasts, flood categories, historic crests |

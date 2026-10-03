@@ -18,7 +18,7 @@ Everything on lahar-watch that can't be read live by the browser, refreshed ever
                 weekly counts for two years and yearly counts since 2000, for "is this normal?".
   • Rivers    — NOAA's National Water Prediction Service gauges on the lahar rivers: the last
                 7 days, the official forecast, flood categories and historic crests.
-  • Waveforms — 24-hour helicorder images from the EarthScope timeseriesplot service.
+  • Waveforms — 24-hour helicorders drawn from dataselect data with obspy (1-10 Hz, one line per hour).
 
 Writes data/*.json (and data/helicorders/*.png). State that has to persist between runs (the
 RSAM history) is kept on the `data` branch, which the workflow restores before running.
@@ -339,25 +339,51 @@ def rivers():
 
 # ── waveform images ──────────────────────────────────────────────────────────
 def helicorders(sts):
+    """24-hour helicorders drawn here from the raw data: one line per hour, filtered 1-10 Hz, Pacific time."""
+    import matplotlib
+    matplotlib.use("Agg")
+    from obspy import read, UTCDateTime
+    from zoneinfo import ZoneInfo
     d = DATA / "helicorders"
     d.mkdir(exist_ok=True)
     by = {s["id"]: s for s in sts}
+    end = NOW.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)   # lines start on the hour
+    start = end - timedelta(hours=24)
+    offset = NOW.astimezone(ZoneInfo("America/Los_Angeles")).utcoffset().total_seconds() / 3600
     res = {}
     for net, sta, label in HELI:
         s = by.get(f"{net}.{sta}")
         if not s or not s["z"]:
             continue
         loc, cha = s["z"]
-        r = get(f"{FDSN}/irisws/timeseriesplot/1/query", {"net": net, "sta": sta, "loc": loc or "--", "cha": cha,
-                                                         "start": iso(NOW - timedelta(hours=24))[:-1], "end": iso(NOW)[:-1],
-                                                         "width": 1000, "height": 220}, raw=True, timeout=90, tries=2)
-        if r is not None and "image" in r.headers.get("content-type", ""):
-            (d / f"{sta}.png").write_bytes(r.content)
-            res[f"{net}.{sta}"] = {"file": f"data/helicorders/{sta}.png", "label": label, "channel": f"{net}.{sta}.{loc or '--'}.{cha}",
-                                   "start": iso(NOW - timedelta(hours=24)), "end": iso(NOW)}
-        else:
-            res[f"{net}.{sta}"] = {"file": None, "label": label, "channel": f"{net}.{sta}.{loc or '--'}.{cha}"}
-    log(f"  {sum(1 for v in res.values() if v['file'])} waveform images")
+        rec = {"file": None, "label": label, "channel": f"{net}.{sta}.{loc or '--'}.{cha}"}
+        r = get(f"{FDSN}/fdsnws/dataselect/1/query", {"net": net, "sta": sta, "loc": loc or "--", "cha": cha,
+                                                     "start": iso(start)[:-1], "end": iso(NOW)[:-1]}, raw=True, timeout=180, tries=2)
+        try:
+            if r is None or r.status_code != 200 or not r.content:
+                raise ValueError("no data")
+            st = read(io.BytesIO(r.content))
+            st.merge(fill_value="interpolate")
+            st.detrend("demean")
+            st.filter("bandpass", freqmin=1, freqmax=10, corners=2)
+            sr = st[0].stats.sampling_rate
+            if sr >= 40:
+                st.decimate(int(sr // 25), no_filter=True)
+            for tr in st:                       # draw in Pacific time: shift the clock, label the axis
+                tr.stats.starttime += offset * 3600
+            fig = st.plot(type="dayplot", interval=60, starttime=UTCDateTime(start) + offset * 3600,
+                          endtime=UTCDateTime(end) + offset * 3600, one_tick_per_line=True,
+                          color=["k", "#c0392b", "#1f4e9a", "#1e7a3c"], size=(900, 760), dpi=100,
+                          tick_format="%H:%M", title="", x_labels_size=8, y_labels_size=8, handle=True)
+            fig.axes[0].set_ylabel(f"Pacific time ({'PDT' if offset == -7 else 'PST'}), hour starting", fontsize=9)
+            fig.savefig(d / f"{sta}.png", dpi=100, bbox_inches="tight")
+            import matplotlib.pyplot as plt
+            plt.close(fig)
+            rec.update(file=f"data/helicorders/{sta}.png", start=iso(start), end=iso(NOW))
+        except Exception as e:
+            log(f"  ! helicorder {sta}: {e}")
+        res[f"{net}.{sta}"] = rec
+    log(f"  {sum(1 for v in res.values() if v['file'])} helicorders")
     return {"fetched_at": iso(NOW), "stations": res}
 
 
